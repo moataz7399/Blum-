@@ -20,7 +20,7 @@ body {
   text-shadow: 0 0 3px rgba(255, 255, 255, 0.7), 0 0 6px rgba(255, 255, 255, 0.5);
 }
 
-/* Hidden Class */
+/* إخفاء العناصر عند الحاجة */
 .hidden {
   display: none;
 }
@@ -62,31 +62,29 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
-  /* خلفية شفافة داكنة */
   background: rgba(0, 0, 0, 0.7);
   display: flex; 
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* فوق كل العناصر */
+  z-index: 9999;
 }
 
 .spinner {
   width: 40px;
   height: 40px;
   border: 4px solid #ddd;
-  border-top: 4px solid #007bff; /* لون أزرق */
+  border-top: 4px solid #007bff;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
-/* حركة الدوران */
 @keyframes spin {
   100% {
     transform: rotate(360deg);
   }
 }
 
-/* Profile Section */
+/* الصفحة الرئيسية */
 .profile-section {
   text-align: center;
   margin-top: 20px;
@@ -101,7 +99,7 @@ header {
   border: 2px solid #fff;
 }
 
-/* Buttons Section */
+/* بطاقتا يوتيوب والتليجرام جنباً إلى جنب */
 .buttons-section {
   display: flex;
   justify-content: space-around;
@@ -113,19 +111,19 @@ header {
   padding: 15px;
   border-radius: 10px;
   text-align: center;
-  width: 45%;
+  width: 40%;
+  min-width: 130px;
 }
 
 .button-card h3 {
   font-size: 1rem;
-}
-
-.button-card p {
-  font-size: 0.8rem;
-  margin: 10px 0;
+  margin-bottom: 8px;
 }
 
 .button-card button {
+  display: block;
+  width: 100%;
+  margin: 5px auto;
   padding: 10px 20px;
   background: #444;
   color: #fff;
@@ -133,10 +131,16 @@ header {
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s;
+  text-align: center;
 }
 
 .button-card button:hover {
   background: #555;
+}
+
+/* زر الـPlay */
+.play-btn {
+  background: #666; 
 }
 
 /* Friends Section */
@@ -193,20 +197,17 @@ header {
   color: #fff;
 }
 
-/* الأزرار الخاصة بقسم Collab */
-
-/* زر Start (أبيض دائري) */
+/* أزرار Start/Claim */
 .start-btn {
   background-color: #fff;
   color: #000;
-  border-radius: 9999px;
+  border-radius: 9999px; 
   padding: 10px 30px;
   border: none;
   font-size: 1rem;
   transition: background 0.3s, color 0.3s;
 }
 
-/* زر Claim (أزرق دائري) */
 .claim-btn {
   background-color: #007bff;
   color: #fff;
@@ -215,6 +216,83 @@ header {
   border: none;
   font-size: 1rem;
   transition: background 0.3s, color 0.3s;
+}
+
+/* الخلفية الأساسية للعبة */
+#game-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000 url("https://i.ibb.co/jfjCkVM/image.png") center center / cover no-repeat;
+  z-index: 9998; 
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+/* عدادات اللعبة */
+.score-panel {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  line-height: 1.5;
+  pointer-events: none; 
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 0 5px #fff, 0 0 10px #ffc107;
+}
+
+.score-panel p {
+  margin-bottom: 5px;
+}
+
+#falconScore, #bombScore {
+  font-size: 1.4rem;
+  color: #fff;
+  text-shadow: 0 0 3px #fff, 0 0 6px #ff0, 0 0 10px #ff0;
+}
+
+/* العداد الزمني */
+.timer-panel {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  pointer-events: none; 
+}
+
+.timer-panel p {
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 0 0 4px #fff, 0 0 8px #ff1493, 0 0 12px #ff1493;
+}
+
+/* الإيموجي المتساقط */
+.falling-emoji {
+  position: absolute;
+  font-size: 2rem;
+  cursor: pointer;
+  user-select: none;
+  pointer-events: auto; 
+}
+
+/* تأثير الاهتزاز */
+.shake {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0%   { transform: translate(0,0); }
+  20%  { transform: translate(-10px,0); }
+  40%  { transform: translate(10px,0); }
+  60%  { transform: translate(-10px,0); }
+  80%  { transform: translate(10px,0); }
+  100% { transform: translate(0,0); }
+}
+
+/* الصورة الحمراء عند الضغط على القنبلة */
+.bomb-image {
+  background: #000 url("https://i.ibb.co/R0SKJqJ/image.png") center center / cover no-repeat !important;
 }
 
 /* Footer */
