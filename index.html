@@ -19,8 +19,8 @@
     </div>
   </header>
 
-  <!-- شاشة التحميل (Loader) - مخفية بشكل افتراضي عبر .hidden -->
-  <div class="loader hidden">
+  <!-- شاشة التحميل (Loader) -->
+  <div class="loader" style="display: none;">
     <div class="spinner"></div>
   </div>
 
@@ -37,16 +37,25 @@
       </div>
     </div>
 
+    <!-- بطاقتا يوتيوب وتليجرام جنباً إلى جنب -->
     <div class="buttons-section">
+      <!-- بطاقة اليوتيوب -->
       <div class="button-card">
         <h3 class="glow-text">YOUTUBE CHANNEL</h3>
-        <p class="glow-text">Learn from videos</p>
-        <button>Subscribe</button>
+        <!-- زر Subscribe -->
+        <button onclick="window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');">
+          Subscribe
+        </button>
+        <!-- زر Play -->
+        <button class="play-btn" onclick="prepareGame()">Play</button>
       </div>
+
+      <!-- بطاقة التليجرام -->
       <div class="button-card">
-        <h3 class="glow-text">JOIN NOW</h3>
-        <p class="glow-text">Home for friends</p>
-        <button>Join</button>
+        <h3 class="glow-text">Telegram Channel</h3>
+        <button onclick="window.open('https://t.me/Falcon_Community_Bot', '_blank');">
+          Join
+        </button>
       </div>
     </div>
   </main>
@@ -105,6 +114,19 @@
     </div>
   </div>
 
+  <!-- واجهة اللعبة -->
+  <div id="game-overlay" class="hidden">
+    <!-- عدادات اللعبة يسار -->
+    <div class="score-panel">
+      <p>Falcons: <span id="falconScore">0</span></p>
+      <p>Bombs: <span id="bombScore">0</span></p>
+    </div>
+    <!-- العداد الزمني يمين -->
+    <div class="timer-panel">
+      <p id="timer">30.00</p>
+    </div>
+  </div>
+
   <footer>
     <nav class="bottom-nav">
       <a href="#" class="active glow-text" onclick="showMain()">
@@ -123,15 +145,14 @@
   </footer>
 
   <script>
-    // دالة لإظهار شاشة التحميل (Loader) لمدة 1 ثانية
-    // ثم تنفيذ callback (تبديل الأقسام)
+    /************************************************************/
+    /* شيفرة التنقل بين الصفحات + شاشة تحميل                   */
+    /************************************************************/
     function showLoader(callback) {
       const loader = document.querySelector('.loader');
-      // إظهار الـLoader
-      loader.classList.remove('hidden');
-      // بعد 1 ثانية نخفيه
+      loader.style.display = 'flex';
       setTimeout(() => {
-        loader.classList.add('hidden');
+        loader.style.display = 'none';
         if (typeof callback === 'function') {
           callback();
         }
@@ -139,55 +160,209 @@
     }
 
     function showMain() {
-      // إظهار شاشة التحميل ثم عرض الصفحة الرئيسية وإخفاء الآخرين
       showLoader(() => {
         document.getElementById('main-content').classList.remove('hidden');
         document.getElementById('friends-page').classList.add('hidden');
         document.getElementById('collab-page').classList.add('hidden');
+        document.getElementById('game-overlay').classList.add('hidden');
       });
     }
 
     function showFriends() {
-      // إظهار شاشة التحميل ثم عرض صفحة الأصدقاء وإخفاء الآخرين
       showLoader(() => {
         document.getElementById('main-content').classList.add('hidden');
         document.getElementById('friends-page').classList.remove('hidden');
         document.getElementById('collab-page').classList.add('hidden');
+        document.getElementById('game-overlay').classList.add('hidden');
       });
     }
 
     function showCollab() {
-      // إظهار شاشة التحميل ثم عرض صفحة التعاون وإخفاء الآخرين
       showLoader(() => {
         document.getElementById('main-content').classList.add('hidden');
         document.getElementById('friends-page').classList.add('hidden');
         document.getElementById('collab-page').classList.remove('hidden');
+        document.getElementById('game-overlay').classList.add('hidden');
       });
     }
 
-    // عند الضغط على زر Start:
-    // 1) ينسخ إيموجي 🐊
-    // 2) بعد 10 ثوانٍ يصبح Claim (زر أزرق)
-    // 3) عند الضغط على Claim يصبح علامة ✓ ويهتز الهاتف
+    /************************************************************/
+    /* الإعداد قبل بدء اللعبة: شاشة التحميل لثانيتين           */
+    /************************************************************/
+    function prepareGame() {
+      const loader = document.querySelector('.loader');
+      loader.style.display = 'flex'; 
+      setTimeout(() => {
+        loader.style.display = 'none';
+        startGame();
+      }, 2000);
+    }
+
+    /************************************************************/
+    /* متغيرات وتحكّم في اللعبة                                 */
+    /************************************************************/
+    let falconScore = 0;
+    let bombScore = 0;
+    let gameTime = 30.00;      
+    let countdownInterval;
+    let totalFalcons;
+    let totalBombs;
+
+    /************************************************************/
+    /* بدء اللعبة: جدولة الصقور والقنابل، بدء العداد العشري     */
+    /************************************************************/
+    function startGame() {
+      document.getElementById('game-overlay').classList.remove('hidden');
+      document.getElementById('main-content').classList.add('hidden');
+      document.getElementById('friends-page').classList.add('hidden');
+      document.getElementById('collab-page').classList.add('hidden');
+
+      // إعادة ضبط النقاط والوقت
+      falconScore = 0;
+      bombScore = 0;
+      gameTime = 30.00;
+      document.getElementById('falconScore').textContent = falconScore;
+      document.getElementById('bombScore').textContent = bombScore;
+      document.getElementById('timer').textContent = gameTime.toFixed(2);
+
+      // تحديد كم عدد الصقور والقنابل
+      totalFalcons = Math.floor(Math.random() * (250 - 150 + 1)) + 150; // 150~250
+      totalBombs   = Math.floor(Math.random() * (50 - 20 + 1)) + 20;   // 20~50
+
+      scheduleEmojis();
+
+      // عداد كل 0.1 ثانية
+      countdownInterval = setInterval(() => {
+        gameTime -= 0.1;
+        if (gameTime <= 0) {
+          gameTime = 0;
+          endGame();
+        }
+        document.getElementById('timer').textContent = gameTime.toFixed(2);
+      }, 100);
+    }
+
+    /************************************************************/
+    /* توزيع الصقور والقنابل خلال 30 ثانية بأوقات عشوائية      */
+    /************************************************************/
+    function scheduleEmojis() {
+      for (let i = 0; i < totalFalcons; i++) {
+        let spawnTime = Math.random() * 30.0; 
+        setTimeout(() => {
+          if (gameTime <= 0) return;
+          createFallingEmoji('🦅');
+        }, spawnTime * 1000);
+      }
+
+      for (let j = 0; j < totalBombs; j++) {
+        let spawnTime = Math.random() * 30.0;
+        setTimeout(() => {
+          if (gameTime <= 0) return;
+          createFallingEmoji('💣');
+        }, spawnTime * 1000);
+      }
+    }
+
+    /************************************************************/
+    /* إنهاء اللعبة                                            */
+    /************************************************************/
+    function endGame() {
+      clearInterval(countdownInterval);
+      const emojis = document.querySelectorAll('.falling-emoji');
+      emojis.forEach(emoji => emoji.remove());
+
+      document.getElementById('game-overlay').classList.add('hidden');
+      document.getElementById('main-content').classList.remove('hidden');
+    }
+
+    /************************************************************/
+    /* إنشاء الإيموجي والسقوط                                   */
+    /************************************************************/
+    function createFallingEmoji(type) {
+      const gameOverlay = document.getElementById('game-overlay');
+      const emojiEl = document.createElement('span');
+      emojiEl.classList.add('falling-emoji');
+      emojiEl.textContent = type;
+
+      const maxLeft = window.innerWidth - 50;
+      const randomLeft = Math.floor(Math.random() * maxLeft);
+      emojiEl.style.left = randomLeft + 'px';
+      emojiEl.style.top = '-50px';
+
+      // عند الضغط على الإيموجي
+      emojiEl.addEventListener('click', () => {
+        if (type === '🦅') {
+          falconScore++;
+          document.getElementById('falconScore').textContent = falconScore;
+        } else {
+          // ضغط قنبلة
+          bombScore++;
+          document.getElementById('bombScore').textContent = bombScore;
+          bombEffect();
+        }
+        emojiEl.remove();
+      });
+
+      gameOverlay.appendChild(emojiEl);
+
+      // تحريك الإيموجي للأسفل
+      let currentTop = -50;
+      function fall() {
+        if (gameOverlay.classList.contains('hidden') || gameTime <= 0) {
+          emojiEl.remove();
+          return;
+        }
+        currentTop += 2.5; 
+        emojiEl.style.top = currentTop + 'px';
+
+        if (currentTop > window.innerHeight + 50) {
+          emojiEl.remove();
+          return;
+        }
+        requestAnimationFrame(fall);
+      }
+      requestAnimationFrame(fall);
+    }
+
+    /************************************************************/
+    /* تأثير القنبلة: اهتزاز + خلفية الصورة الحمراء           */
+    /************************************************************/
+    function bombEffect() {
+      const overlay = document.getElementById('game-overlay');
+
+      // اهتزاز الجهاز
+      if (navigator.vibrate) {
+        navigator.vibrate(200);
+      }
+
+      // نغير الخلفية إلى الصورة الحمراء
+      overlay.classList.add('bomb-image');
+      // نضيف الاهتزاز (shake)
+      overlay.classList.add('shake');
+
+      // بعد 300 مللي ثانية نزيل التأثير ونرجع الخلفية الأصلية
+      setTimeout(() => {
+        overlay.classList.remove('bomb-image');
+        overlay.classList.remove('shake');
+      }, 300);
+    }
+
+    /************************************************************/
+    /* أزرار Start/Claim/✓ (قسم Collab)                         */
+    /************************************************************/
     document.querySelectorAll('.action-btn').forEach(function (button) {
       button.addEventListener('click', function () {
         if (button.textContent.trim() === 'Start') {
-          // نسخ الإيموجي:
           navigator.clipboard.writeText('🐊').catch(() => {});
-
-          // بعد 10 ثوانٍ يتحول النص والشكل إلى Claim
           setTimeout(() => {
             button.textContent = 'Claim';
             button.classList.remove('start-btn');
             button.classList.add('claim-btn');
           }, 10000);
-
         } else if (button.textContent.trim() === 'Claim') {
           button.textContent = '✓';
-
-          // عند الضغط على Claim يهتز الهاتف (إن كان يدعم الاهتزاز)
           if (navigator.vibrate) {
-            navigator.vibrate(200); // اهتزاز لمدة 200 مللي ثانية
+            navigator.vibrate(200);
           }
         }
       });
