@@ -15,6 +15,11 @@ body {
   overflow: hidden;
 }
 
+/* Glow Effect for Text */
+.glow-text {
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.7), 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
 /* Hidden Class */
 .hidden {
   display: none;
@@ -57,20 +62,12 @@ header {
 }
 
 .profile-icon {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
+  object-fit: cover;
   background: #fff;
-}
-
-.stats h2 {
-  font-size: 2rem;
-  margin: 10px 0;
-}
-
-.stats p {
-  font-size: 1rem;
-  color: #888;
+  border: 2px solid #fff;
 }
 
 /* Buttons Section */
@@ -160,51 +157,33 @@ header {
   margin-left: 10px;
 }
 
-.task-card h3 {
-  font-size: 1rem;
-  color: #fff;
-}
-
+.task-card h3,
 .task-card p {
-  font-size: 0.8rem;
-  color: #888;
-}
-
-.task-card span {
-  font-size: 1.5rem;
-  color: #0f0;
-}
-
-/* Buttons for tasks */
-.action-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 25px;
-  font-size: 1rem;
-  cursor: pointer;
-  background: #007bff;
   color: #fff;
-  transition: background 0.3s, color 0.3s;
 }
 
-.claim-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 25px;
-  font-size: 1rem;
-  cursor: pointer;
-  background: #fff;
+/* الأزرار الخاصة بقسم Collab */
+
+/* زر Start (أبيض دائري) */
+.start-btn {
+  background-color: #fff;
   color: #000;
+  border-radius: 9999px; /* لجعلها دائرية تمامًا */
+  padding: 10px 30px;    /* زيادة على اليمين واليسار ليظهر الشكل المستطيل الدائري */
+  border: none;
+  font-size: 1rem;
   transition: background 0.3s, color 0.3s;
 }
 
-.action-btn:hover {
-  background: #0056b3;
-}
-
-.claim-btn:hover {
-  background: #ddd;
-  color: #333;
+/* زر Claim (أزرق دائري) */
+.claim-btn {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 9999px; 
+  padding: 10px 30px;
+  border: none;
+  font-size: 1rem;
+  transition: background 0.3s, color 0.3s;
 }
 
 /* Footer */
@@ -230,11 +209,16 @@ footer {
   flex-direction: column;
   align-items: center;
   font-size: 0.9rem;
+  transition: color 0.3s;
 }
 
 .bottom-nav a i {
   font-size: 1.2rem;
   margin-bottom: 5px;
+}
+
+.bottom-nav a:hover {
+  color: #fff;
 }
 
 .bottom-nav a.active {
