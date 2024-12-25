@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram Bot Page</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="top-bar">
+      <span class="close-btn">×</span>
+      <h1>Rats Kingdom</h1>
+      <button class="dropdown-btn">▼</button>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="profile-section">
+      <img src="https://via.placeholder.com/100" alt="Profile Icon" class="profile-icon">
+      <div class="stats">
+        <h2>0.00</h2>
+        <p>RATS</p>
+      </div>
+    </div>
+
+    <div class="buttons-section">
+      <div class="button-card">
+        <h3>YOUTUBE CHANNEL</h3>
+        <p>Learn from videos</p>
+        <button>Subscribe</button>
+      </div>
+      <div class="button-card">
+        <h3>JOIN NOW</h3>
+        <p>Home for friends</p>
+        <button>Join</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Friends Page -->
+  <div id="friends-page" class="hidden">
+    <div class="friends-section">
+      <img src="https://via.placeholder.com/100" alt="Profile Icon" class="profile-icon">
+      <h2>Invite friends and get more RATS</h2>
+      <div class="friends-buttons">
+        <button>Copy Invite Link</button>
+        <button>Share Invite Link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collab Page -->
+  <div id="collab-page" class="hidden">
+    <div class="tasks-section">
+      <div class="task-card">
+        <img src="https://via.placeholder.com/40" alt="Add PAWS emoji">
+        <div>
+          <h3>Add PAWS emoji</h3>
+          <p>+6,000 PAWS</p>
+        </div>
+        <button class="action-btn">Start</button>
+      </div>
+      <div class="task-card">
+        <img src="https://via.placeholder.com/40" alt="Study PAWS">
+        <div>
+          <h3>Study PAWS</h3>
+          <p>+250 PAWS</p>
+        </div>
+        <button class="action-btn">Start</button>
+      </div>
+      <div class="task-card">
+        <img src="https://via.placeholder.com/40" alt="Join PAWS Cult X">
+        <div>
+          <h3>Join PAWS Cult X</h3>
+          <p>+2,000 PAWS</p>
+        </div>
+        <button class="action-btn">Start</button>
+      </div>
+      <div class="task-card">
+        <img src="https://via.placeholder.com/40" alt="Put PAWS in your name">
+        <div>
+          <h3>Put 🐾 in your name</h3>
+          <p>+5,000 PAWS</p>
+        </div>
+        <button class="action-btn">Start</button>
+      </div>
+      <div class="task-card">
+        <img src="https://via.placeholder.com/40" alt="Boost PAWS channel">
+        <div>
+          <h3>Boost PAWS channel</h3>
+          <p>+2,500 PAWS</p>
+        </div>
+        <button class="action-btn">Start</button>
+      </div>
+      <div class="task-card">
+        <img src="https://via.placeholder.com/40" alt="Connect wallet">
+        <div>
+          <h3>Connect wallet</h3>
+          <p>+3,000 PAWS</p>
+        </div>
+        <button class="action-btn">Start</button>
+      </div>
+      <div class="task-card">
+        <img src="https://via.placeholder.com/40" alt="Invite 10 friends">
+        <div>
+          <h3>Invite 10 friends</h3>
+          <p>+5,000 PAWS</p>
+        </div>
+        <button class="action-btn">Start</button>
+      </div>
+      <div class="task-card">
+        <img src="https://via.placeholder.com/40" alt="Follow channel">
+        <div>
+          <h3>Follow channel</h3>
+          <p>+1,000 PAWS</p>
+        </div>
+        <button class="action-btn">Start</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <nav class="bottom-nav">
+      <a href="#" class="active" onclick="showMain()">Home</a>
+      <a href="#" onclick="showCollab()">Collab</a>
+      <a href="#">Leaderboard</a>
+      <a href="#" onclick="showFriends()">Friends</a>
+    </nav>
+  </footer>
+
+  <script>
+    function showMain() {
+      document.getElementById('main-content').classList.remove('hidden');
+      document.getElementById('friends-page').classList.add('hidden');
+      document.getElementById('collab-page').classList.add('hidden');
+    }
+
+    function showFriends() {
+      document.getElementById('main-content').classList.add('hidden');
+      document.getElementById('friends-page').classList.remove('hidden');
+      document.getElementById('collab-page').classList.add('hidden');
+    }
+
+    function showCollab() {
+      document.getElementById('main-content').classList.add('hidden');
+      document.getElementById('friends-page').classList.add('hidden');
+      document.getElementById('collab-page').classList.remove('hidden');
+    }
+
+    // Handle Start and Claim for all tasks
+    document.querySelectorAll('.action-btn').forEach((btn) => {
+      btn.addEventListener('click', function () {
+        const taskBtn = this;
+
+        // Copy emoji 🐊 to clipboard
+        navigator.clipboard.writeText("🐊").then(() => {
+          console.log("Emoji copied to clipboard!");
+        });
+
+        // Change text to Claim after 10 seconds
+        setTimeout(() => {
+          taskBtn.textContent = "Claim";
+          taskBtn.classList.remove("action-btn");
+          taskBtn.classList.add("claim-btn");
+
+          // Add functionality for Claim button
+          taskBtn.addEventListener("click", function () {
+            // Replace button with checkmark
+            taskBtn.outerHTML = '<span class="task-check">✔</span>';
+          });
+        }, 10000);
+      });
+    });
+  </script>
+</body>
+</html>
