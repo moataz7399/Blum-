@@ -139,7 +139,7 @@
     // عند الضغط على Start:
     // 1) ينسخ إيموجي 🐊
     // 2) بعد 10 ثوانٍ يصبح Claim (زر أزرق)
-    // 3) عند الضغط على Claim يصبح علامة ✓ ويحتفظ بنفس الشكل
+    // 3) عند الضغط على Claim يصبح علامة ✓ ويهتز الهاتف
     document.querySelectorAll('.action-btn').forEach(function (button) {
       button.addEventListener('click', function () {
         if (button.textContent.trim() === 'Start') {
@@ -154,6 +154,11 @@
           }, 10000);
         } else if (button.textContent.trim() === 'Claim') {
           button.textContent = '✓';
+
+          // عند الضغط على Claim يهتز الهاتف إن كان يدعم الاهتزاز
+          if (navigator.vibrate) {
+            navigator.vibrate(200); // اهتزاز لمدة 200 مللي ثانية
+          }
         }
       });
     });
