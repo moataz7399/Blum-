@@ -19,6 +19,11 @@
     </div>
   </header>
 
+  <!-- شاشة التحميل (Loader) - مخفية بشكل افتراضي عبر .hidden -->
+  <div class="loader hidden">
+    <div class="spinner"></div>
+  </div>
+
   <main id="main-content">
     <div class="profile-section">
       <img
@@ -118,32 +123,56 @@
   </footer>
 
   <script>
+    // دالة لإظهار شاشة التحميل (Loader) لمدة 1 ثانية
+    // ثم تنفيذ callback (تبديل الأقسام)
+    function showLoader(callback) {
+      const loader = document.querySelector('.loader');
+      // إظهار الـLoader
+      loader.classList.remove('hidden');
+      // بعد 1 ثانية نخفيه
+      setTimeout(() => {
+        loader.classList.add('hidden');
+        if (typeof callback === 'function') {
+          callback();
+        }
+      }, 1000);
+    }
+
     function showMain() {
-      document.getElementById('main-content').classList.remove('hidden');
-      document.getElementById('friends-page').classList.add('hidden');
-      document.getElementById('collab-page').classList.add('hidden');
+      // إظهار شاشة التحميل ثم عرض الصفحة الرئيسية وإخفاء الآخرين
+      showLoader(() => {
+        document.getElementById('main-content').classList.remove('hidden');
+        document.getElementById('friends-page').classList.add('hidden');
+        document.getElementById('collab-page').classList.add('hidden');
+      });
     }
 
     function showFriends() {
-      document.getElementById('main-content').classList.add('hidden');
-      document.getElementById('friends-page').classList.remove('hidden');
-      document.getElementById('collab-page').classList.add('hidden');
+      // إظهار شاشة التحميل ثم عرض صفحة الأصدقاء وإخفاء الآخرين
+      showLoader(() => {
+        document.getElementById('main-content').classList.add('hidden');
+        document.getElementById('friends-page').classList.remove('hidden');
+        document.getElementById('collab-page').classList.add('hidden');
+      });
     }
 
     function showCollab() {
-      document.getElementById('main-content').classList.add('hidden');
-      document.getElementById('friends-page').classList.add('hidden');
-      document.getElementById('collab-page').classList.remove('hidden');
+      // إظهار شاشة التحميل ثم عرض صفحة التعاون وإخفاء الآخرين
+      showLoader(() => {
+        document.getElementById('main-content').classList.add('hidden');
+        document.getElementById('friends-page').classList.add('hidden');
+        document.getElementById('collab-page').classList.remove('hidden');
+      });
     }
 
-    // عند الضغط على Start:
+    // عند الضغط على زر Start:
     // 1) ينسخ إيموجي 🐊
     // 2) بعد 10 ثوانٍ يصبح Claim (زر أزرق)
     // 3) عند الضغط على Claim يصبح علامة ✓ ويهتز الهاتف
     document.querySelectorAll('.action-btn').forEach(function (button) {
       button.addEventListener('click', function () {
         if (button.textContent.trim() === 'Start') {
-          // ينسخ الإيموجي:
+          // نسخ الإيموجي:
           navigator.clipboard.writeText('🐊').catch(() => {});
 
           // بعد 10 ثوانٍ يتحول النص والشكل إلى Claim
@@ -152,10 +181,11 @@
             button.classList.remove('start-btn');
             button.classList.add('claim-btn');
           }, 10000);
+
         } else if (button.textContent.trim() === 'Claim') {
           button.textContent = '✓';
 
-          // عند الضغط على Claim يهتز الهاتف إن كان يدعم الاهتزاز
+          // عند الضغط على Claim يهتز الهاتف (إن كان يدعم الاهتزاز)
           if (navigator.vibrate) {
             navigator.vibrate(200); // اهتزاز لمدة 200 مللي ثانية
           }
