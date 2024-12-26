@@ -1,4 +1,4 @@
-/* Reset and General Styles */
+/* Reset (تصفير) */
 * {
   margin: 0;
   padding: 0;
@@ -6,53 +6,37 @@
   font-family: 'Arial', sans-serif;
 }
 
+/* خلفية الصفحة سوداء ولون النص أبيض */
 body {
   background-color: #000;
   color: #fff;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
 }
 
-/* Glow Effect for Text */
+/* تأثير توهج للنص */
 .glow-text {
   text-shadow: 0 0 3px rgba(255, 255, 255, 0.7), 0 0 6px rgba(255, 255, 255, 0.5);
 }
 
 /* إخفاء العناصر عند الحاجة */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
-/* Header */
+/* هيدر الصفحة */
 header {
   background: #000;
   padding: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center; 
   align-items: center;
   border-bottom: 1px solid #333;
 }
 
 .top-bar {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
-}
-
-.close-btn {
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.dropdown-btn {
-  font-size: 20px;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
 }
 
 /* شاشة التحميل (Loader) */
@@ -84,7 +68,11 @@ header {
   }
 }
 
-/* الصفحة الرئيسية */
+/* المحتوى الرئيسي */
+#main-content {
+  padding-bottom: 70px; /* لتفادي تداخل الفوتر */
+}
+
 .profile-section {
   text-align: center;
   margin-top: 20px;
@@ -99,19 +87,27 @@ header {
   border: 2px solid #fff;
 }
 
-/* بطاقتا يوتيوب والتليجرام جنباً إلى جنب */
-.buttons-section {
+/* تقسيم البطاقات (عمود يسار وعمود يمين) */
+.two-columns {
   display: flex;
-  justify-content: space-around;
-  margin: 20px 0;
+  justify-content: space-around; 
+  flex-wrap: wrap;
+  margin-top: 20px;
 }
 
+.column {
+  display: flex;
+  flex-direction: column; 
+  gap: 20px;
+}
+
+/* شكل البطاقات */
 .button-card {
   background: #1a1a1a;
   padding: 15px;
   border-radius: 10px;
   text-align: center;
-  width: 40%;
+  width: 240px;
   min-width: 130px;
 }
 
@@ -138,12 +134,14 @@ header {
   background: #555;
 }
 
-/* زر الـPlay */
-.play-btn {
-  background: #666; 
+/* بطاقة الـPlay في الأسفل بوسط الصفحة */
+.play-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-/* Friends Section */
+/* صفحة الأصدقاء */
 .friends-section {
   text-align: center;
   margin-top: 20px;
@@ -166,7 +164,7 @@ header {
   background: #e5e5e5;
 }
 
-/* Collab Section */
+/* صفحة المهام (Collab) */
 .tasks-section {
   margin: 20px;
 }
@@ -182,9 +180,10 @@ header {
 }
 
 .task-card img {
-  width: 40px;
-  height: 40px;
+  width: 60px; 
+  height: 60px; 
   border-radius: 5px;
+  object-fit: cover;
 }
 
 .task-card div {
@@ -218,7 +217,7 @@ header {
   transition: background 0.3s, color 0.3s;
 }
 
-/* الخلفية الأساسية للعبة */
+/* واجهة اللعبة */
 #game-overlay {
   position: fixed;
   top: 0;
@@ -227,7 +226,7 @@ header {
   height: 100%;
   background: #000 url("https://i.ibb.co/jfjCkVM/image.png") center center / cover no-repeat;
   z-index: 9998; 
-  overflow: hidden;
+  overflow: hidden; 
   pointer-events: auto;
 }
 
@@ -236,8 +235,7 @@ header {
   position: absolute;
   top: 10px;
   left: 10px;
-  line-height: 1.5;
-  pointer-events: none; 
+  pointer-events: none;
   font-size: 1.2rem;
   font-weight: bold;
   text-shadow: 0 0 5px #fff, 0 0 10px #ffc107;
@@ -247,18 +245,19 @@ header {
   margin-bottom: 5px;
 }
 
-#falconScore, #bombScore {
+#falconScore, 
+#bombScore {
   font-size: 1.4rem;
   color: #fff;
   text-shadow: 0 0 3px #fff, 0 0 6px #ff0, 0 0 10px #ff0;
 }
 
-/* العداد الزمني */
+/* عداد الوقت */
 .timer-panel {
   position: absolute;
   top: 10px;
   right: 15px;
-  pointer-events: none; 
+  pointer-events: none;
 }
 
 .timer-panel p {
@@ -273,10 +272,10 @@ header {
   font-size: 2rem;
   cursor: pointer;
   user-select: none;
-  pointer-events: auto; 
+  pointer-events: auto;
 }
 
-/* تأثير الاهتزاز */
+/* تأثير الاهتزاز عند الضغط على قنبلة */
 .shake {
   animation: shake 0.3s;
 }
@@ -290,17 +289,79 @@ header {
   100% { transform: translate(0,0); }
 }
 
-/* الصورة الحمراء عند الضغط على القنبلة */
+/* الخلفية الحمراء عند الضغط على قنبلة */
 .bomb-image {
   background: #000 url("https://i.ibb.co/R0SKJqJ/image.png") center center / cover no-repeat !important;
 }
 
-/* Footer */
+/* شاشة نهاية اللعبة */
+.end-game-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.end-content {
+  text-align: center;
+}
+
+.gift-emoji {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.stats-line {
+  font-size: 1.4rem;
+  margin: 10px 0;
+  font-weight: bold;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+}
+
+.line-text {
+  margin-right: 5px;
+}
+
+/* الحاوية للأزرار الثلاثة في الشاشة النهائية */
+.buttons-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 80%;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* الأزرار في شاشة النهاية */
+#end-game-screen button {
+  padding: 15px;
+  font-size: 1.1rem;
+  color: #000;
+  background: #fff;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#end-game-screen button:hover {
+  background: #ddd;
+  color: #000;
+}
+
+/* الفوتر */
 footer {
   background: #111;
   padding: 10px 0;
-  position: absolute;
-  bottom: 0;
+  position: static;
   width: 100%;
 }
 
@@ -332,4 +393,10 @@ footer {
 
 .bottom-nav a.active {
   color: #fff;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
 }
