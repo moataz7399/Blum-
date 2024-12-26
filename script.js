@@ -202,6 +202,9 @@ document.querySelectorAll('.action-btn').forEach(button => {
       else if (taskName === "Follow Telegram Channel") {
         window.open('https://t.me/fake', '_blank');
       }
+      else if (taskName === "Subscribe to our YouTube channel") {
+        window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');
+      }
       else if (taskName === "Follow us on X") {
         window.open('https://t.me/faker', '_blank');
       }
@@ -236,4 +239,39 @@ document.getElementById('btn-back-home').addEventListener('click', () => {
 });
 document.getElementById('btn-share-link').addEventListener('click', () => {
   alert('Share Link Bot clicked!');
+});
+
+// وظيفة عرض رسالة النجاح
+function showSuccessMessage() {
+  // إنشاء الرسالة
+  const successMessage = document.createElement('div');
+  successMessage.textContent = 'Success';
+  successMessage.classList.add('success-message');
+
+  // إضافة الرسالة إلى الصفحة
+  document.body.appendChild(successMessage);
+
+  // إزالة الرسالة بعد ثانية واحدة
+  setTimeout(() => {
+    successMessage.remove();
+  }, 1000);
+}
+
+// تحديث أزرار المهام
+document.querySelectorAll('.action-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    if (button.textContent.trim() === 'Start') {
+      // تحويل الزر إلى Wait... ثم Claim
+      button.textContent = 'Wait...';
+      setTimeout(() => {
+        button.textContent = 'Claim';
+        button.classList.add('claim-btn');
+      }, 10000);
+    } else if (button.textContent.trim() === 'Claim') {
+      // تحويل الزر إلى ✓ وإظهار رسالة النجاح
+      button.textContent = '✓';
+      button.classList.add('completed-btn');
+      showSuccessMessage();
+    }
+  });
 });
