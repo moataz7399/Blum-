@@ -1,4 +1,4 @@
-/* Reset (تصفير) */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -6,133 +6,141 @@
   font-family: 'Arial', sans-serif;
 }
 
-/* خلفية الصفحة سوداء ولون النص أبيض */
 body {
   background-color: #000;
   color: #fff;
 }
 
-/* تأثير توهج للنص */
+/* توهج */
 .glow-text {
-  text-shadow: 0 0 3px rgba(255, 255, 255, 0.7),
-               0 0 6px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 3px rgba(255,255,255,0.7),
+               0 0 6px rgba(255,255,255,0.5);
 }
 
-/* إخفاء العناصر عند الحاجة */
 .hidden {
   display: none !important;
 }
 
-/* هيدر الصفحة */
+/* هيدر */
 header {
   background: #000;
   padding: 10px;
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   border-bottom: 1px solid #333;
 }
-
 .top-bar {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
 }
 
-/* شاشة التحميل (Loader) */
+/* شاشة التحميل */
 .loader {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex; 
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
 }
-
 .spinner {
-  width: 40px;
-  height: 40px;
+  width: 40px; height: 40px;
   border: 4px solid #ddd;
   border-top: 4px solid #007bff;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 @keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
+  100% { transform: rotate(360deg); }
 }
 
 /* المحتوى الرئيسي */
 #main-content {
-  /* لإفساح مساحة للفوتر الثابت */
-  margin-bottom: 80px; 
-  padding-top: 10px;
-  text-align: center; /* لجعل البطاقات في المنتصف */
+  text-align: center;
+  padding-bottom: 70px;
 }
 
-/* صورة البروفايل والقيمة */
+/* صورة ورصيد */
 .profile-section {
   margin-top: 20px;
 }
 .profile-icon {
-  width: 120px;
-  height: 120px;
+  width: 120px; height: 120px;
   border-radius: 50%;
   object-fit: cover;
   background: #fff;
   border: 2px solid #fff;
 }
 
-/* الحاوية للأزرار في الصفحة الرئيسية */
-.buttons-section {
+/* عمودان جنباً لجنب بلا لف */
+.two-columns {
   display: flex;
-  flex-direction: column; /* كلها عموديًا */
-  align-items: center;
-  gap: 20px; /* مسافة بين البطاقات */
-  margin: 20px 0;
+  flex-wrap: nowrap; /* لا يلف */
+  justify-content: space-around;
+  gap: 10px; /* مسافة بين العمودين */
+  margin-top: 20px;
 }
 
-/* شكل البطاقات الرئيسية */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* بطاقات أصغر */
 .button-card {
   background: #1a1a1a;
-  width: 80%; /* عرض مناسب للجوال */
-  max-width: 400px; /* حد أقصى لعرض البطاقة */
-  padding: 15px;
+  width: 140px; /* أصغر ليتسع العمودان في العرض دون تمرير */
+  padding: 10px; 
   border-radius: 10px;
+  margin: 0 auto;
   text-align: center;
-  margin: 0 auto; /* توسيط البطاقة */
 }
 
 .button-card h3 {
-  font-size: 1rem;
-  margin-bottom: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
 }
 .button-card button {
   display: block;
   width: 100%;
   margin: 5px auto;
-  padding: 10px 20px;
+  padding: 8px;
   background: #444;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s;
-  text-align: center;
 }
 .button-card button:hover {
   background: #555;
 }
 
+/* زر Play */
+.play-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.play-container .button-card {
+  width: 140px;
+  padding: 10px;
+}
+
 /* صفحة الأصدقاء */
 .friends-section {
+  text-align: center;
   margin-top: 20px;
+}
+.friends-section .profile-icon {
+  display: block;
+  margin: 0 auto;
 }
 .friends-buttons button {
   width: 80%;
@@ -150,7 +158,7 @@ header {
   background: #e5e5e5;
 }
 
-/* صفحة المهام (Collab) */
+/* Collab */
 .tasks-section {
   margin: 20px;
 }
@@ -164,8 +172,7 @@ header {
   margin-bottom: 10px;
 }
 .task-card img {
-  width: 60px; 
-  height: 60px; 
+  width: 60px; height: 60px;
   border-radius: 5px;
   object-fit: cover;
 }
@@ -173,13 +180,14 @@ header {
   flex-grow: 1;
   margin-left: 10px;
 }
-.task-card h3,
+.task-card h3, 
 .task-card p {
   color: #fff;
 }
+
 /* أزرار Start/Claim */
 .start-btn {
-  background-color: #fff;
+  background: #fff;
   color: #000;
   border-radius: 9999px; 
   padding: 10px 30px;
@@ -188,7 +196,7 @@ header {
   transition: background 0.3s, color 0.3s;
 }
 .claim-btn {
-  background-color: #007bff;
+  background: #007bff;
   color: #fff;
   border-radius: 9999px;
   padding: 10px 30px;
@@ -200,15 +208,14 @@ header {
 /* واجهة اللعبة */
 #game-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #000 url("https://i.ibb.co/jfjCkVM/image.png") center center / cover no-repeat;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #000 url("https://i.ibb.co/jfjCkVM/image.png") center/cover no-repeat;
   z-index: 9998; 
-  overflow: hidden; 
-  pointer-events: auto;
+  overflow: hidden;
 }
+
+/* عدادات */
 .score-panel {
   position: absolute;
   top: 10px;
@@ -226,17 +233,18 @@ header {
   color: #fff;
   text-shadow: 0 0 3px #fff, 0 0 6px #ff0, 0 0 10px #ff0;
 }
+
 .timer-panel {
   position: absolute;
-  top: 10px;
-  right: 15px;
+  top: 10px; right: 15px;
   pointer-events: none;
 }
 .timer-panel p {
-  font-size: 2rem;
+  font-size: 2rem; 
   font-weight: bold;
   text-shadow: 0 0 4px #fff, 0 0 8px #ff1493, 0 0 12px #ff1493;
 }
+
 .falling-emoji {
   position: absolute;
   font-size: 2rem;
@@ -244,7 +252,8 @@ header {
   user-select: none;
   pointer-events: auto;
 }
-/* تأثير الاهتزاز */
+
+/* اهتزاز */
 .shake {
   animation: shake 0.3s;
 }
@@ -257,15 +266,14 @@ header {
   100% { transform: translate(0,0); }
 }
 .bomb-image {
-  background: #000 url("https://i.ibb.co/R0SKJqJ/image.png") center center / cover no-repeat !important;
+  background: #000 url("https://i.ibb.co/R0SKJqJ/image.png") center/cover no-repeat !important;
 }
-/* شاشة نهاية اللعبة */
+
+/* نهاية اللعبة */
 .end-game-screen {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background-color: #000; 
   display: flex;
   justify-content: center;
@@ -293,10 +301,9 @@ header {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  width: 80%;
+  width: 80%; 
   max-width: 320px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
 }
 #end-game-screen button {
   padding: 15px;
@@ -309,21 +316,17 @@ header {
   cursor: pointer;
 }
 #end-game-screen button:hover {
-  background: #ddd;
+  background: #ddd; 
   color: #000;
 }
 
-/* الفوتر - نجعله ثابت في الأسفل */
+/* فوتر */
 footer {
-  position: fixed; /* فوتر ثابت */
-  bottom: 0;
-  left: 0;
-  width: 100%;
   background: #111;
   padding: 10px 0;
-  z-index: 9999; /* فوق أي عنصر آخر */
+  position: static; 
+  width: 100%;
 }
-
 .bottom-nav {
   display: flex;
   justify-content: space-around;
