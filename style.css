@@ -111,11 +111,12 @@ header {
   width: 100%;
   margin: 5px auto;
   padding: 8px;
-  background: #444;
-  color: #fff;
-  border: none;
+  background: #fff; /* لون الخلفية الأبيض */
+  color: #000;      /* لون النص الأسود */
+  border: none; 
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bold; /* اجعل النص غامقاً */
   transition: background 0.3s;
 }
 .button-card button:hover {
@@ -324,8 +325,10 @@ header {
 footer {
   background: #111;
   padding: 10px 0;
-  position: static; 
-  width: 100%;
+  position: fixed; /* يجعل الفوتر ثابتاً */
+  bottom: 0;       /* يثبته عند أسفل الصفحة */
+  width: 100%;     /* ليغطي العرض الكامل */
+  z-index: 1000;   /* يضمن ظهوره فوق أي عناصر أخرى */
 }
 .bottom-nav {
   display: flex;
@@ -351,4 +354,22 @@ footer {
 }
 .bottom-nav a.active {
   color: #fff;
+}
+
+/* تصميم رسالة النجاح */
+.success-message {
+  position: fixed;
+  bottom: 20px; /* تظهر في أسفل الشاشة */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #28a745; /* لون الخلفية أخضر */
+  color: #fff; /* لون النص أبيض */
+  font-size: 16px;
+  font-weight: bold; /* الخط غامق */
+  padding: 10px 20px;
+  border-radius: 10px; /* الحواف مقوسة */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+  z-index: 1000; /* ضمان ظهورها فوق العناصر الأخرى */
+  opacity: 0.9; /* شفافية خفيفة */
+  pointer-events: none; /* لا يمكن التفاعل معها */
 }
