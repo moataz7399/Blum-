@@ -1,445 +1,298 @@
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rats Kingdom</title>
+  <!-- FontAwesome -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    rel="stylesheet"
+  />
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!--  -->
+  <header>
+    <div class="top-bar">
+      <h1 class="glow-text">Rats Kingdom</h1>
+    </div>
+  </header>
 
-body {
-  background: url('https://i.ibb.co/tqmh1BZ/IMG.jpg') center/cover no-repeat; /* رابط الخلفية */
-  background-attachment: fixed; /* يجعل الخلفية ثابتة أثناء التمرير */
-  margin: 0;
-  padding: 0;
-  color: #fff; /* لون النص */
-  min-height: 100vh; /* لتغطية الشاشة بالكامل */
-  display: flex;
-  flex-direction: column;
-}
+  <!--   -->
+  <div class="loader" style="display: none;">
+    <div class="spinner"></div>
+  </div>
 
-#confetti-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9999;
-  overflow: hidden;
-}
+  <!--   -->
+  <main id="main-content">
+    <!--   -->
+    <div class="profile-section">
+      <img
+        src="https://i.ibb.co/6DDKSS7/logo.png"
+        alt="Profile Icon"
+        class="profile-icon"
+      />
+      <div class="stats">
+        <h2 class="glow-text">0.00</h2>
+        <p class="glow-text">RATS</p>
+      </div>
+    </div>
 
-.confetti {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: #ffc107;
-  border-radius: 50%;
-  animation: confetti-animation 5s ease-in-out forwards;
-  will-change: transform; /* تحسين الأداء */
-}
+    <!-- :  ( + Follow X)   ( + share) -->
+    <div class="two-columns">
+      <!--   -->
+      <div class="column">
+        <!--  -->
+        <div class="button-card">
+          <h3 class="glow-text">Youtube Channel</h3>
+          <button onclick="window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');">
+            Subscribe
+          </button>
+        </div>
 
-@keyframes confetti-animation {
-  0% {
-    transform: translate(0, 0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(0, 100vh) rotate(720deg);
-    opacity: 0;
-  }
-}
+        <!-- Follow X -->
+        <div class="button-card">
+          <h3 class="glow-text">Follow X</h3>
+          <button onclick="window.open('https://wwww', '_blank');">
+            Follow
+          </button>
+        </div>
+      </div>
 
-/* توهج */
-.glow-text {
-  text-shadow: 0 0 3px rgba(255,255,255,0.7),
-               0 0 6px rgba(255,255,255,0.5);
-}
+      <!--   -->
+      <div class="column">
+        <!--  -->
+        <div class="button-card">
+          <h3 class="glow-text">Telegram Channel</h3>
+          <button onclick="window.open('https://t.me/Falcon_Community_Bot', '_blank');">
+            Join
+          </button>
+        </div>
 
-.hidden {
-  display: none !important;
-}
+        <!-- share link bot -->
+        <div class="button-card">
+          <h3 class="glow-text">share link bot</h3>
+          <button onclick="window.open('https://wa.me9', '_blank');">
+            share
+          </button>
+        </div>
+      </div>
+    </div>
 
-/* هيدر */
-header {
-  background: transparent; /* اجعل الهيدر شفافاً */
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: none; /* إزالة الخط الفاصل */
-}
-.top-bar {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    <!--  Play    -->
+    <div class="play-container">
+      <div class="button-card">
+        <h3 class="glow-text">Play</h3>
+        <button onclick="prepareGame()">Play</button>
+      </div>
+    </div>
+  </main>
 
-/* شاشة التحميل */
-.loader {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-.spinner {
-  width: 40px; height: 40px;
-  border: 4px solid #ddd;
-  border-top: 4px solid #007bff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-@keyframes spin {
-  100% { transform: rotate(360deg); }
-}
+  <!--   -->
+  <div id="friends-page" class="hidden">
+    <div class="friends-section">
+      <img
+        src="https://i.ibb.co/6DDKSS7/logo.png"
+        alt="Profile Icon"
+        class="profile-icon"
+      />
+      <h2 class="glow-text">Invite friends and get more RATS</h2>
+      <div class="friends-buttons">
+        <button>Copy Invite Link</button>
+        <button>Share Invite Link</button>
+      </div>
+    </div>
+  </div>
 
-/* جسم الصفحة بالكامل */
-body {
-  background: url('https://i.ibb.co/tqmh1BZ/IMG.jpg') center/cover no-repeat; /* رابط الخلفية */
-  background-attachment: fixed; /* يجعل الخلفية ثابتة أثناء التمرير */
-  color: #fff;
-  margin: 0;
-  padding: 0;
-  height: 100vh; /* يغطي الشاشة بالكامل */
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
+<!--   (Collab) -->
+<div id="collab-page" class="hidden">
+  <div class="tasks-section">
+    <!--  1 -->
+    <div class="task-card">
+      <img 
+        src="https://i.ibb.co/xJH1Qpz/Picsart-24-12-26-03-59-05-253.png" 
+        alt=""
+      />
+      <div>
+        <h3 class="glow-text">Put  next to your name</h3>
+        <p class="glow-text">+6,000 PAWS</p>
+      </div>
+      <button class="action-btn start-btn">Start</button>
+    </div>
+    <!--  2 -->
+    <div class="task-card">
+      <img 
+        src="https://i.ibb.co/V9FPRbL/Picsart-24-12-26-03-07-35-183.png" 
+        alt="Follow Telegram Channel"
+      />
+      <div>
+        <h3 class="glow-text">Follow Telegram Channel</h3>
+        <p class="glow-text">+250 PAWS</p>
+      </div>
+      <button class="action-btn start-btn">Start</button>
+    </div>
+    <!--  3 -->
+    <div class="task-card">
+      <img 
+        src="https://i.ibb.co/BV0tDyw/Picsart-24-12-26-03-13-44-267.png"
+        alt="Follow us on X"
+      />
+      <div>
+        <h3 class="glow-text">Follow us on X</h3>
+        <p class="glow-text">+2,000 PAWS</p>
+      </div>
+      <button class="action-btn start-btn">Start</button>
+    </div>
+    <!--  4 -->
+    <div class="task-card">
+      <img 
+        src="https://i.ibb.co/N28QCRM/Picsart-24-12-26-03-23-37-573.png"
+        alt="Boost Channel"
+      />
+      <div>
+        <h3 class="glow-text">Boost Channel</h3>
+        <p class="glow-text">+5,000 PAWS</p>
+      </div>
+      <button class="action-btn start-btn">Start</button>
+    </div>
+    
+    <!--  : Subscribe to YouTube -->
+    <div class="task-card">
+      <img 
+        src="https://i.ibb.co/wNqSmVn/Picsart-24-12-26-10-58-21-444.png" 
+        alt="YouTube Subscribe"
+      />
+      <div>
+        <h3 class="glow-text">Subscribe to our YouTube channel</h3>
+        <p class="glow-text">+3,000 PAWS</p>
+      </div>
+      <button class="action-btn start-btn">Start</button>
+    </div>
 
-/* المحتوى الرئيسي */
-#main-content {
-  flex: 1; /* يجعل المحتوى يمتد لملء الشاشة */
-  text-align: center;
-  padding-bottom: 70px;
-}
+    <!--      -->
+    <!-- Invite 3 friends -->
+    <div class="task-card">
+      <img 
+        src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
+        alt="Invite Friends"
+      />
+      <div>
+        <h3 class="glow-text">Invite 3 friends</h3>
+        <p class="glow-text">+3,000 PAWS</p>
+      </div>
+      <button class="action-btn start-btn">Start</button>
+    </div>
+    <!-- Invite 5 friends -->
+    <div class="task-card">
+      <img 
+        src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
+        alt="Invite Friends"
+      />
+      <div>
+        <h3 class="glow-text">Invite 5 friends</h3>
+        <p class="glow-text">+5,000 PAWS</p>
+      </div>
+      <button class="action-btn start-btn">Start</button>
+    </div>
+    <!-- Invite 10 friends -->
+    <div class="task-card">
+      <img 
+        src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
+        alt="Invite Friends"
+      />
+      <div>
+        <h3 class="glow-text">Invite 10 friends</h3>
+        <p class="glow-text">+12,500 PAWS</p>
+      </div>
+      <button class="action-btn start-btn">Start</button>
+    </div>
+    <!-- Invite 25 friends -->
+    <div class="task-card">
+      <img 
+        src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
+        alt="Invite Friends"
+      />
+      <div>
+        <h3 class="glow-text">Invite 25 friends</h3>
+        <p class="glow-text">+30,000 PAWS</p>
+      </div>
+      <button class="action-btn start-btn">Start</button>
+    </div>
+    <!-- Invite 1000 friends -->
+    <div class="task-card">
+      <img 
+        src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
+        alt="Invite Friends"
+      />
+      <div>
+        <h3 class="glow-text">Invite 1000 friends</h3>
+        <p class="glow-text">+125,000 PAWS</p>
+      </div>
+      <button class="action-btn start-btn">Start</button>
+    </div>
+  </div>
+</div>
 
-/* صورة ورصيد */
-.profile-section {
-  margin-top: 20px;
-}
-.profile-icon {
-  width: 120px; height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #fff;
-  border: 2px solid #fff;
-}
+  <!--   -->
+  <div id="game-overlay" class="hidden">
+    <div class="score-panel">
+      <p>Falcons: <span id="falconScore">0</span></p>
+      <p>Bombs: <span id="bombScore">0</span></p>
+    </div>
+    <div class="timer-panel">
+      <p id="timer">5.00</p>
+    </div>
+  </div>
 
-/* عمودان جنباً لجنب بلا لف */
-.two-columns {
-  display: flex;
-  flex-wrap: nowrap; /* لا يلف */
-  justify-content: space-around;
-  gap: 10px; /* مسافة بين العمودين */
-  margin-top: 20px;
-}
+<!-- شاشة نهاية اللعبة -->
+<div id="end-game-screen" class="hidden end-game-screen">
+  <div class="end-content">
+    <div class="gift-emoji">🎁</div>
+    <div class="stats-line">
+      <span class="line-text">🦅 Falcon : </span>
+      <span id="endFalconScore">0</span>
+    </div>
+    <div class="stats-line">
+      <span class="line-text">💣 Bombs : </span>
+      <span id="endBombScore">0</span>
+    </div>
+    <div class="buttons-container">
+      <button id="btn-new-round">
+        <i class="fas fa-play"></i> New Round
+      </button>
+      <button id="btn-back-home">
+        <i class="fas fa-arrow-left"></i> Return Home
+      </button>
+      <button id="btn-share-link">
+        <i class="fas fa-share"></i> Share Link Bot
+      </button>
+    </div>
+  </div>
+</div>
 
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+<!-- حاوية الكشكشة -->
+<div id="confetti-container" class="hidden"></div>
 
-/* بطاقات أصغر */
-.button-card {
-  background: #1a1a1a;
-  width: 140px; /* أصغر ليتسع العمودان في العرض دون تمرير */
-  padding: 10px; 
-  border-radius: 10px;
-  margin: 0 auto;
-  text-align: center;
-}
+  <!--  -->
+  <footer>
+    <nav class="bottom-nav">
+      <a href="#" class="active glow-text" onclick="showMain()">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a href="#" class="glow-text" onclick="showCollab()">
+        <i class="fas fa-handshake"></i> Collab
+      </a>
+      <a href="#" class="glow-text">
+        <i class="fas fa-trophy"></i> Leaderboard
+      </a>
+      <a href="#" class="glow-text" onclick="showFriends()">
+        <i class="fas fa-user-friends"></i> Friends
+      </a>
+    </nav>
+  </footer>
 
-.button-card h3 {
-  font-size: 0.9rem;
-  margin-bottom: 5px;
-}
-.button-card button {
-  display: block;
-  width: 100%;
-  margin: 5px auto;
-  padding: 8px;
-  background: #fff; /* لون الخلفية الأبيض */
-  color: #000;      /* لون النص الأسود */
-  border: none; 
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold; /* اجعل النص غامقاً */
-  transition: background 0.3s;
-}
-.button-card button:hover {
-  background: #555;
-}
-
-/* زر Play */
-.play-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-.play-container .button-card {
-  width: 140px;
-  padding: 10px;
-}
-
-/* صفحة الأصدقاء */
-.friends-section {
-  text-align: center;
-  margin-top: 20px;
-}
-.friends-section .profile-icon {
-  display: block;
-  margin: 0 auto;
-}
-.friends-buttons button {
-  width: 80%;
-  margin: 10px auto;
-  padding: 15px 0;
-  background: #fff;
-  color: #000;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-.friends-buttons button:hover {
-  background: #e5e5e5;
-}
-
-/* Collab */
-.tasks-section {
-  margin: 20px;
-  max-height: calc(100vh - 150px); /* لضبط الارتفاع بناءً على ارتفاع الشاشة مع مراعاة الهيدر والفوتر */
-  overflow-y: auto; /* لتفعيل التمرير العمودي */
-  padding-right: 10px; /* إضافة مساحة داخلية للتمرير */
-  scrollbar-width: thin; /* جعل شريط التمرير رفيعاً */
-}
-
-/* تخصيص شريط التمرير */
-.tasks-section::-webkit-scrollbar {
-  width: 8px;
-}
-
-.tasks-section::-webkit-scrollbar-thumb {
-  background-color: #888; /* لون شريط التمرير */
-  border-radius: 4px; /* تقويس الحواف */
-}
-
-.tasks-section::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* لون شريط التمرير عند التمرير عليه */
-}
-.task-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #1a1a1a;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-.task-card img {
-  width: 60px; height: 60px;
-  border-radius: 5px;
-  object-fit: cover;
-}
-.task-card div {
-  flex-grow: 1;
-  margin-left: 10px;
-}
-.task-card h3, 
-.task-card p {
-  color: #fff;
-}
-
-/* أزرار Start/Claim */
-.start-btn {
-  background: #fff;
-  color: #000;
-  border-radius: 9999px; 
-  padding: 10px 30px;
-  border: none;
-  font-size: 1rem;
-  transition: background 0.3s, color 0.3s;
-}
-.claim-btn {
-  background: #007bff;
-  color: #fff;
-  border-radius: 9999px;
-  padding: 10px 30px;
-  border: none;
-  font-size: 1rem;
-  transition: background 0.3s, color 0.3s;
-}
-
-/* واجهة اللعبة */
-#game-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: #000 url("https://i.ibb.co/jfjCkVM/image.png") center/cover no-repeat;
-  z-index: 9998; 
-  overflow: hidden;
-}
-
-/* عدادات */
-.score-panel {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  pointer-events: none;
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-shadow: 0 0 5px #fff, 0 0 10px #ffc107;
-}
-.score-panel p {
-  margin-bottom: 5px;
-}
-#falconScore, #bombScore {
-  font-size: 1.4rem;
-  color: #fff;
-  text-shadow: 0 0 3px #fff, 0 0 6px #ff0, 0 0 10px #ff0;
-}
-
-.timer-panel {
-  position: absolute;
-  top: 10px; right: 15px;
-  pointer-events: none;
-}
-.timer-panel p {
-  font-size: 2rem; 
-  font-weight: bold;
-  text-shadow: 0 0 4px #fff, 0 0 8px #ff1493, 0 0 12px #ff1493;
-}
-
-.falling-emoji {
-  position: absolute;
-  font-size: 2rem;
-  cursor: pointer;
-  user-select: none;
-  pointer-events: auto;
-}
-
-/* اهتزاز */
-.shake {
-  animation: shake 0.3s;
-}
-@keyframes shake {
-  0%   { transform: translate(0,0); }
-  20%  { transform: translate(-10px,0); }
-  40%  { transform: translate(10px,0); }
-  60%  { transform: translate(-10px,0); }
-  80%  { transform: translate(10px,0); }
-  100% { transform: translate(0,0); }
-}
-.bomb-image {
-  background: #000 url("https://i.ibb.co/R0SKJqJ/image.png") center/cover no-repeat !important;
-}
-
-/* نهاية اللعبة */
-.end-game-screen {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: #000; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-.end-content {
-  text-align: center;
-}
-.gift-emoji {
-  font-size: 4rem;
-  margin-bottom: 20px;
-}
-.stats-line {
-  font-size: 1.4rem;
-  margin: 10px 0;
-  font-weight: bold;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
-}
-.line-text {
-  margin-right: 5px;
-}
-.buttons-container {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 80%; 
-  max-width: 320px;
-  margin: 0 auto;
-}
-#end-game-screen button {
-  padding: 15px;
-  font-size: 1.1rem;
-  color: #000;
-  background: #fff;
-  border: none;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-}
-#end-game-screen button:hover {
-  background: #ddd; 
-  color: #000;
-}
-
-/* فوتر */
-footer {
-  background: transparent; /* اجعل الفوتر شفافاً */
-  padding: 10px 0;
-  position: fixed; /* يبقى ثابتاً في الأسفل */
-  bottom: 0;
-  width: 100%;
-  z-index: 1000;
-}
-.bottom-nav {
-  display: flex;
-  justify-content: space-around;
-}
-.bottom-nav a {
-  color: #888;
-  text-decoration: none;
-  font-size: 1rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 0.9rem;
-  transition: color 0.3s;
-}
-.bottom-nav a i {
-  font-size: 1.2rem;
-  margin-bottom: 5px;
-}
-.bottom-nav a:hover {
-  color: #fff;
-}
-.bottom-nav a.active {
-  color: #fff;
-}
-
-/* تصميم رسالة النجاح */
-.success-message {
-  position: fixed;
-  bottom: 20px; /* تظهر في أسفل الشاشة */
-  left: 50%; /* تظهر في وسط الصفحة أفقيًا */
-  transform: translateX(-50%);
-  background-color: #28a745; /* لون الخلفية أخضر */
-  color: #fff; /* لون النص أبيض */
-  font-size: 16px; /* حجم الخط */
-  font-weight: bold; /* الخط غامق */
-  padding: 10px 20px; /* مساحة داخلية */
-  border-radius: 10px; /* الحواف مقوسة */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
-  z-index: 1000; /* ضمان ظهورها فوق العناصر الأخرى */
-  opacity: 0.9; /* شفافية خفيفة */
-  pointer-events: none; /* لا يمكن التفاعل معها */
-}
+  <script src="script.js"></script>
+</body>
+</html>
