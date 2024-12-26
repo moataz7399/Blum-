@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Telegram Bot Page</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Falcon-Bomb Game</title>
+  <!-- مكتبة الأيقونات FontAwesome -->
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     rel="stylesheet"
   />
+  <!-- ملف التنسيقات CSS -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- الهيدر -->
   <header>
     <div class="top-bar">
-      <span class="close-btn">×</span>
       <h1 class="glow-text">Rats Kingdom</h1>
-      <button class="dropdown-btn">▼</button>
     </div>
   </header>
 
@@ -24,7 +25,9 @@
     <div class="spinner"></div>
   </div>
 
+  <!-- المحتوى الرئيسي -->
   <main id="main-content">
+    <!-- القسم العلوي (الصورة والرصيد) -->
     <div class="profile-section">
       <img
         src="https://i.ibb.co/6DDKSS7/logo.png"
@@ -37,34 +40,61 @@
       </div>
     </div>
 
-    <!-- بطاقتا يوتيوب وتليجرام جنباً إلى جنب -->
-    <div class="buttons-section">
-      <!-- بطاقة اليوتيوب -->
-      <div class="button-card">
-        <h3 class="glow-text">YOUTUBE CHANNEL</h3>
-        <!-- زر Subscribe -->
-        <button onclick="window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');">
-          Subscribe
-        </button>
-        <!-- زر Play -->
-        <button class="play-btn" onclick="prepareGame()">Play</button>
+    <!-- عمودان: يسار (يوتيوب + Follow X) و يمين (تيليجرام + share link bot) -->
+    <div class="two-columns">
+      <!-- العمود الأيسر -->
+      <div class="column">
+        <!-- بطاقة 1: YouTube Channel -->
+        <div class="button-card">
+          <h3 class="glow-text">YOUTUBE CHANNEL</h3>
+          <button onclick="window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');">
+            Subscribe
+          </button>
+        </div>
+
+        <!-- بطاقة 2: Follow X -->
+        <div class="button-card">
+          <h3 class="glow-text">Follow X</h3>
+          <button onclick="window.open('https://wwww', '_blank');">
+            Follow
+          </button>
+        </div>
       </div>
 
-      <!-- بطاقة التليجرام -->
+      <!-- العمود الأيمن -->
+      <div class="column">
+        <!-- بطاقة 3: Telegram Channel -->
+        <div class="button-card">
+          <h3 class="glow-text">Telegram Channel</h3>
+          <button onclick="window.open('https://t.me/Falcon_Community_Bot', '_blank');">
+            Join
+          </button>
+        </div>
+
+        <!-- بطاقة 4: share link bot -->
+        <div class="button-card">
+          <h3 class="glow-text">share link bot</h3>
+          <button onclick="window.open('https://wa.me9', '_blank');">
+            share
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- بطاقة Play في الأسفل وسط الصفحة -->
+    <div class="play-container">
       <div class="button-card">
-        <h3 class="glow-text">Telegram Channel</h3>
-        <button onclick="window.open('https://t.me/Falcon_Community_Bot', '_blank');">
-          Join
-        </button>
+        <h3 class="glow-text">Play</h3>
+        <button onclick="prepareGame()">Play</button>
       </div>
     </div>
   </main>
 
-  <!-- Friends Page -->
+  <!-- صفحة الأصدقاء (Friends) -->
   <div id="friends-page" class="hidden">
     <div class="friends-section">
       <img
-        src="https://via.placeholder.com/100"
+        src="https://i.ibb.co/6DDKSS7/logo.png"
         alt="Profile Icon"
         class="profile-icon"
       />
@@ -76,37 +106,56 @@
     </div>
   </div>
 
-  <!-- Collab Page -->
+  <!-- صفحة المهام (Collab) -->
   <div id="collab-page" class="hidden">
     <div class="tasks-section">
+      <!-- المهمة 1: Put 🦅 next to your name -->
       <div class="task-card">
-        <img src="https://via.placeholder.com/40" alt="Add PAWS emoji" />
+        <img 
+          src="https://i.ibb.co/xJH1Qpz/Picsart-24-12-26-03-59-05-253.png" 
+          alt="🦅"
+        />
         <div>
-          <h3 class="glow-text">Add PAWS emoji</h3>
+          <h3 class="glow-text">Put 🦅 next to your name</h3>
           <p class="glow-text">+6,000 PAWS</p>
         </div>
         <button class="action-btn start-btn">Start</button>
       </div>
+
+      <!-- المهمة 2: Follow Telegram Channel -->
       <div class="task-card">
-        <img src="https://via.placeholder.com/40" alt="Study PAWS" />
+        <img 
+          src="https://i.ibb.co/V9FPRbL/Picsart-24-12-26-03-07-35-183.png" 
+          alt="Follow Telegram Channel"
+        />
         <div>
-          <h3 class="glow-text">Study PAWS</h3>
+          <h3 class="glow-text">Follow Telegram Channel</h3>
           <p class="glow-text">+250 PAWS</p>
         </div>
         <button class="action-btn start-btn">Start</button>
       </div>
+
+      <!-- المهمة 3: Follow us on X -->
       <div class="task-card">
-        <img src="https://via.placeholder.com/40" alt="Join PAWS Cult X" />
+        <img 
+          src="https://i.ibb.co/BV0tDyw/Picsart-24-12-26-03-13-44-267.png"
+          alt="Follow us on X"
+        />
         <div>
-          <h3 class="glow-text">Join PAWS Cult X</h3>
+          <h3 class="glow-text">Follow us on X</h3>
           <p class="glow-text">+2,000 PAWS</p>
         </div>
         <button class="action-btn start-btn">Start</button>
       </div>
+
+      <!-- المهمة 4: Boost Channel -->
       <div class="task-card">
-        <img src="https://via.placeholder.com/40" alt="Put PAWS in your name" />
+        <img 
+          src="https://i.ibb.co/N28QCRM/Picsart-24-12-26-03-23-37-573.png"
+          alt="Boost Channel"
+        />
         <div>
-          <h3 class="glow-text">Put 🐾 in your name</h3>
+          <h3 class="glow-text">Boost Channel</h3>
           <p class="glow-text">+5,000 PAWS</p>
         </div>
         <button class="action-btn start-btn">Start</button>
@@ -123,10 +172,38 @@
     </div>
     <!-- العداد الزمني يمين -->
     <div class="timer-panel">
-      <p id="timer">30.00</p>
+      <p id="timer">5.00</p> <!-- مؤقت 5 ثوانٍ للتجربة -->
     </div>
   </div>
 
+  <!-- شاشة نهاية اللعبة (شاشة سوداء) -->
+  <div id="end-game-screen" class="hidden end-game-screen">
+    <div class="end-content">
+      <div class="gift-emoji">🎁</div>
+      <div class="stats-line">
+        <span class="line-text">🦅 Falcon : </span>
+        <span id="endFalconScore">0</span>
+      </div>
+      <div class="stats-line">
+        <span class="line-text">💣 Bombs : </span>
+        <span id="endBombScore">0</span>
+      </div>
+      
+      <div class="buttons-container">
+        <button id="btn-new-round">
+          <i class="fas fa-play"></i> New Round
+        </button>
+        <button id="btn-back-home">
+          <i class="fas fa-arrow-left"></i> Return Home
+        </button>
+        <button id="btn-share-link">
+          <i class="fas fa-share"></i> Share Link Bot
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- الفوتر (قائمة التنقل السفلية) -->
   <footer>
     <nav class="bottom-nav">
       <a href="#" class="active glow-text" onclick="showMain()">
@@ -144,229 +221,7 @@
     </nav>
   </footer>
 
-  <script>
-    /************************************************************/
-    /* شيفرة التنقل بين الصفحات + شاشة تحميل                   */
-    /************************************************************/
-    function showLoader(callback) {
-      const loader = document.querySelector('.loader');
-      loader.style.display = 'flex';
-      setTimeout(() => {
-        loader.style.display = 'none';
-        if (typeof callback === 'function') {
-          callback();
-        }
-      }, 1000);
-    }
-
-    function showMain() {
-      showLoader(() => {
-        document.getElementById('main-content').classList.remove('hidden');
-        document.getElementById('friends-page').classList.add('hidden');
-        document.getElementById('collab-page').classList.add('hidden');
-        document.getElementById('game-overlay').classList.add('hidden');
-      });
-    }
-
-    function showFriends() {
-      showLoader(() => {
-        document.getElementById('main-content').classList.add('hidden');
-        document.getElementById('friends-page').classList.remove('hidden');
-        document.getElementById('collab-page').classList.add('hidden');
-        document.getElementById('game-overlay').classList.add('hidden');
-      });
-    }
-
-    function showCollab() {
-      showLoader(() => {
-        document.getElementById('main-content').classList.add('hidden');
-        document.getElementById('friends-page').classList.add('hidden');
-        document.getElementById('collab-page').classList.remove('hidden');
-        document.getElementById('game-overlay').classList.add('hidden');
-      });
-    }
-
-    /************************************************************/
-    /* الإعداد قبل بدء اللعبة: شاشة التحميل لثانيتين           */
-    /************************************************************/
-    function prepareGame() {
-      const loader = document.querySelector('.loader');
-      loader.style.display = 'flex'; 
-      setTimeout(() => {
-        loader.style.display = 'none';
-        startGame();
-      }, 2000);
-    }
-
-    /************************************************************/
-    /* متغيرات وتحكّم في اللعبة                                 */
-    /************************************************************/
-    let falconScore = 0;
-    let bombScore = 0;
-    let gameTime = 30.00;      
-    let countdownInterval;
-    let totalFalcons;
-    let totalBombs;
-
-    /************************************************************/
-    /* بدء اللعبة: جدولة الصقور والقنابل، بدء العداد العشري     */
-    /************************************************************/
-    function startGame() {
-      document.getElementById('game-overlay').classList.remove('hidden');
-      document.getElementById('main-content').classList.add('hidden');
-      document.getElementById('friends-page').classList.add('hidden');
-      document.getElementById('collab-page').classList.add('hidden');
-
-      // إعادة ضبط النقاط والوقت
-      falconScore = 0;
-      bombScore = 0;
-      gameTime = 30.00;
-      document.getElementById('falconScore').textContent = falconScore;
-      document.getElementById('bombScore').textContent = bombScore;
-      document.getElementById('timer').textContent = gameTime.toFixed(2);
-
-      // تحديد كم عدد الصقور والقنابل
-      totalFalcons = Math.floor(Math.random() * (250 - 150 + 1)) + 150; // 150~250
-      totalBombs   = Math.floor(Math.random() * (50 - 20 + 1)) + 20;   // 20~50
-
-      scheduleEmojis();
-
-      // عداد كل 0.1 ثانية
-      countdownInterval = setInterval(() => {
-        gameTime -= 0.1;
-        if (gameTime <= 0) {
-          gameTime = 0;
-          endGame();
-        }
-        document.getElementById('timer').textContent = gameTime.toFixed(2);
-      }, 100);
-    }
-
-    /************************************************************/
-    /* توزيع الصقور والقنابل خلال 30 ثانية بأوقات عشوائية      */
-    /************************************************************/
-    function scheduleEmojis() {
-      for (let i = 0; i < totalFalcons; i++) {
-        let spawnTime = Math.random() * 30.0; 
-        setTimeout(() => {
-          if (gameTime <= 0) return;
-          createFallingEmoji('🦅');
-        }, spawnTime * 1000);
-      }
-
-      for (let j = 0; j < totalBombs; j++) {
-        let spawnTime = Math.random() * 30.0;
-        setTimeout(() => {
-          if (gameTime <= 0) return;
-          createFallingEmoji('💣');
-        }, spawnTime * 1000);
-      }
-    }
-
-    /************************************************************/
-    /* إنهاء اللعبة                                            */
-    /************************************************************/
-    function endGame() {
-      clearInterval(countdownInterval);
-      const emojis = document.querySelectorAll('.falling-emoji');
-      emojis.forEach(emoji => emoji.remove());
-
-      document.getElementById('game-overlay').classList.add('hidden');
-      document.getElementById('main-content').classList.remove('hidden');
-    }
-
-    /************************************************************/
-    /* إنشاء الإيموجي والسقوط                                   */
-    /************************************************************/
-    function createFallingEmoji(type) {
-      const gameOverlay = document.getElementById('game-overlay');
-      const emojiEl = document.createElement('span');
-      emojiEl.classList.add('falling-emoji');
-      emojiEl.textContent = type;
-
-      const maxLeft = window.innerWidth - 50;
-      const randomLeft = Math.floor(Math.random() * maxLeft);
-      emojiEl.style.left = randomLeft + 'px';
-      emojiEl.style.top = '-50px';
-
-      // عند الضغط على الإيموجي
-      emojiEl.addEventListener('click', () => {
-        if (type === '🦅') {
-          falconScore++;
-          document.getElementById('falconScore').textContent = falconScore;
-        } else {
-          // ضغط قنبلة
-          bombScore++;
-          document.getElementById('bombScore').textContent = bombScore;
-          bombEffect();
-        }
-        emojiEl.remove();
-      });
-
-      gameOverlay.appendChild(emojiEl);
-
-      // تحريك الإيموجي للأسفل
-      let currentTop = -50;
-      function fall() {
-        if (gameOverlay.classList.contains('hidden') || gameTime <= 0) {
-          emojiEl.remove();
-          return;
-        }
-        currentTop += 2.5; 
-        emojiEl.style.top = currentTop + 'px';
-
-        if (currentTop > window.innerHeight + 50) {
-          emojiEl.remove();
-          return;
-        }
-        requestAnimationFrame(fall);
-      }
-      requestAnimationFrame(fall);
-    }
-
-    /************************************************************/
-    /* تأثير القنبلة: اهتزاز + خلفية الصورة الحمراء           */
-    /************************************************************/
-    function bombEffect() {
-      const overlay = document.getElementById('game-overlay');
-
-      // اهتزاز الجهاز
-      if (navigator.vibrate) {
-        navigator.vibrate(200);
-      }
-
-      // نغير الخلفية إلى الصورة الحمراء
-      overlay.classList.add('bomb-image');
-      // نضيف الاهتزاز (shake)
-      overlay.classList.add('shake');
-
-      // بعد 300 مللي ثانية نزيل التأثير ونرجع الخلفية الأصلية
-      setTimeout(() => {
-        overlay.classList.remove('bomb-image');
-        overlay.classList.remove('shake');
-      }, 300);
-    }
-
-    /************************************************************/
-    /* أزرار Start/Claim/✓ (قسم Collab)                         */
-    /************************************************************/
-    document.querySelectorAll('.action-btn').forEach(function (button) {
-      button.addEventListener('click', function () {
-        if (button.textContent.trim() === 'Start') {
-          navigator.clipboard.writeText('🐊').catch(() => {});
-          setTimeout(() => {
-            button.textContent = 'Claim';
-            button.classList.remove('start-btn');
-            button.classList.add('claim-btn');
-          }, 10000);
-        } else if (button.textContent.trim() === 'Claim') {
-          button.textContent = '✓';
-          if (navigator.vibrate) {
-            navigator.vibrate(200);
-          }
-        }
-      });
-    });
-  </script>
+  <!-- ملف الجافاسكربت -->
+  <script src="script.js"></script>
 </body>
 </html>
