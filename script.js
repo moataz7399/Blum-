@@ -19,6 +19,7 @@ function showMain() {
     document.getElementById('end-game-screen').classList.add('hidden');
   });
 }
+
 function showFriends() {
   showLoader(() => {
     document.getElementById('main-content').classList.add('hidden');
@@ -28,6 +29,7 @@ function showFriends() {
     document.getElementById('end-game-screen').classList.add('hidden');
   });
 }
+
 function showCollab() {
   showLoader(() => {
     document.getElementById('main-content').classList.add('hidden');
@@ -55,10 +57,11 @@ function prepareGame() {
 /************************************************************/
 let falconScore = 0;
 let bombScore = 0;
-let gameTime = 5.00; // للاختبار
+let gameTime = 30.00; // مدة اللعبة
 let countdownInterval;
 let totalFalcons;
 let totalBombs;
+const fallSpeed = 3; // سرعة سقوط ثابتة
 
 /************************************************************/
 /* بدء اللعبة                                               */
@@ -72,13 +75,13 @@ function startGame() {
 
   falconScore = 0;
   bombScore = 0;
-  gameTime = 5.00; 
+  gameTime = 30.00; 
   document.getElementById('falconScore').textContent = falconScore;
   document.getElementById('bombScore').textContent = bombScore;
   document.getElementById('timer').textContent = gameTime.toFixed(2);
 
-  totalFalcons = Math.floor(Math.random() * (250 - 150 + 1)) + 150;
-  totalBombs   = Math.floor(Math.random() * (50 - 20 + 1)) + 20;
+  totalFalcons = Math.floor(Math.random() * (150 - 100 + 1)) + 150;
+  totalBombs = Math.floor(Math.random() * (20 - 10 + 1)) + 20;
 
   scheduleEmojis();
 
@@ -96,8 +99,11 @@ function startGame() {
 /* توزيع الصقور والقنابل                                   */
 /************************************************************/
 function scheduleEmojis() {
+  const falconInterval = gameTime / totalFalcons;
+  const bombInterval = gameTime / totalBombs;
+
   for (let i = 0; i < totalFalcons; i++) {
-    let spawnTime = Math.random() * 5.0;
+    let spawnTime = i * falconInterval;
     setTimeout(() => {
       if (gameTime <= 0) return;
       createFallingEmoji('🦅');
@@ -105,7 +111,7 @@ function scheduleEmojis() {
   }
 
   for (let j = 0; j < totalBombs; j++) {
-    let spawnTime = Math.random() * 5.0;
+    let spawnTime = j * bombInterval;
     setTimeout(() => {
       if (gameTime <= 0) return;
       createFallingEmoji('💣');
@@ -123,16 +129,32 @@ function endGame() {
   document.getElementById('end-game-screen').classList.remove('hidden');
   document.getElementById('endFalconScore').textContent = falconScore;
   document.getElementById('endBombScore').textContent = bombScore;
+
+  gameTime = 0; // منع أي عمليات إضافية بعد انتهاء اللعبة
 }
 
 /************************************************************/
-/* إنشاء الإيموجي والسقوط + الضغط                          */
+/* إنشاء الإيموجي بالسقوط + الضغط                          */
 /************************************************************/
 function createFallingEmoji(type) {
+  if (gameTime <= 0) return;
+
   const gameOverlay = document.getElementById('game-overlay');
   const emojiEl = document.createElement('span');
   emojiEl.classList.add('falling-emoji');
-  emojiEl.textContent = type;
+
+  // تحديد الصورة حسب النوع
+  if (type === '🦅') {
+    emojiEl.style.backgroundImage = "url('https://i.ibb.co/qdC3sPc/Picsart-24-12-26-16-25-14-117.png')";
+  } else if (type === '💣') {
+    emojiEl.style.backgroundImage = "url('https://i.ibb.co/st0V7gb/Picsart-24-12-26-16-26-53-669.png')";
+  }
+
+  // إضافة خصائص CSS للصورة
+  emojiEl.style.backgroundSize = 'contain';
+  emojiEl.style.backgroundRepeat = 'no-repeat';
+  emojiEl.style.width = '50px'; // حجم الصورة
+  emojiEl.style.height = '50px'; // حجم الصورة
 
   const maxLeft = window.innerWidth - 50;
   const randomLeft = Math.floor(Math.random() * maxLeft);
@@ -140,6 +162,7 @@ function createFallingEmoji(type) {
   emojiEl.style.top = '-50px';
 
   emojiEl.addEventListener('click', () => {
+    if (gameTime <= 0) return;
     if (type === '🦅') {
       falconScore++;
       document.getElementById('falconScore').textContent = falconScore;
@@ -157,11 +180,11 @@ function createFallingEmoji(type) {
 
   let currentTop = -50;
   function fall() {
-    if (gameOverlay.classList.contains('hidden') || gameTime <= 0) {
+    if (gameTime <= 0 || gameOverlay.classList.contains('hidden')) {
       emojiEl.remove();
       return;
     }
-    currentTop += 2.5;
+    currentTop += fallSpeed; // سرعة ثابتة
     emojiEl.style.top = currentTop + 'px';
     if (currentTop > window.innerHeight + 50) {
       emojiEl.remove();
@@ -187,46 +210,6 @@ function bombEffect() {
     overlay.classList.remove('shake');
   }, 300);
 }
-
-/************************************************************/
-/* أزرار (Start -> Wait... -> Claim -> ✓)                   */
-/************************************************************/
-document.querySelectorAll('.action-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const taskName = button.parentNode.querySelector('h3').textContent.trim();
-
-    if (button.textContent.trim() === 'Start') {
-      if (taskName === "Put 🦅 next to your name") {
-        navigator.clipboard.writeText('🦅').catch(() => {});
-      }
-      else if (taskName === "Follow Telegram Channel") {
-        window.open('https://t.me/fake', '_blank');
-      }
-      else if (taskName === "Subscribe to our YouTube channel") {
-        window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');
-      }
-      else if (taskName === "Follow us on X") {
-        window.open('https://t.me/faker', '_blank');
-      }
-      else if (taskName === "Boost Channel") {
-        window.open('https://t.me/faaker', '_blank');
-      }
-
-      button.textContent = 'Wait...';
-      setTimeout(() => {
-        button.textContent = 'Claim';
-        button.classList.remove('start-btn');
-        button.classList.add('claim-btn');
-      }, 10000);
-
-    } else if (button.textContent.trim() === 'Claim') {
-      button.textContent = '✓';
-      if (navigator.vibrate) {
-        navigator.vibrate(200);
-      }
-    }
-  });
-});
 
 /************************************************************/
 /* أزرار شاشة النهاية                                      */
@@ -255,6 +238,73 @@ function showSuccessMessage() {
   setTimeout(() => {
     successMessage.remove();
   }, 1000);
+}
+
+function showConfetti() {
+  const confettiContainer = document.getElementById("confetti-container");
+  confettiContainer.classList.remove("hidden");
+
+  // عدد الكشكشة
+  const numberOfConfetti = 100;
+
+  for (let i = 0; i < numberOfConfetti; i++) {
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti");
+
+    // موقع عشوائي من الأطراف العلوية (يمين أو يسار)
+    const startX = Math.random() > 0.5 ? -20 : window.innerWidth + 20;
+    const startY = Math.random() * 100;
+
+    // موقع النهاية العشوائي
+    const endX = Math.random() * window.innerWidth;
+    const endY = window.innerHeight + 50;
+
+    // إضافة الألوان والتنسيق
+    const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+    confetti.style.backgroundColor = color;
+    confetti.style.left = `${startX}px`;
+    confetti.style.top = `${startY}px`;
+
+    // حركة القذف إلى الأعلى ثم السقوط
+    const midX = window.innerWidth / 2 + (Math.random() * 200 - 100); // المنتصف
+    const midY = 100; // أقرب نقطة في الأعلى
+    const duration = Math.random() * 1.5 + 1; // مدة القذف
+    const fallDuration = Math.random() * 2 + 2; // مدة السقوط
+
+    confetti.style.transition = `transform ${duration}s ease-out`;
+    confetti.style.transform = `translate(${midX - startX}px, ${midY - startY}px)`;
+
+    confettiContainer.appendChild(confetti);
+
+    // بعد القذف يبدأ السقوط
+    setTimeout(() => {
+      confetti.style.transition = `transform ${fallDuration}s linear`;
+      confetti.style.transform = `translate(${endX - midX}px, ${endY - midY}px)`;
+
+      // إزالة الكشكشة بعد انتهاء الحركة
+      setTimeout(() => {
+        confetti.remove();
+      }, fallDuration * 1000);
+    }, duration * 1000);
+  }
+
+  // إخفاء الحاوية بعد 5 ثوانٍ
+  setTimeout(() => {
+    confettiContainer.classList.add("hidden");
+  }, 5000);
+}
+
+// استدعاء الكشكشة عند انتهاء الجولة
+function endGame() {
+  clearInterval(countdownInterval);
+  document.querySelectorAll('.falling-emoji').forEach(emoji => emoji.remove());
+  document.getElementById('game-overlay').classList.add('hidden');
+  document.getElementById('end-game-screen').classList.remove('hidden');
+  document.getElementById('endFalconScore').textContent = falconScore;
+  document.getElementById('endBombScore').textContent = bombScore;
+
+  // استدعاء الكشكشة
+  showConfetti();
 }
 
 // تحديث أزرار المهام
