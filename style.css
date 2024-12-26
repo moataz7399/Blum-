@@ -14,7 +14,8 @@ body {
 
 /* تأثير توهج للنص */
 .glow-text {
-  text-shadow: 0 0 3px rgba(255, 255, 255, 0.7), 0 0 6px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.7),
+               0 0 6px rgba(255, 255, 255, 0.5);
 }
 
 /* إخفاء العناصر عند الحاجة */
@@ -61,7 +62,6 @@ header {
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
-
 @keyframes spin {
   100% {
     transform: rotate(360deg);
@@ -70,14 +70,16 @@ header {
 
 /* المحتوى الرئيسي */
 #main-content {
-  padding-bottom: 70px; /* لتفادي تداخل الفوتر */
+  /* لإفساح مساحة للفوتر الثابت */
+  margin-bottom: 80px; 
+  padding-top: 10px;
+  text-align: center; /* لجعل البطاقات في المنتصف */
 }
 
+/* صورة البروفايل والقيمة */
 .profile-section {
-  text-align: center;
   margin-top: 20px;
 }
-
 .profile-icon {
   width: 120px;
   height: 120px;
@@ -87,35 +89,30 @@ header {
   border: 2px solid #fff;
 }
 
-/* تقسيم البطاقات (عمود يسار وعمود يمين) */
-.two-columns {
+/* الحاوية للأزرار في الصفحة الرئيسية */
+.buttons-section {
   display: flex;
-  justify-content: space-around; 
-  flex-wrap: wrap;
-  margin-top: 20px;
+  flex-direction: column; /* كلها عموديًا */
+  align-items: center;
+  gap: 20px; /* مسافة بين البطاقات */
+  margin: 20px 0;
 }
 
-.column {
-  display: flex;
-  flex-direction: column; 
-  gap: 20px;
-}
-
-/* شكل البطاقات */
+/* شكل البطاقات الرئيسية */
 .button-card {
   background: #1a1a1a;
+  width: 80%; /* عرض مناسب للجوال */
+  max-width: 400px; /* حد أقصى لعرض البطاقة */
   padding: 15px;
   border-radius: 10px;
   text-align: center;
-  width: 240px;
-  min-width: 130px;
+  margin: 0 auto; /* توسيط البطاقة */
 }
 
 .button-card h3 {
   font-size: 1rem;
   margin-bottom: 8px;
 }
-
 .button-card button {
   display: block;
   width: 100%;
@@ -129,24 +126,14 @@ header {
   transition: background 0.3s;
   text-align: center;
 }
-
 .button-card button:hover {
   background: #555;
 }
 
-/* بطاقة الـPlay في الأسفل بوسط الصفحة */
-.play-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
 /* صفحة الأصدقاء */
 .friends-section {
-  text-align: center;
   margin-top: 20px;
 }
-
 .friends-buttons button {
   width: 80%;
   margin: 10px auto;
@@ -159,7 +146,6 @@ header {
   cursor: pointer;
   transition: background 0.3s;
 }
-
 .friends-buttons button:hover {
   background: #e5e5e5;
 }
@@ -168,7 +154,6 @@ header {
 .tasks-section {
   margin: 20px;
 }
-
 .task-card {
   display: flex;
   align-items: center;
@@ -178,24 +163,20 @@ header {
   border-radius: 10px;
   margin-bottom: 10px;
 }
-
 .task-card img {
   width: 60px; 
   height: 60px; 
   border-radius: 5px;
   object-fit: cover;
 }
-
 .task-card div {
   flex-grow: 1;
   margin-left: 10px;
 }
-
 .task-card h3,
 .task-card p {
   color: #fff;
 }
-
 /* أزرار Start/Claim */
 .start-btn {
   background-color: #fff;
@@ -206,7 +187,6 @@ header {
   font-size: 1rem;
   transition: background 0.3s, color 0.3s;
 }
-
 .claim-btn {
   background-color: #007bff;
   color: #fff;
@@ -229,8 +209,6 @@ header {
   overflow: hidden; 
   pointer-events: auto;
 }
-
-/* عدادات اللعبة */
 .score-panel {
   position: absolute;
   top: 10px;
@@ -240,33 +218,25 @@ header {
   font-weight: bold;
   text-shadow: 0 0 5px #fff, 0 0 10px #ffc107;
 }
-
 .score-panel p {
   margin-bottom: 5px;
 }
-
-#falconScore, 
-#bombScore {
+#falconScore, #bombScore {
   font-size: 1.4rem;
   color: #fff;
   text-shadow: 0 0 3px #fff, 0 0 6px #ff0, 0 0 10px #ff0;
 }
-
-/* عداد الوقت */
 .timer-panel {
   position: absolute;
   top: 10px;
   right: 15px;
   pointer-events: none;
 }
-
 .timer-panel p {
   font-size: 2rem;
   font-weight: bold;
   text-shadow: 0 0 4px #fff, 0 0 8px #ff1493, 0 0 12px #ff1493;
 }
-
-/* الإيموجي المتساقط */
 .falling-emoji {
   position: absolute;
   font-size: 2rem;
@@ -274,12 +244,10 @@ header {
   user-select: none;
   pointer-events: auto;
 }
-
-/* تأثير الاهتزاز عند الضغط على قنبلة */
+/* تأثير الاهتزاز */
 .shake {
   animation: shake 0.3s;
 }
-
 @keyframes shake {
   0%   { transform: translate(0,0); }
   20%  { transform: translate(-10px,0); }
@@ -288,12 +256,9 @@ header {
   80%  { transform: translate(10px,0); }
   100% { transform: translate(0,0); }
 }
-
-/* الخلفية الحمراء عند الضغط على قنبلة */
 .bomb-image {
   background: #000 url("https://i.ibb.co/R0SKJqJ/image.png") center center / cover no-repeat !important;
 }
-
 /* شاشة نهاية اللعبة */
 .end-game-screen {
   position: fixed;
@@ -307,28 +272,22 @@ header {
   align-items: center;
   z-index: 9999;
 }
-
 .end-content {
   text-align: center;
 }
-
 .gift-emoji {
   font-size: 4rem;
   margin-bottom: 20px;
 }
-
 .stats-line {
   font-size: 1.4rem;
   margin: 10px 0;
   font-weight: bold;
   text-shadow: 0 0 3px #fff, 0 0 6px #fff;
 }
-
 .line-text {
   margin-right: 5px;
 }
-
-/* الحاوية للأزرار الثلاثة في الشاشة النهائية */
 .buttons-container {
   margin-top: 20px;
   display: flex;
@@ -339,8 +298,6 @@ header {
   margin-left: auto;
   margin-right: auto;
 }
-
-/* الأزرار في شاشة النهاية */
 #end-game-screen button {
   padding: 15px;
   font-size: 1.1rem;
@@ -351,25 +308,26 @@ header {
   font-weight: bold;
   cursor: pointer;
 }
-
 #end-game-screen button:hover {
   background: #ddd;
   color: #000;
 }
 
-/* الفوتر */
+/* الفوتر - نجعله ثابت في الأسفل */
 footer {
+  position: fixed; /* فوتر ثابت */
+  bottom: 0;
+  left: 0;
+  width: 100%;
   background: #111;
   padding: 10px 0;
-  position: static;
-  width: 100%;
+  z-index: 9999; /* فوق أي عنصر آخر */
 }
 
 .bottom-nav {
   display: flex;
   justify-content: space-around;
 }
-
 .bottom-nav a {
   color: #888;
   text-decoration: none;
@@ -381,22 +339,13 @@ footer {
   font-size: 0.9rem;
   transition: color 0.3s;
 }
-
 .bottom-nav a i {
   font-size: 1.2rem;
   margin-bottom: 5px;
 }
-
 .bottom-nav a:hover {
   color: #fff;
 }
-
 .bottom-nav a.active {
   color: #fff;
-}
-
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
 }
