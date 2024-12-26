@@ -1,33 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Falcon-Bomb Game</title>
-  <!-- مكتبة الأيقونات FontAwesome -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rats Kingdom</title>
+  <!-- FontAwesome -->
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     rel="stylesheet"
   />
-  <!-- ملف التنسيقات CSS -->
-  <link rel="stylesheet" href="style.css" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- الهيدر -->
+  <!-- هيدر -->
   <header>
     <div class="top-bar">
       <h1 class="glow-text">Rats Kingdom</h1>
     </div>
   </header>
 
-  <!-- شاشة التحميل (Loader) -->
+  <!-- شاشة التحميل -->
   <div class="loader" style="display: none;">
     <div class="spinner"></div>
   </div>
 
   <!-- المحتوى الرئيسي -->
   <main id="main-content">
-    <!-- القسم العلوي (الصورة والرصيد) -->
+    <!-- صورة ورصيد -->
     <div class="profile-section">
       <img
         src="https://i.ibb.co/6DDKSS7/logo.png"
@@ -40,11 +40,11 @@
       </div>
     </div>
 
-    <!-- عمودان: يسار (يوتيوب + Follow X) و يمين (تيليجرام + share link bot) -->
+    <!-- عمودان: يسار (يوتيوب + Follow X) و يمين (تيليجرام + share) -->
     <div class="two-columns">
       <!-- العمود الأيسر -->
       <div class="column">
-        <!-- بطاقة 1: YouTube Channel -->
+        <!-- يوتيوب -->
         <div class="button-card">
           <h3 class="glow-text">YOUTUBE CHANNEL</h3>
           <button onclick="window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');">
@@ -52,7 +52,7 @@
           </button>
         </div>
 
-        <!-- بطاقة 2: Follow X -->
+        <!-- Follow X -->
         <div class="button-card">
           <h3 class="glow-text">Follow X</h3>
           <button onclick="window.open('https://wwww', '_blank');">
@@ -63,7 +63,7 @@
 
       <!-- العمود الأيمن -->
       <div class="column">
-        <!-- بطاقة 3: Telegram Channel -->
+        <!-- تليجرام -->
         <div class="button-card">
           <h3 class="glow-text">Telegram Channel</h3>
           <button onclick="window.open('https://t.me/Falcon_Community_Bot', '_blank');">
@@ -71,7 +71,7 @@
           </button>
         </div>
 
-        <!-- بطاقة 4: share link bot -->
+        <!-- share link bot -->
         <div class="button-card">
           <h3 class="glow-text">share link bot</h3>
           <button onclick="window.open('https://wa.me9', '_blank');">
@@ -81,7 +81,7 @@
       </div>
     </div>
 
-    <!-- بطاقة Play في الأسفل وسط الصفحة -->
+    <!-- زر Play بالأسفل في الوسط -->
     <div class="play-container">
       <div class="button-card">
         <h3 class="glow-text">Play</h3>
@@ -90,7 +90,7 @@
     </div>
   </main>
 
-  <!-- صفحة الأصدقاء (Friends) -->
+  <!-- صفحة الأصدقاء -->
   <div id="friends-page" class="hidden">
     <div class="friends-section">
       <img
@@ -109,7 +109,7 @@
   <!-- صفحة المهام (Collab) -->
   <div id="collab-page" class="hidden">
     <div class="tasks-section">
-      <!-- المهمة 1: Put 🦅 next to your name -->
+      <!-- مهمة 1 -->
       <div class="task-card">
         <img 
           src="https://i.ibb.co/xJH1Qpz/Picsart-24-12-26-03-59-05-253.png" 
@@ -121,8 +121,7 @@
         </div>
         <button class="action-btn start-btn">Start</button>
       </div>
-
-      <!-- المهمة 2: Follow Telegram Channel -->
+      <!-- مهمة 2 -->
       <div class="task-card">
         <img 
           src="https://i.ibb.co/V9FPRbL/Picsart-24-12-26-03-07-35-183.png" 
@@ -134,8 +133,7 @@
         </div>
         <button class="action-btn start-btn">Start</button>
       </div>
-
-      <!-- المهمة 3: Follow us on X -->
+      <!-- مهمة 3 -->
       <div class="task-card">
         <img 
           src="https://i.ibb.co/BV0tDyw/Picsart-24-12-26-03-13-44-267.png"
@@ -147,8 +145,7 @@
         </div>
         <button class="action-btn start-btn">Start</button>
       </div>
-
-      <!-- المهمة 4: Boost Channel -->
+      <!-- مهمة 4 -->
       <div class="task-card">
         <img 
           src="https://i.ibb.co/N28QCRM/Picsart-24-12-26-03-23-37-573.png"
@@ -165,18 +162,16 @@
 
   <!-- واجهة اللعبة -->
   <div id="game-overlay" class="hidden">
-    <!-- عدادات اللعبة يسار -->
     <div class="score-panel">
       <p>Falcons: <span id="falconScore">0</span></p>
       <p>Bombs: <span id="bombScore">0</span></p>
     </div>
-    <!-- العداد الزمني يمين -->
     <div class="timer-panel">
-      <p id="timer">5.00</p> <!-- مؤقت 5 ثوانٍ للتجربة -->
+      <p id="timer">5.00</p>
     </div>
   </div>
 
-  <!-- شاشة نهاية اللعبة (شاشة سوداء) -->
+  <!-- شاشة نهاية اللعبة -->
   <div id="end-game-screen" class="hidden end-game-screen">
     <div class="end-content">
       <div class="gift-emoji">🎁</div>
@@ -203,7 +198,7 @@
     </div>
   </div>
 
-  <!-- الفوتر (قائمة التنقل السفلية) -->
+  <!-- فوتر -->
   <footer>
     <nav class="bottom-nav">
       <a href="#" class="active glow-text" onclick="showMain()">
@@ -221,7 +216,6 @@
     </nav>
   </footer>
 
-  <!-- ملف الجافاسكربت -->
   <script src="script.js"></script>
 </body>
 </html>
