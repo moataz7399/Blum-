@@ -7,8 +7,46 @@
 }
 
 body {
-  background-color: #000;
-  color: #fff;
+  background: url('https://i.ibb.co/dJhV6X3/Picsart-24-12-26-13-44-58-555.jpg') center/cover no-repeat; /* رابط الخلفية */
+  background-attachment: fixed; /* يجعل الخلفية ثابتة أثناء التمرير */
+  margin: 0;
+  padding: 0;
+  color: #fff; /* لون النص */
+  min-height: 100vh; /* لتغطية الشاشة بالكامل */
+  display: flex;
+  flex-direction: column;
+}
+
+#confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #ffc107;
+  border-radius: 50%;
+  animation: confetti-animation 5s ease-in-out forwards;
+  will-change: transform; /* تحسين الأداء */
+}
+
+@keyframes confetti-animation {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 100vh) rotate(720deg);
+    opacity: 0;
+  }
 }
 
 /* توهج */
@@ -23,12 +61,12 @@ body {
 
 /* هيدر */
 header {
-  background: #000;
+  background: transparent; /* اجعل الهيدر شفافاً */
   padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid #333;
+  border-bottom: none; /* إزالة الخط الفاصل */
 }
 .top-bar {
   width: 100%;
@@ -59,8 +97,22 @@ header {
   100% { transform: rotate(360deg); }
 }
 
+/* جسم الصفحة بالكامل */
+body {
+  background: url('https://i.ibb.co/dJhV6X3/Picsart-24-12-26-13-44-58-555.jpg') center/cover no-repeat; /* رابط الخلفية */
+  background-attachment: fixed; /* يجعل الخلفية ثابتة أثناء التمرير */
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  height: 100vh; /* يغطي الشاشة بالكامل */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 /* المحتوى الرئيسي */
 #main-content {
+  flex: 1; /* يجعل المحتوى يمتد لملء الشاشة */
   text-align: center;
   padding-bottom: 70px;
 }
@@ -162,6 +214,24 @@ header {
 /* Collab */
 .tasks-section {
   margin: 20px;
+  max-height: calc(100vh - 150px); /* لضبط الارتفاع بناءً على ارتفاع الشاشة مع مراعاة الهيدر والفوتر */
+  overflow-y: auto; /* لتفعيل التمرير العمودي */
+  padding-right: 10px; /* إضافة مساحة داخلية للتمرير */
+  scrollbar-width: thin; /* جعل شريط التمرير رفيعاً */
+}
+
+/* تخصيص شريط التمرير */
+.tasks-section::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tasks-section::-webkit-scrollbar-thumb {
+  background-color: #888; /* لون شريط التمرير */
+  border-radius: 4px; /* تقويس الحواف */
+}
+
+.tasks-section::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* لون شريط التمرير عند التمرير عليه */
 }
 .task-card {
   display: flex;
@@ -323,12 +393,12 @@ header {
 
 /* فوتر */
 footer {
-  background: #111;
+  background: transparent; /* اجعل الفوتر شفافاً */
   padding: 10px 0;
-  position: fixed; /* يجعل الفوتر ثابتاً */
-  bottom: 0;       /* يثبته عند أسفل الصفحة */
-  width: 100%;     /* ليغطي العرض الكامل */
-  z-index: 1000;   /* يضمن ظهوره فوق أي عناصر أخرى */
+  position: fixed; /* يبقى ثابتاً في الأسفل */
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
 }
 .bottom-nav {
   display: flex;
@@ -360,13 +430,13 @@ footer {
 .success-message {
   position: fixed;
   bottom: 20px; /* تظهر في أسفل الشاشة */
-  left: 50%;
+  left: 50%; /* تظهر في وسط الصفحة أفقيًا */
   transform: translateX(-50%);
   background-color: #28a745; /* لون الخلفية أخضر */
   color: #fff; /* لون النص أبيض */
-  font-size: 16px;
+  font-size: 16px; /* حجم الخط */
   font-weight: bold; /* الخط غامق */
-  padding: 10px 20px;
+  padding: 10px 20px; /* مساحة داخلية */
   border-radius: 10px; /* الحواف مقوسة */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
   z-index: 1000; /* ضمان ظهورها فوق العناصر الأخرى */
