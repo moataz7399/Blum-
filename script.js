@@ -150,17 +150,18 @@ function createFallingEmoji(type) {
     emojiEl.style.backgroundImage = "url('https://i.ibb.co/st0V7gb/Picsart-24-12-26-16-26-53-669.png')";
   }
 
-  // إضافة خصائص CSS للصورة
+  // إعداد خصائص CSS
   emojiEl.style.backgroundSize = 'contain';
   emojiEl.style.backgroundRepeat = 'no-repeat';
-  emojiEl.style.width = '50px'; // حجم الصورة
-  emojiEl.style.height = '50px'; // حجم الصورة
+  emojiEl.style.width = '50px';
+  emojiEl.style.height = '50px';
 
+  // وضع الإيموجي في مكان عشوائي على المحور الأفقي
   const maxLeft = window.innerWidth - 50;
-  const randomLeft = Math.floor(Math.random() * maxLeft);
-  emojiEl.style.left = randomLeft + 'px';
+  emojiEl.style.left = `${Math.random() * maxLeft}px`;
   emojiEl.style.top = '-50px';
 
+  // عند الضغط على الإيموجي
   emojiEl.addEventListener('click', () => {
     if (gameTime <= 0) return;
     if (type === '🦅') {
@@ -176,23 +177,23 @@ function createFallingEmoji(type) {
     emojiEl.remove();
   });
 
+  // إضافة الإيموجي إلى الشاشة
   gameOverlay.appendChild(emojiEl);
 
+  // تحريك الإيموجي للأسفل بسرعة ثابتة
   let currentTop = -50;
-  function fall() {
-    if (gameTime <= 0 || gameOverlay.classList.contains('hidden')) {
+  const fallSpeed = 5; // السرعة الثابتة للإيموجي
+
+  const interval = setInterval(() => {
+    currentTop += fallSpeed;
+    emojiEl.style.top = `${currentTop}px`;
+
+    // إزالة الإيموجي إذا خرج من الشاشة
+    if (currentTop > window.innerHeight) {
       emojiEl.remove();
-      return;
+      clearInterval(interval);
     }
-    currentTop += fallSpeed; // سرعة ثابتة
-    emojiEl.style.top = currentTop + 'px';
-    if (currentTop > window.innerHeight + 50) {
-      emojiEl.remove();
-      return;
-    }
-    requestAnimationFrame(fall);
-  }
-  requestAnimationFrame(fall);
+  }, 16); // تحديث كل 16ms (حوالي 60 إطاراً في الثانية)
 }
 
 /************************************************************/
