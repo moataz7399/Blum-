@@ -307,6 +307,23 @@ function endGame() {
   showConfetti();
 }
 
+function formatTimerDigits(value) {
+  const styledNumbers = {
+    '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰',
+    '5': '𝟱', '6': '𝟲', '7': '𝟳', '8': '𝟴', '9': '𝟵'
+  };
+  return value.toString().split('').map(digit => styledNumbers[digit] || digit).join('');
+}
+
+// تحديث عرض الوقت مع التنسيق الجديد
+setInterval(() => {
+  const timerElement = document.getElementById('timer');
+  if (timerElement) {
+    const currentTime = parseFloat(timerElement.textContent).toFixed(2);
+    timerElement.textContent = formatTimerDigits(currentTime);
+  }
+}, 100);
+
 // تحديث أزرار المهام
 document.querySelectorAll('.action-btn').forEach(button => {
   button.addEventListener('click', () => {
