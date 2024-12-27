@@ -9,25 +9,65 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     rel="stylesheet"
   />
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* شاشة التحميل */
+    #splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://i.ibb.co/KmqHJFh/Picsart-24-12-27-14-35-12-356.jpg') no-repeat center center / cover;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 9999;
+    }
+
+    .progress-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background-color: #333;
+    }
+
+    .progress-bar .progress {
+      width: 0;
+      height: 100%;
+      background-color: #0f0;
+      transition: width 5s linear;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <!--  -->
-  <header>
+  <!-- شاشة التحميل -->
+  <div id="splash-screen">
+    <div class="progress-bar">
+      <div class="progress"></div>
+    </div>
+  </div>
+
+  <!-- الهيدر -->
+  <header class="hidden">
     <div class="top-bar">
       <h1 class="glow-text">Rats Kingdom</h1>
     </div>
   </header>
 
-  <!--   -->
-  <div class="loader" style="display: none;">
+  <!-- شاشة التحميل -->
+  <div class="loader hidden">
     <div class="spinner"></div>
   </div>
 
-  <!--   -->
-  <main id="main-content">
-    <!--   -->
+  <!-- المحتوى الرئيسي -->
+  <main id="main-content" class="hidden">
     <div class="profile-section">
       <img
         src="https://i.ibb.co/6DDKSS7/logo.png"
@@ -40,11 +80,8 @@
       </div>
     </div>
 
-    <!-- :  ( + Follow X)   ( + share) -->
     <div class="two-columns">
-      <!--   -->
       <div class="column">
-        <!--  -->
         <div class="button-card">
           <h3 class="glow-text">𝐘𝐨𝐮𝐭𝐮𝐛𝐞 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</h3>
           <button onclick="window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');">
@@ -305,16 +342,16 @@
   <!--  -->
 <footer>
   <nav class="bottom-nav">
-    <a href="#" class="active glow-text" onclick="showMain()">
+    <a href="#" class="active glow-text" onclick="handleNavClick('main')">
       <i class="fas fa-home"></i> Home
     </a>
-    <a href="#" class="glow-text" onclick="showCollab()">
+    <a href="#" class="glow-text" onclick="handleNavClick('collab')">
       <i class="fas fa-handshake"></i> Collab
     </a>
-    <a href="#" class="glow-text">
+    <a href="#" class="glow-text" onclick="handleNavClick('leaderboard')">
       <i class="fas fa-trophy"></i> Leaderboard
     </a>
-    <a href="#" class="glow-text" onclick="showFriends()">
+    <a href="#" class="glow-text" onclick="handleNavClick('friends')">
       <i class="fas fa-user-friends"></i> Friends
     </a>
   </nav>
