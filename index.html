@@ -46,7 +46,7 @@
       <div class="column">
         <!--  -->
         <div class="button-card">
-          <h3 class="glow-text">Youtube Channel</h3>
+          <h3 class="glow-text">𝐘𝐨𝐮𝐭𝐮𝐛𝐞 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</h3>
           <button onclick="window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');">
             Subscribe
           </button>
@@ -54,7 +54,7 @@
 
         <!-- Follow X -->
         <div class="button-card">
-          <h3 class="glow-text">Follow X</h3>
+          <h3 class="glow-text">𝐅𝐨𝐥𝐥𝐨𝐰 𝐗</h3>
           <button onclick="window.open('https://wwww', '_blank');">
             Follow
           </button>
@@ -65,7 +65,7 @@
       <div class="column">
         <!--  -->
         <div class="button-card">
-          <h3 class="glow-text">Telegram Channel</h3>
+          <h3 class="glow-text">𝐓𝐞𝐥𝐞𝐠𝐫𝐚𝐦 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</h3>
           <button onclick="window.open('https://t.me/Falcon_Community_Bot', '_blank');">
             Join
           </button>
@@ -73,7 +73,7 @@
 
         <!-- share link bot -->
         <div class="button-card">
-          <h3 class="glow-text">share link bot</h3>
+          <h3 class="glow-text">𝐒𝐡𝐚𝐫𝐞 𝐋𝐢𝐧𝐤 𝐁𝐨𝐭</h3>
           <button onclick="window.open('https://wa.me9', '_blank');">
             share
           </button>
@@ -84,7 +84,7 @@
     <!--  Play    -->
     <div class="play-container">
       <div class="button-card">
-        <h3 class="glow-text">Play</h3>
+        <h3 class="glow-text">𝐏𝐥𝐚𝐲 𝐅𝐚𝐥𝐜𝐨𝐧</h3>
         <button onclick="prepareGame()">Play</button>
       </div>
     </div>
@@ -98,10 +98,10 @@
         alt="Profile Icon"
         class="profile-icon"
       />
-      <h2 class="glow-text">Invite friends and get more RATS</h2>
+      <h2 class="glow-text">𝗜𝗻𝘃𝗶𝘁𝗲 𝗳𝗿𝗶𝗲𝗻𝗱𝘀 𝗮𝗻𝗱 𝗴𝗲𝘁 𝗺𝗼𝗿𝗲 𝗥𝗔𝗧𝗦</h2>
       <div class="friends-buttons">
-        <button>Copy Invite Link</button>
-        <button>Share Invite Link</button>
+        <button>𝐂𝐨𝐩𝐲 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
+        <button>𝐒𝐡𝐚𝐫𝐞 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
       </div>
     </div>
   </div>
@@ -238,35 +238,56 @@
   <!--   -->
   <div id="game-overlay" class="hidden">
     <div class="score-panel">
-      <p>Falcons: <span id="falconScore">0</span></p>
-      <p>Bombs: <span id="bombScore">0</span></p>
+      <p>𝗙𝗮𝗹𝗰𝗼𝗻𝘀: <span id="falconScore">0</span></p>
+      <p>𝗕𝗼𝗺𝗯𝘀: <span id="bombScore">0</span></p>
     </div>
     <div class="timer-panel">
       <p id="timer">5.00</p>
     </div>
   </div>
 
-<!-- شاشة نهاية اللعبة -->
 <div id="end-game-screen" class="hidden end-game-screen">
   <div class="end-content">
-    <div class="gift-emoji">🎁</div>
+    <img 
+      src="https://i.ibb.co/Jx0h5F4/Picsart-24-12-26-17-25-34-218.png" 
+      alt="End Round" 
+      class="end-image"
+    />
     <div class="stats-line">
-      <span class="line-text">🦅 Falcon : </span>
+      <img 
+        src="https://i.ibb.co/m9xY2LB/Picsart-24-12-26-16-23-44-367.png" 
+        alt="Falcon Icon" 
+        class="icon"
+      />
+      <span class="line-text">Falcon :</span>
       <span id="endFalconScore">0</span>
     </div>
     <div class="stats-line">
-      <span class="line-text">💣 Bombs : </span>
+      <img 
+        src="https://i.ibb.co/st0V7gb/Picsart-24-12-26-16-26-53-669.png" 
+        alt="Bomb Icon" 
+        class="icon"
+      />
+      <span class="line-text">Bombs :</span>
       <span id="endBombScore">0</span>
     </div>
     <div class="buttons-container">
+      <!-- زر New Round -->
       <button id="btn-new-round">
-        <i class="fas fa-play"></i> New Round
+        <span class="btn-icon"><i class="fas fa-play"></i></span> 
+        <span class="btn-text">𝐏𝐥𝐚𝐲 𝐚𝐠𝐚𝐢𝐧</span>
       </button>
+
+      <!-- زر Return Home -->
       <button id="btn-back-home">
-        <i class="fas fa-arrow-left"></i> Return Home
+        <span class="btn-icon"><i class="fas fa-arrow-left"></i></span> 
+        <span class="btn-text">𝐁𝐚𝐜𝐤</span>
       </button>
+
+      <!-- زر Share Link Bot -->
       <button id="btn-share-link">
-        <i class="fas fa-share"></i> Share Link Bot
+        <span class="btn-icon"><i class="fas fa-share"></i></span> 
+        <span class="btn-text">𝐒𝐡𝐚𝐫𝐞 𝐋𝐢𝐧𝐤 𝐁𝐨𝐭</span>
       </button>
     </div>
   </div>
@@ -276,22 +297,22 @@
 <div id="confetti-container" class="hidden"></div>
 
   <!--  -->
-  <footer>
-    <nav class="bottom-nav">
-      <a href="#" class="active glow-text" onclick="showMain()">
-        <i class="fas fa-home"></i> Home
-      </a>
-      <a href="#" class="glow-text" onclick="showCollab()">
-        <i class="fas fa-handshake"></i> Collab
-      </a>
-      <a href="#" class="glow-text">
-        <i class="fas fa-trophy"></i> Leaderboard
-      </a>
-      <a href="#" class="glow-text" onclick="showFriends()">
-        <i class="fas fa-user-friends"></i> Friends
-      </a>
-    </nav>
-  </footer>
+<footer>
+  <nav class="bottom-nav">
+    <a href="#" class="active glow-text" onclick="showMain()">
+      <i class="fas fa-home"></i> Home
+    </a>
+    <a href="#" class="glow-text" onclick="showCollab()">
+      <i class="fas fa-handshake"></i> Collab
+    </a>
+    <a href="#" class="glow-text">
+      <i class="fas fa-trophy"></i> Leaderboard
+    </a>
+    <a href="#" class="glow-text" onclick="showFriends()">
+      <i class="fas fa-user-friends"></i> Friends
+    </a>
+  </nav>
+</footer>
 
   <script src="script.js"></script>
 </body>
