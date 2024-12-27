@@ -17,6 +17,27 @@ body {
   flex-direction: column;
 }
 
+/* تصميم المربع الجديد */
+.friends-table {
+  margin-top: 20px;
+  background: rgba(0, 0, 0, 0.8); /* لون خلفية شفاف */
+  border: 2px solid #fff; /* إطار أبيض */
+  border-radius: 10px; /* تقويس الزوايا */
+  width: 90%; /* عرض المربع */
+  height: calc(100vh - 300px); /* يمتد من أسفل كلمة "Share Invite Link" إلى أسفل الشاشة */
+  margin: 0 auto; /* توسيط المربع */
+  padding: 20px; /* مسافة داخلية */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* ظل المربع */
+  overflow-y: auto; /* تفعيل التمرير العمودي إذا امتلأ المحتوى */
+}
+
+/* نصوص داخل المربع */
+.friends-table p {
+  color: #fff; /* لون النص */
+  font-size: 1.2rem; /* حجم النص */
+  text-align: center; /* محاذاة النص */
+}
+
 #confetti-container {
   position: fixed;
   top: 0;
