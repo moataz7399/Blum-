@@ -7,7 +7,7 @@
 }
 
 body {
-  background: url('https://i.ibb.co/dJhV6X3/Picsart-24-12-26-13-44-58-555.jpg') center/cover no-repeat; /* رابط الخلفية */
+  background: url('https://i.ibb.co/tqmh1BZ/IMG.jpg') center/cover no-repeat; /* رابط الخلفية */
   background-attachment: fixed; /* يجعل الخلفية ثابتة أثناء التمرير */
   margin: 0;
   padding: 0;
@@ -50,9 +50,15 @@ body {
 }
 
 /* توهج */
-.glow-text {
+header .glow-text,
+#game-overlay .score-panel p,
+#end-game-screen .stats-line {
   text-shadow: 0 0 3px rgba(255,255,255,0.7),
                0 0 6px rgba(255,255,255,0.5);
+}
+
+.glow-text {
+  text-shadow: none;
 }
 
 .hidden {
@@ -99,7 +105,7 @@ header {
 
 /* جسم الصفحة بالكامل */
 body {
-  background: url('https://i.ibb.co/dJhV6X3/Picsart-24-12-26-13-44-58-555.jpg') center/cover no-repeat; /* رابط الخلفية */
+  background: url('https://i.ibb.co/1m2th6k/Picsart-24-12-26-13-54-43-713.jpg') center/cover no-repeat; /* رابط الخلفية */
   background-attachment: fixed; /* يجعل الخلفية ثابتة أثناء التمرير */
   color: #fff;
   margin: 0;
@@ -313,7 +319,7 @@ body {
 .timer-panel p {
   font-size: 2rem; 
   font-weight: bold;
-  text-shadow: 0 0 4px #fff, 0 0 8px #ff1493, 0 0 12px #ff1493;
+  text-shadow: 0 0 4px #fff, 0 0 8px #fff, 0 0 12px #fff;
 }
 
 .falling-emoji {
@@ -322,6 +328,12 @@ body {
   cursor: pointer;
   user-select: none;
   pointer-events: auto;
+}
+
+.timer-panel p {
+  font-family: 'Poppins', sans-serif; /* يمكنك اختيار خط يدعم التنسيق */
+  unicode-bidi: bidi-override;
+  font-variant-numeric: tabular-nums;
 }
 
 /* اهتزاز */
@@ -377,33 +389,45 @@ body {
   margin: 0 auto;
 }
 #end-game-screen button {
-  padding: 15px;
-  font-size: 1.1rem;
-  color: #000;
-  background: #fff;
-  border: none;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
+  display: block; /* يجعل الأزرار على صفوف منفصلة */
+  width: 90%; /* عرض الزر بالنسبة للمساحة الكلية */
+  max-width: 450px; /* تحديد عرض أقصى أكبر */
+  padding: 20px 40px; /* تكبير المساحة الداخلية للزر */
+  margin: 15px auto; /* مركزية الأزرار مع مسافة بينها */
+  font-size: 1.6rem; /* تكبير حجم النص */
+  color: #000; /* لون النص */
+  background-color: #fff; /* لون الخلفية */
+  border: none; /* إزالة الحدود */
+  border-radius: 30px; /* زيادة استدارة الحواف */
+  font-weight: bold; /* جعل النص غامق */
+  text-align: center; /* محاذاة النص إلى الوسط */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* إضافة ظل */
+  transition: all 0.3s ease-in-out; /* تأثيرات سلسة عند التمرير */
 }
+
 #end-game-screen button:hover {
-  background: #ddd; 
-  color: #000;
+  background-color: #ddd; /* تغيير لون الخلفية عند التمرير */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4); /* تعزيز الظل عند التمرير */
+  transform: scale(1.05); /* تكبير بسيط عند التمرير */
 }
 
 /* فوتر */
 footer {
-  background: transparent; /* اجعل الفوتر شفافاً */
-  padding: 10px 0;
-  position: fixed; /* يبقى ثابتاً في الأسفل */
+  position: fixed;
   bottom: 0;
   width: 100%;
+  background-color: #1a1a1a; /* لون خلفية الفوتر */
+  border-top: 2px solid #fff; /* إضافة خط فوق الفوتر */
   z-index: 1000;
 }
+
 .bottom-nav {
   display: flex;
   justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
 }
+
 .bottom-nav a {
   color: #888;
   text-decoration: none;
@@ -412,18 +436,47 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 0.9rem;
   transition: color 0.3s;
 }
+
 .bottom-nav a i {
-  font-size: 1.2rem;
+  font-size: 1.5rem; /* حجم الأيقونة */
   margin-bottom: 5px;
 }
+
 .bottom-nav a:hover {
-  color: #fff;
+  color: #fff; /* لون النص عند التمرير */
 }
+
 .bottom-nav a.active {
-  color: #fff;
+  color: #fff; /* لون النص عند التفعيل */
+}
+
+.end-image {
+  width: 150px; /* حجم الصورة */
+  height: auto;
+  margin-bottom: 20px; /* مسافة أسفل الصورة */
+}
+
+.icon {
+  width: 30px; /* حجم الأيقونة */
+  height: auto;
+  margin-right: 10px; /* مسافة بين الأيقونة والنص */
+  vertical-align: middle; /* محاذاة وسط الأيقونة مع النص */
+}
+
+.line-text {
+  font-size: 1.4rem;
+  margin-left: 5px; /* مسافة بين النص ورقم النتيجة */
+}
+
+.stats-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  font-weight: bold;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
 }
 
 /* تصميم رسالة النجاح */
