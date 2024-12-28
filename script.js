@@ -3,40 +3,65 @@
 /************************************************************/
 function showLoader(callback) {
   const loader = document.querySelector('.loader');
-  loader.style.display = 'flex';
+  loader.classList.remove('hidden'); // إظهار شاشة التحميل
   setTimeout(() => {
-    loader.style.display = 'none';
+    loader.classList.add('hidden'); // إخفاء شاشة التحميل بعد ثانية واحدة
     if (typeof callback === 'function') callback();
   }, 1000); // مدة التحميل 1 ثانية
 }
 
 function showMain() {
   showLoader(() => {
+    document.querySelector('header').classList.remove('hidden'); // إظهار الهيدر
     document.getElementById('main-content').classList.remove('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
+    setActiveNav('main');
   });
 }
 
 function showFriends() {
   showLoader(() => {
+    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.remove('hidden');
     document.getElementById('collab-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
+    setActiveNav('friends');
   });
 }
 
 function showCollab() {
   showLoader(() => {
+    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.remove('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
+    setActiveNav('collab');
+  });
+}
+
+function showLeaderboard() {
+  showLoader(() => {
+    // Logic for leaderboard page (if implemented)
+    alert('Leaderboard page is not implemented yet!');
+    setActiveNav('leaderboard');
+  });
+}
+
+function setActiveNav(page) {
+  const navLinks = document.querySelectorAll('.bottom-nav a');
+  navLinks.forEach(link => {
+    if (link.getAttribute('onclick') === `handleNavClick('${page}')`) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
   });
 }
 
@@ -44,12 +69,9 @@ function showCollab() {
 /* قبل بدء اللعبة                                           */
 /************************************************************/
 function prepareGame() {
-  const loader = document.querySelector('.loader');
-  loader.style.display = 'flex';
-  setTimeout(() => {
-    loader.style.display = 'none';
+  showLoader(() => {
     startGame();
-  }, 2000);
+  });
 }
 
 /************************************************************/
@@ -57,16 +79,18 @@ function prepareGame() {
 /************************************************************/
 let falconScore = 0;
 let bombScore = 0;
+let ratsScore = 0.00; // متغير النقاط الرئيسية
 let gameTime = 30.00; // مدة اللعبة
 let countdownInterval;
 let totalFalcons;
 let totalBombs;
-const fallSpeed = 3; // سرعة سقوط ثابتة
+const fallSpeed = 5; // سرعة سقوط ثابتة
 
 /************************************************************/
 /* بدء اللعبة                                               */
 /************************************************************/
 function startGame() {
+  document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
   document.getElementById('game-overlay').classList.remove('hidden');
   document.getElementById('main-content').classList.add('hidden');
   document.getElementById('friends-page').classList.add('hidden');
@@ -75,10 +99,13 @@ function startGame() {
 
   falconScore = 0;
   bombScore = 0;
-  gameTime = 30.00; 
-  document.getElementById('falconScore').textContent = falconScore;
-  document.getElementById('bombScore').textContent = bombScore;
-  document.getElementById('timer').textContent = gameTime.toFixed(2);
+  // ratsScore is persistent, retrieve from localStorage
+  ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
+  gameTime = 30.00;
+  document.getElementById('falconScore').textContent = falconScore; // أظهر العدد فقط
+  document.getElementById('bombScore').textContent = bombScore; // أظهر العدد فقط
+  document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
+  document.getElementById('timer').textContent = formatTimerDigits(gameTime.toFixed(2));
 
   totalFalcons = Math.floor(Math.random() * (150 - 100 + 1)) + 150;
   totalBombs = Math.floor(Math.random() * (20 - 10 + 1)) + 20;
@@ -91,8 +118,8 @@ function startGame() {
       gameTime = 0;
       endGame();
     }
-    document.getElementById('timer').textContent = gameTime.toFixed(2);
-  }, 100);
+    document.getElementById('timer').textContent = formatTimerDigits(gameTime.toFixed(2));
+  }, 100); // كل 100 مللي ثانية
 }
 
 /************************************************************/
@@ -127,8 +154,12 @@ function endGame() {
   document.querySelectorAll('.falling-emoji').forEach(emoji => emoji.remove());
   document.getElementById('game-overlay').classList.add('hidden');
   document.getElementById('end-game-screen').classList.remove('hidden');
-  document.getElementById('endFalconScore').textContent = falconScore;
-  document.getElementById('endBombScore').textContent = bombScore;
+  // حذف تحديث النقاط في شاشة نهاية اللعبة
+  // document.getElementById('endFalconScore').textContent = formatNumber(falconScore);
+  // document.getElementById('endBombScore').textContent = formatNumber(bombScore);
+
+  // استدعاء الكشكشة
+  showConfetti();
 
   gameTime = 0; // منع أي عمليات إضافية بعد انتهاء اللعبة
 }
@@ -151,8 +182,6 @@ function createFallingEmoji(type) {
   }
 
   // إعداد خصائص CSS
-  emojiEl.style.backgroundSize = 'contain';
-  emojiEl.style.backgroundRepeat = 'no-repeat';
   emojiEl.style.width = '50px';
   emojiEl.style.height = '50px';
 
@@ -164,17 +193,19 @@ function createFallingEmoji(type) {
   // عند الضغط على الإيموجي
   emojiEl.addEventListener('click', () => {
     if (gameTime <= 0) return;
+
     if (type === '🦅') {
       falconScore++;
-      document.getElementById('falconScore').textContent = falconScore;
+      document.getElementById('falconScore').textContent = falconScore; // فقط تحديث الرقم
     } else {
       bombScore++;
-      falconScore = 0;
-      document.getElementById('bombScore').textContent = bombScore;
-      document.getElementById('falconScore').textContent = falconScore;
-      bombEffect();
+      falconScore = 0; // إعادة الصقور إلى الصفر عند القنبلة
+      document.getElementById('falconScore').textContent = falconScore; // تحديث عدد الصقور
+      document.getElementById('bombScore').textContent = bombScore; // تحديث عدد القنابل
+      bombEffect(); // استدعاء تأثير القنبلة
     }
-    emojiEl.remove();
+
+    emojiEl.remove(); // إزالة الإيموجي من الشاشة
   });
 
   // إضافة الإيموجي إلى الشاشة
@@ -182,8 +213,6 @@ function createFallingEmoji(type) {
 
   // تحريك الإيموجي للأسفل بسرعة ثابتة
   let currentTop = -50;
-  const fallSpeed = 5; // السرعة الثابتة للإيموجي
-
   const interval = setInterval(() => {
     currentTop += fallSpeed;
     emojiEl.style.top = `${currentTop}px`;
@@ -225,11 +254,45 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
   alert('Share Link Bot clicked!');
 });
 
-// وظيفة عرض رسالة النجاح
-function showSuccessMessage() {
+/************************************************************/
+/* وظيفة نسخ رابط الدعوة                                      */
+/************************************************************/
+function copyInviteLink() {
+  const inviteLink = 'https://example.com/invite'; // ضع رابط الدعوة الحقيقي هنا
+  navigator.clipboard.writeText(inviteLink).then(() => {
+    showSuccessMessage('Invite link copied!');
+  }).catch(err => {
+    console.error('Failed to copy invite link: ', err);
+  });
+}
+
+/************************************************************/
+/* وظيفة مشاركة رابط الدعوة                                      */
+/************************************************************/
+function shareInviteLink() {
+  const inviteLink = 'https://example.com/invite'; // ضع رابط الدعوة الحقيقي هنا
+  if (navigator.share) {
+    navigator.share({
+      title: 'Join Rats Kingdom',
+      text: 'Join me in Rats Kingdom!',
+      url: inviteLink
+    }).then(() => {
+      console.log('Invite link shared successfully.');
+    }).catch(err => {
+      console.error('Error sharing invite link: ', err);
+    });
+  } else {
+    alert('Share not supported on this browser.');
+  }
+}
+
+/************************************************************/
+/* وظيفة عرض رسالة النجاح                                    */
+/************************************************************/
+function showSuccessMessage(message = 'Success') {
   // إنشاء الرسالة
   const successMessage = document.createElement('div');
-  successMessage.textContent = 'Success';
+  successMessage.textContent = message;
   successMessage.classList.add('success-message');
 
   // إضافة الرسالة إلى الصفحة
@@ -241,120 +304,46 @@ function showSuccessMessage() {
   }, 1000);
 }
 
-function showConfetti() {
-  const confettiContainer = document.getElementById("confetti-container");
-  confettiContainer.classList.remove("hidden");
+/************************************************************/
+/* دالة تنسيق الأرقام مع الفواصل والرموز الخاصة              */
+/************************************************************/
+function formatNumber(num) {
+  // إضافة الفواصل
+  const parts = num.toString().split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  // عدد الكشكشة
-  const numberOfConfetti = 100;
-
-  for (let i = 0; i < numberOfConfetti; i++) {
-    const confetti = document.createElement("div");
-    confetti.classList.add("confetti");
-
-    // موقع عشوائي من الأطراف العلوية (يمين أو يسار)
-    const startX = Math.random() > 0.5 ? -20 : window.innerWidth + 20;
-    const startY = Math.random() * 100;
-
-    // موقع النهاية العشوائي
-    const endX = Math.random() * window.innerWidth;
-    const endY = window.innerHeight + 50;
-
-    // إضافة الألوان والتنسيق
-    const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
-    confetti.style.backgroundColor = color;
-    confetti.style.left = `${startX}px`;
-    confetti.style.top = `${startY}px`;
-
-    // حركة القذف إلى الأعلى ثم السقوط
-    const midX = window.innerWidth / 2 + (Math.random() * 200 - 100); // المنتصف
-    const midY = 100; // أقرب نقطة في الأعلى
-    const duration = Math.random() * 1.5 + 1; // مدة القذف
-    const fallDuration = Math.random() * 2 + 2; // مدة السقوط
-
-    confetti.style.transition = `transform ${duration}s ease-out`;
-    confetti.style.transform = `translate(${midX - startX}px, ${midY - startY}px)`;
-
-    confettiContainer.appendChild(confetti);
-
-    // بعد القذف يبدأ السقوط
-    setTimeout(() => {
-      confetti.style.transition = `transform ${fallDuration}s linear`;
-      confetti.style.transform = `translate(${endX - midX}px, ${endY - midY}px)`;
-
-      // إزالة الكشكشة بعد انتهاء الحركة
-      setTimeout(() => {
-        confetti.remove();
-      }, fallDuration * 1000);
-    }, duration * 1000);
+  // تحويل إلى رموز خاصة
+  const styledNumbers = {
+    '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰',
+    '5': '𝟱', '6': '𝟲', '7': '𝟳', '8': '𝟴', '9': '𝟵',
+    ',': ','
+  };
+  parts[0] = parts[0].split('').map(digit => styledNumbers[digit] || digit).join('');
+  if (parts[1]) {
+    parts[1] = parts[1].split('').map(digit => styledNumbers[digit] || digit).join('');
+    return parts.join('.');
   }
-
-  // إخفاء الحاوية بعد 5 ثوانٍ
-  setTimeout(() => {
-    confettiContainer.classList.add("hidden");
-  }, 5000);
+  return parts[0];
 }
 
-// شغل شاشة الافتتاح
-document.addEventListener("DOMContentLoaded", () => {
-  const progress = document.querySelector(".progress");
-  const splashScreen = document.getElementById("splash-screen");
-
-  // املأ الشريط في 5 ثوانٍ
-  setTimeout(() => {
-    progress.style.width = "100%";
-  }, 10);
-
-  // بعد 5 ثوانٍ، أخفِ شاشة الافتتاح
-  setTimeout(() => {
-    splashScreen.style.display = "none";
-  }, 5000);
-});
-
-// استدعاء الكشكشة عند انتهاء الجولة
-function endGame() {
-  clearInterval(countdownInterval);
-  document.querySelectorAll('.falling-emoji').forEach(emoji => emoji.remove());
-  document.getElementById('game-overlay').classList.add('hidden');
-  document.getElementById('end-game-screen').classList.remove('hidden');
-  document.getElementById('endFalconScore').textContent = falconScore;
-  document.getElementById('endBombScore').textContent = bombScore;
-
-  // استدعاء الكشكشة
-  showConfetti();
-}
-
+/************************************************************/
+/* دالة تنسيق الوقت                                        */
+/************************************************************/
 function formatTimerDigits(value) {
   const styledNumbers = {
     '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰',
-    '5': '𝟱', '6': '𝟲', '7': '𝟳', '8': '𝟴', '9': '𝟵'
+    '5': '𝟱', '6': '𝟲', '7': '𝟳', '8': '𝟴', '9': '𝟵', '.': '.'
   };
   return value.toString().split('').map(digit => styledNumbers[digit] || digit).join('');
 }
 
-// تحديث عرض الوقت مع التنسيق الجديد
-setInterval(() => {
-  const timerElement = document.getElementById('timer');
-  if (timerElement) {
-    const currentTime = parseFloat(timerElement.textContent).toFixed(2);
-    timerElement.textContent = formatTimerDigits(currentTime);
-  }
-}, 100);
-
-// دالة إظهار التحميل
-function showLoader(callback) {
-  const loader = document.querySelector('.loader');
-  loader.style.display = 'flex';
-  setTimeout(() => {
-    loader.style.display = 'none';
-    if (typeof callback === 'function') callback();
-  }, 1000); // مدة التحميل 1 ثانية
-}
-
-// دالة التنقل بين الصفحات مع تأثير التحميل
+/************************************************************/
+/* دالة التنقل بين الصفحات مع تأثير التحميل                  */
+/************************************************************/
 function handleNavClick(page) {
   showLoader(() => {
     // إخفاء جميع الأقسام
+    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
@@ -363,39 +352,162 @@ function handleNavClick(page) {
 
     // إظهار الصفحة المطلوبة
     if (page === 'main') {
+      document.querySelector('header').classList.remove('hidden'); // إظهار الهيدر
       document.getElementById('main-content').classList.remove('hidden');
+      setActiveNav('main');
     } else if (page === 'friends') {
       document.getElementById('friends-page').classList.remove('hidden');
+      setActiveNav('friends');
     } else if (page === 'collab') {
       document.getElementById('collab-page').classList.remove('hidden');
+      setActiveNav('collab');
     } else if (page === 'leaderboard') {
-      alert('Leaderboard page is not implemented yet!'); // تنبيه إذا لم تكن الصفحة موجودة
+      showLeaderboard();
+      setActiveNav('leaderboard');
     }
   });
 }
 
-// تحديث أزرار المهام
-document.querySelectorAll('.action-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    if (button.textContent.trim() === 'Start') {
-      // تحويل الزر إلى Wait... ثم Claim
-      button.textContent = 'Wait...';
-      setTimeout(() => {
-        button.textContent = 'Claim';
-        button.classList.add('claim-btn');
-      }, 10000);
-    } else if (button.textContent.trim() === 'Claim') {
-      // تحويل الزر إلى ✓ وإظهار رسالة النجاح
-      button.textContent = '✓';
-      button.classList.add('completed-btn');
-      
-      // إضافة تأثير الاهتزاز عند الضغط على Claim
-      if (navigator.vibrate) {
-        navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
-      }
+/************************************************************/
+/* شغل شاشة الافتتاح                                      */
+/************************************************************/
+document.addEventListener("DOMContentLoaded", () => {
+  const progress = document.querySelector(".progress-bar .progress");
+  const splashScreen = document.getElementById("splash-screen");
+  const ratsScoreElement = document.getElementById("ratsScore");
 
-      // عرض رسالة النجاح
-      showSuccessMessage();
-    }
+  // استرجاع النقاط من localStorage
+  ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
+  ratsScoreElement.textContent = formatNumber(ratsScore.toFixed(2));
+
+  // املأ الشريط في 5 ثوانٍ
+  setTimeout(() => {
+    progress.style.width = "100%";
+  }, 10);
+
+  // بعد 5 ثوانٍ، أخفِ شاشة الافتتاح وعرض الصفحة الرئيسية
+  setTimeout(() => {
+    splashScreen.style.display = "none";
+    showMain(); // عرض الصفحة الرئيسية بعد شاشة الافتتاح
+    document.querySelector('.progress-bar').classList.add('hidden'); // إخفاء شريط التحميل
+  }, 5000);
+
+  // إضافة مستمعي الأحداث لأزرار المهام
+  document.querySelectorAll('.action-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      if (button.textContent.trim() === 'Start') {
+        // فتح الرابط المرتبط بالمهمة
+        const link = button.getAttribute('data-link');
+        if (link) {
+          window.open(link, '_blank');
+        }
+
+        // تحويل الزر إلى Wait... ثم Claim
+        button.textContent = 'Wait...';
+        button.disabled = true;
+        setTimeout(() => {
+          button.textContent = 'Claim';
+          button.classList.add('claim-btn');
+          button.classList.remove('start-btn');
+          button.disabled = false;
+        }, 10000); // انتظار 10 ثوانٍ
+      } else if (button.textContent.trim() === 'Claim') {
+        // الحصول على النقاط من السمة data-points
+        const points = parseInt(button.getAttribute('data-points'), 10);
+        if (isNaN(points)) return;
+
+        // إضافة النقاط إلى ratsScore
+        ratsScore += points;
+        // حفظ النقاط في localStorage
+        localStorage.setItem('ratsScore', ratsScore.toFixed(2));
+
+        // تحديث عرض النقاط في الصفحة الرئيسية
+        document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
+
+        // تحويل الزر إلى ✓ وإظهار رسالة النجاح
+        button.textContent = '✓';
+        button.classList.add('completed-btn');
+        button.classList.remove('claim-btn');
+        button.disabled = true;
+        
+        // إضافة تأثير الاهتزاز عند الضغط على Claim
+        if (navigator.vibrate) {
+          navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
+        }
+
+        // عرض رسالة النجاح
+        showSuccessMessage('Points claimed successfully!');
+      }
+    });
   });
 });
+
+/************************************************************/
+/* دالة عرض الكشكشة                                        */
+/************************************************************/
+function showConfetti() {
+  const confettiContainer = document.getElementById("confetti-container");
+  confettiContainer.classList.remove("hidden");
+
+  // عدد الكشكشة
+  const numberOfConfetti = 100; // يمكنك زيادة أو تقليل العدد حسب الرغبة
+
+  for (let i = 0; i < numberOfConfetti; i++) {
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti");
+
+    // تحديد نوع الكشكشة عشوائيًا
+    const types = ['line', 'star', 'circle'];
+    const type = types[Math.floor(Math.random() * types.length)];
+    confetti.classList.add(type);
+
+    // تحديد بداية الكشكشة من اليسار أو اليمين فقط
+    const sides = ['left', 'right'];
+    const side = sides[Math.floor(Math.random() * sides.length)];
+
+    let startX, startY, translateX;
+
+    if (side === 'left') {
+      // بداية من اليسار، تتحرك نحو اليمين
+      startX = Math.random() * window.innerWidth * 0.2; // 20% من العرض من اليسار
+      translateX = Math.random() * 200 + 100; // حركة جانبية عشوائية نحو اليمين بين 100 و300 بيكسل
+    } else {
+      // بداية من اليمين، تتحرك نحو اليسار
+      startX = window.innerWidth - (Math.random() * window.innerWidth * 0.2); // 20% من العرض من اليمين
+      translateX = -(Math.random() * 200 + 100); // حركة جانبية عشوائية نحو اليسار بين -100 و-300 بيكسل
+    }
+
+    startY = Math.random() * window.innerHeight * 0.2; // 20% من الارتفاع من الأعلى
+
+    // تحديد الموقع الابتدائي
+    confetti.style.left = `${startX}px`;
+    confetti.style.top = `${startY}px`;
+
+    // إضافة الألوان والتنسيق
+    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ff00ff', '#00ffff', '#ffff00'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    if (type !== 'star') {
+      confetti.style.backgroundColor = color;
+    }
+
+    // إضافة الإيموجي إلى الكشكشة إذا كان نوع نجمة أو دائرة
+    if (type === 'star') {
+      confetti.style.clipPath = 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)';
+      confetti.style.backgroundColor = color;
+    }
+
+    // إضافة الكشكشة إلى الحاوية
+    confettiContainer.appendChild(confetti);
+
+    // إعداد متغيرات CSS للتحريك
+    const translateY = window.innerHeight + 100; // لضمان سقوط الكشكشة خارج الشاشة
+
+    confetti.style.setProperty('--translateX', `${translateX}px`);
+    confetti.style.setProperty('--translateY', `${translateY}px`);
+  }
+
+  // إزالة الكشكشة بعد انتهاء الحركة
+  setTimeout(() => {
+    confettiContainer.classList.add("hidden");
+  }, 2000); // بعد 2 ثانية (مدة الأنيميشن)
+}
