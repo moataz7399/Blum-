@@ -9,6 +9,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     rel="stylesheet"
   />
+  <!-- ربط ملف CSS -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -38,7 +39,7 @@
   <main id="main-content" class="hidden">
     <div class="profile-section">
       <img
-        src="https://i.ibb.co/6DDKSS7/logo.png"
+        src="https://i.ibb.co/6DDKSS7/logo.png" <!-- تأكد من صحة رابط الصورة -->
         alt="Profile Icon"
         class="profile-icon"
       />
@@ -80,9 +81,7 @@
         <!-- Share Link Bot -->
         <div class="button-card">
           <h3 class="glow-text">𝐒𝐡𝐚𝐫𝐞 𝐋𝐢𝐧𝐤 𝐁𝐨𝐭</h3>
-          <button onclick="window.open('https://wa.me/yourlink', '_blank');">
-            Share
-          </button>
+          <button onclick="shareInviteLink()">Share</button>
         </div>
       </div>
     </div>
@@ -91,7 +90,8 @@
     <div class="play-container">
       <div class="button-card">
         <h3 class="glow-text">𝐏𝐥𝐚𝐲 𝐅𝐚𝐥𝐜𝐨𝐧</h3>
-        <button onclick="prepareGame()">Play</button>
+        <p class="cards-label">» ᴄᴀʀᴅꜱ : <span id="cardsCount">0</span></p>
+        <button id="playFalconBtn" onclick="handlePlayFalcon()">Play</button>
       </div>
     </div>
   </main>
@@ -100,7 +100,7 @@
   <div id="friends-page" class="hidden">
     <div class="friends-section">
       <img
-        src="https://i.ibb.co/6DDKSS7/logo.png"
+        src="https://i.ibb.co/6DDKSS7/logo.png" <!-- تأكد من صحة رابط الصورة -->
         alt="Profile Icon"
         class="profile-icon"
       />
@@ -214,19 +214,6 @@
         <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="5000" data-link="https://example.com/invite5">Start</button>
       </div>
-      <!-- Invite 10 friends -->
-      <div class="task-card">
-        <img 
-          src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
-          alt="Invite 10 Friends"
-        />
-        <div>
-          <h3 class="glow-text">Invite 10 friends</h3>
-          <p class="glow-text">+12,500 PAWS</p>
-        </div>
-        <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="12500" data-link="https://example.com/invite10">Start</button>
-      </div>
       <!-- Invite 25 friends -->
       <div class="task-card">
         <img 
@@ -240,20 +227,102 @@
         <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="30000" data-link="https://example.com/invite25">Start</button>
       </div>
-      <!-- Invite 1000 friends -->
-      <div class="task-card">
-        <img 
-          src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
-          alt="Invite 1000 Friends"
-        />
-        <div>
-          <h3 class="glow-text">Invite 1000 friends</h3>
-          <p class="glow-text">+125,000 PAWS</p>
-        </div>
-        <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="125000" data-link="https://example.com/invite1000">Start</button>
-      </div>
     </div>
+  </div>
+
+  <!-- Login Daily Page -->
+  <div id="login-daily-page" class="hidden">
+    <div class="login-daily-header">
+      <h2 class="header-title">Daily Entry 🎁</h2>
+      <p class="header-subtitle">Log in daily to the bot and get mysterious rewards</p>
+    </div>
+    <div class="login-daily-table">
+      <!-- الخانات من 1 إلى 9 -->
+      <div class="day-item" data-day="1">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="1 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">1 Day</div>
+      </div>
+      <div class="day-item" data-day="2">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="2 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">2 Day</div>
+      </div>
+      <div class="day-item" data-day="3">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="3 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">3 Day</div>
+      </div>
+      <div class="day-item" data-day="4">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="4 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">4 Day</div>
+      </div>
+      <div class="day-item" data-day="5">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="5 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">5 Day</div>
+      </div>
+      <div class="day-item" data-day="6">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="6 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">6 Day</div>
+      </div>
+      <div class="day-item" data-day="7">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="7 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">7 Day</div>
+      </div>
+      <div class="day-item" data-day="8">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="8 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">8 Day</div>
+      </div>
+      <div class="day-item" data-day="9">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="9 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">9 Day</div>
+      </div>
+      <!-- تم حذف الخانة العاشرة -->
+    </div>
+    <!-- إضافة حاوية الكشكشة في صفحة Login Daily -->
+    <div id="confetti-container-login" class="confetti-container"></div>
   </div>
 
   <!-- واجهة اللعبة -->
@@ -270,10 +339,10 @@
   <div id="end-game-screen" class="hidden end-game-screen">
     <div class="end-content">
       <!-- إضافة حاوية الكشكشة داخل شاشة نهاية اللعبة -->
-      <div id="confetti-container" class="confetti-container hidden"></div>
+      <div id="confetti-container" class="confetti-container"></div>
 
       <div class="buttons-container">
-        <!-- زر New Round -->
+        <!-- زر Play Again -->
         <button id="btn-new-round">
           <span class="btn-icon"><i class="fas fa-play"></i></span> 
           <span class="btn-text">𝐏𝐥𝐚𝐲 𝐚𝐠𝐚𝐢𝐧</span>
@@ -303,6 +372,9 @@
       <a href="#" class="glow-text" onclick="handleNavClick('collab')">
         <i class="fas fa-handshake"></i> Collab
       </a>
+      <a href="#" class="glow-text" onclick="handleNavClick('loginDaily')">
+        <i class="fas fa-calendar-check"></i> Login Daily
+      </a>
       <a href="#" class="glow-text" onclick="handleNavClick('leaderboard')">
         <i class="fas fa-trophy"></i> Leaderboard
       </a>
@@ -312,6 +384,10 @@
     </nav>
   </footer>
 
+  <!-- مكتبة Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  
+  <!-- ربط ملف JavaScript -->
   <script src="script.js"></script>
 </body>
 </html>
