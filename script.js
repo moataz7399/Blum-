@@ -16,6 +16,7 @@ function showMain() {
     document.getElementById('main-content').classList.remove('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
+    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('main');
@@ -28,6 +29,7 @@ function showFriends() {
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.remove('hidden');
     document.getElementById('collab-page').classList.add('hidden');
+    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('friends');
@@ -40,6 +42,7 @@ function showCollab() {
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.remove('hidden');
+    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('collab');
@@ -51,6 +54,19 @@ function showLeaderboard() {
     // Logic for leaderboard page (if implemented)
     alert('Leaderboard page is not implemented yet!');
     setActiveNav('leaderboard');
+  });
+}
+
+function showLoginDaily() {
+  showLoader(() => {
+    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
+    document.getElementById('main-content').classList.add('hidden');
+    document.getElementById('friends-page').classList.add('hidden');
+    document.getElementById('collab-page').classList.add('hidden');
+    document.getElementById('login-daily-page').classList.remove('hidden'); /* إظهار Login Daily */
+    document.getElementById('game-overlay').classList.add('hidden');
+    document.getElementById('end-game-screen').classList.add('hidden');
+    setActiveNav('loginDaily');
   });
 }
 
@@ -87,6 +103,21 @@ let totalBombs;
 const fallSpeed = 5; // سرعة سقوط ثابتة
 
 /************************************************************/
+/* تعريف مكافآت الأيام اليومية                             */
+/************************************************************/
+const dailyRewards = [
+  { day: 1, points: 100, cards: 2 },
+  { day: 2, points: 250, cards: 5 },
+  { day: 3, points: 300, cards: 7 },
+  { day: 4, points: 500, cards: 18 },
+  { day: 5, points: 750, cards: 12 },
+  { day: 6, points: 1000, cards: 13 },
+  { day: 7, points: 1250, cards: 14 },
+  { day: 8, points: 1500, cards: 15 },
+  { day: 9, points: 2000, cards: 20 },
+];
+
+/************************************************************/
 /* بدء اللعبة                                               */
 /************************************************************/
 function startGame() {
@@ -95,12 +126,16 @@ function startGame() {
   document.getElementById('main-content').classList.add('hidden');
   document.getElementById('friends-page').classList.add('hidden');
   document.getElementById('collab-page').classList.add('hidden');
+  document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
   document.getElementById('end-game-screen').classList.add('hidden');
 
   falconScore = 0;
   bombScore = 0;
   // ratsScore is persistent, retrieve from localStorage
   ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
+  // cardsCount is persistent, retrieve from localStorage
+  let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
+  document.getElementById('cardsCount').textContent = cardsCount;
   gameTime = 30.00;
   document.getElementById('falconScore').textContent = falconScore; // أظهر العدد فقط
   document.getElementById('bombScore').textContent = bombScore; // أظهر العدد فقط
@@ -154,12 +189,24 @@ function endGame() {
   document.querySelectorAll('.falling-emoji').forEach(emoji => emoji.remove());
   document.getElementById('game-overlay').classList.add('hidden');
   document.getElementById('end-game-screen').classList.remove('hidden');
-  // حذف تحديث النقاط في شاشة نهاية اللعبة
-  // document.getElementById('endFalconScore').textContent = formatNumber(falconScore);
-  // document.getElementById('endBombScore').textContent = formatNumber(bombScore);
 
-  // استدعاء الكشكشة
-  showConfetti();
+  // إضافة تأثير الاهتزاز عند انتهاء الجولة
+  const overlay = document.getElementById('game-overlay');
+  if (navigator.vibrate) {
+    navigator.vibrate(200);
+  }
+  overlay.classList.add('shake');
+  setTimeout(() => {
+    overlay.classList.remove('shake');
+  }, 300);
+
+  // استدعاء الكشكشة باستخدام مكتبة canvas-confetti
+  showConfetti('confetti-container');
+
+  // إضافة falconScore إلى ratsScore
+  ratsScore += falconScore;
+  localStorage.setItem('ratsScore', ratsScore.toFixed(2));
+  document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
 
   gameTime = 0; // منع أي عمليات إضافية بعد انتهاء اللعبة
 }
@@ -211,18 +258,25 @@ function createFallingEmoji(type) {
   // إضافة الإيموجي إلى الشاشة
   gameOverlay.appendChild(emojiEl);
 
-  // تحريك الإيموجي للأسفل بسرعة ثابتة
+  // استخدام requestAnimationFrame لتحسين الأداء
   let currentTop = -50;
-  const interval = setInterval(() => {
-    currentTop += fallSpeed;
+  let lastTimestamp = null;
+
+  function animate(timestamp) {
+    if (!lastTimestamp) lastTimestamp = timestamp;
+    const delta = timestamp - lastTimestamp;
+    lastTimestamp = timestamp;
+    currentTop += fallSpeed * (delta / 16); // تعديل الحركة بناءً على الفرق الزمني
+
     emojiEl.style.top = `${currentTop}px`;
 
-    // إزالة الإيموجي إذا خرج من الشاشة
     if (currentTop > window.innerHeight) {
       emojiEl.remove();
-      clearInterval(interval);
+      return;
     }
-  }, 16); // تحديث كل 16ms (حوالي 60 إطاراً في الثانية)
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
 }
 
 /************************************************************/
@@ -245,12 +299,27 @@ function bombEffect() {
 /* أزرار شاشة النهاية                                      */
 /************************************************************/
 document.getElementById('btn-new-round').addEventListener('click', () => {
+  let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
+  if (cardsCount < 1) {
+    showSuccessMessage('No cards available. Please collect your daily reward.');
+    return;
+  }
+
+  // استهلاك كرت واحد لإعادة اللعب
+  cardsCount -= 1;
+  localStorage.setItem('cardsCount', cardsCount);
+  document.getElementById('cardsCount').textContent = cardsCount;
+
+  showConfetti('confetti-container'); // عرض الكشكشة عند الضغط على Play Again
   prepareGame();
 });
 document.getElementById('btn-back-home').addEventListener('click', () => {
+  // إزالة الكشكشة قبل العودة إلى الصفحة الرئيسية
+  clearConfetti('confetti-container');
   showMain();
 });
 document.getElementById('btn-share-link').addEventListener('click', () => {
+  showConfetti('confetti-container'); // عرض الكشكشة عند الضغط على Share Link Bot
   alert('Share Link Bot clicked!');
 });
 
@@ -341,12 +410,18 @@ function formatTimerDigits(value) {
 /* دالة التنقل بين الصفحات مع تأثير التحميل                  */
 /************************************************************/
 function handleNavClick(page) {
+  if (page === 'loginDaily') {
+    showLoginDaily();
+    return;
+  }
+
   showLoader(() => {
     // إخفاء جميع الأقسام
     document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
+    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
 
@@ -369,16 +444,192 @@ function handleNavClick(page) {
 }
 
 /************************************************************/
+/* دالة التعامل مع زر Play Falcon وإدارة المكافآت اليومية   */
+/************************************************************/
+function handlePlayFalcon() {
+  let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
+  let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
+
+  if (cardsCount < 1) {
+    showSuccessMessage('No cards available. Please collect your daily reward.');
+    return;
+  }
+
+  // استهلاك كرت واحد للعب
+  cardsCount -= 1;
+  localStorage.setItem('cardsCount', cardsCount);
+  document.getElementById('cardsCount').textContent = cardsCount;
+
+  // بدء اللعبة
+  prepareGame();
+}
+
+/************************************************************/
+/* دالة تهيئة خانات الـ 9 أيام                               */
+/************************************************************/
+function initializeDailyLogin() {
+  const dayItems = document.querySelectorAll('.day-item');
+
+  // استرجاع حالة الأيام من localStorage
+  let claimedDays = JSON.parse(localStorage.getItem('claimedDays')) || [];
+  let lastClaimedDate = localStorage.getItem('lastClaimedDate') ? new Date(localStorage.getItem('lastClaimedDate')) : null;
+
+  dayItems.forEach((dayItem, index) => {
+    const dayNumber = index + 1;
+    if (claimedDays.includes(dayNumber)) {
+      // اليوم تم فتحه مسبقًا
+      unlockDay(dayItem, true);
+    } else {
+      if (dayNumber === 1) {
+        // اليوم الأول مفتوح دائمًا
+        unlockDay(dayItem, false);
+      } else {
+        // باقي الأيام تحتاج إلى التحقق من مرور يوم منذ آخر فتح
+        const previousDay = dayNumber - 1;
+        if (claimedDays.includes(previousDay) && lastClaimedDate) {
+          const today = new Date();
+          const nextUnlockTime = new Date(lastClaimedDate);
+          nextUnlockTime.setDate(nextUnlockTime.getDate() + 1);
+
+          // مقارنة التواريخ باستخدام UTC لتجنب مشكلات المناطق الزمنية
+          if (today.toDateString() === nextUnlockTime.toDateString() || today > nextUnlockTime) {
+            unlockDay(dayItem, false);
+          }
+        }
+      }
+    }
+  });
+
+  // إضافة مستمعي الأحداث لخانات الأيام
+  dayItems.forEach((dayItem, index) => {
+    dayItem.addEventListener('click', () => {
+      const dayNumber = index + 1;
+      if (isDayUnlocked(dayNumber)) {
+        if (!claimedDays.includes(dayNumber)) {
+          // فتح الخانة
+          unlockDay(dayItem, true);
+          // عرض الكشكشة
+          showConfetti('confetti-container-login');
+          // اهتزاز الهاتف
+          if (navigator.vibrate) {
+            navigator.vibrate(200); // اهتزاز لمدة 200 مللي ثانية
+          }
+          // تحديث الحالة في localStorage
+          claimedDays.push(dayNumber);
+          localStorage.setItem('claimedDays', JSON.stringify(claimedDays));
+          localStorage.setItem('lastClaimedDate', new Date().toISOString());
+
+          // منح المكافأة اليومية
+          const reward = dailyRewards[dayNumber - 1];
+          if (reward) {
+            ratsScore += reward.points;
+            let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
+            cardsCount += reward.cards; // زيادة الكروت حسب المكافأة اليومية
+            localStorage.setItem('ratsScore', ratsScore.toFixed(2));
+            localStorage.setItem('cardsCount', cardsCount);
+            document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
+            document.getElementById('cardsCount').textContent = cardsCount;
+
+            // تحديث اليوم التالي
+            let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
+            currentDay += 1;
+            if (currentDay > dailyRewards.length) {
+              currentDay = 1; // إعادة تعيين إلى اليوم الأول بعد اليوم التاسع
+            }
+            localStorage.setItem('currentDay', currentDay);
+
+            showSuccessMessage(`Day ${dayNumber} reward claimed: +${reward.points} PAWS and +${reward.cards} cards!`);
+          }
+        }
+      } else {
+        showSuccessMessage('You need to wait for the next day to unlock this day.');
+      }
+    });
+  });
+}
+
+/************************************************************/
+/* دالة فتح اليوم                                           */
+/************************************************************/
+function unlockDay(dayItem, isCompleted) {
+  const overlay = dayItem.querySelector('.overlay');
+  if (overlay) {
+    if (isCompleted) {
+      overlay.innerHTML = '<i class="fas fa-check"></i>'; // أيقونة الصح
+      overlay.classList.add('completed');
+    } else {
+      overlay.classList.add('hidden'); // إخفاء التظليل وإيقونة القفل
+    }
+  }
+}
+
+/************************************************************/
+/* دالة التحقق مما إذا كان اليوم مفتوحًا                     */
+/************************************************************/
+function isDayUnlocked(dayNumber) {
+  const dayItem = document.querySelector(`.day-item[data-day="${dayNumber}"]`);
+  if (!dayItem) return false;
+  const overlay = dayItem.querySelector('.overlay');
+  return (overlay && overlay.classList.contains('hidden')) || (overlay && overlay.classList.contains('completed'));
+}
+
+/************************************************************/
+/* دالة عرض الكشكشة باستخدام مكتبة canvas-confetti          */
+/************************************************************/
+function showConfetti(containerId) {
+  const confettiContainer = document.getElementById(containerId);
+  if (!confettiContainer) return;
+
+  // إنشاء عنصر canvas داخل حاوية الكشكشة
+  const canvas = document.createElement('canvas');
+  canvas.style.position = 'absolute';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
+  canvas.width = confettiContainer.offsetWidth;
+  canvas.height = confettiContainer.offsetHeight;
+  confettiContainer.appendChild(canvas);
+
+  // إنشاء كشكشة مخصصة باستخدام مكتبة canvas-confetti
+  const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
+  myConfetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 }
+  });
+
+  // إزالة عنصر canvas بعد انتهاء الكشكشة
+  setTimeout(() => {
+    confettiContainer.removeChild(canvas);
+  }, 3000); // مدة عرض الكشكشة 3 ثوانٍ
+}
+
+/************************************************************/
+/* دالة إزالة الكشكشة عند العودة إلى الصفحة الرئيسية       */
+/************************************************************/
+function clearConfetti(containerId) {
+  const confettiContainer = document.getElementById(containerId);
+  if (!confettiContainer) return;
+
+  // إزالة جميع عناصر canvas داخل حاوية الكشكشة
+  const canvases = confettiContainer.querySelectorAll('canvas');
+  canvases.forEach(canvas => canvas.remove());
+}
+
+/************************************************************/
 /* شغل شاشة الافتتاح                                      */
 /************************************************************/
 document.addEventListener("DOMContentLoaded", () => {
   const progress = document.querySelector(".progress-bar .progress");
   const splashScreen = document.getElementById("splash-screen");
   const ratsScoreElement = document.getElementById("ratsScore");
+  const cardsCountElement = document.getElementById("cardsCount");
 
-  // استرجاع النقاط من localStorage
+  // استرجاع النقاط والكروت من localStorage
   ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
   ratsScoreElement.textContent = formatNumber(ratsScore.toFixed(2));
+
+  let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
+  cardsCountElement.textContent = cardsCount;
 
   // املأ الشريط في 5 ثوانٍ
   setTimeout(() => {
@@ -440,74 +691,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // تهيئة خانات الـ 9 أيام
+  initializeDailyLogin();
 });
-
-/************************************************************/
-/* دالة عرض الكشكشة                                        */
-/************************************************************/
-function showConfetti() {
-  const confettiContainer = document.getElementById("confetti-container");
-  confettiContainer.classList.remove("hidden");
-
-  // عدد الكشكشة
-  const numberOfConfetti = 100; // يمكنك زيادة أو تقليل العدد حسب الرغبة
-
-  for (let i = 0; i < numberOfConfetti; i++) {
-    const confetti = document.createElement("div");
-    confetti.classList.add("confetti");
-
-    // تحديد نوع الكشكشة عشوائيًا
-    const types = ['line', 'star', 'circle'];
-    const type = types[Math.floor(Math.random() * types.length)];
-    confetti.classList.add(type);
-
-    // تحديد بداية الكشكشة من اليسار أو اليمين فقط
-    const sides = ['left', 'right'];
-    const side = sides[Math.floor(Math.random() * sides.length)];
-
-    let startX, startY, translateX;
-
-    if (side === 'left') {
-      // بداية من اليسار، تتحرك نحو اليمين
-      startX = Math.random() * window.innerWidth * 0.2; // 20% من العرض من اليسار
-      translateX = Math.random() * 200 + 100; // حركة جانبية عشوائية نحو اليمين بين 100 و300 بيكسل
-    } else {
-      // بداية من اليمين، تتحرك نحو اليسار
-      startX = window.innerWidth - (Math.random() * window.innerWidth * 0.2); // 20% من العرض من اليمين
-      translateX = -(Math.random() * 200 + 100); // حركة جانبية عشوائية نحو اليسار بين -100 و-300 بيكسل
-    }
-
-    startY = Math.random() * window.innerHeight * 0.2; // 20% من الارتفاع من الأعلى
-
-    // تحديد الموقع الابتدائي
-    confetti.style.left = `${startX}px`;
-    confetti.style.top = `${startY}px`;
-
-    // إضافة الألوان والتنسيق
-    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ff00ff', '#00ffff', '#ffff00'];
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    if (type !== 'star') {
-      confetti.style.backgroundColor = color;
-    }
-
-    // إضافة الإيموجي إلى الكشكشة إذا كان نوع نجمة أو دائرة
-    if (type === 'star') {
-      confetti.style.clipPath = 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)';
-      confetti.style.backgroundColor = color;
-    }
-
-    // إضافة الكشكشة إلى الحاوية
-    confettiContainer.appendChild(confetti);
-
-    // إعداد متغيرات CSS للتحريك
-    const translateY = window.innerHeight + 100; // لضمان سقوط الكشكشة خارج الشاشة
-
-    confetti.style.setProperty('--translateX', `${translateX}px`);
-    confetti.style.setProperty('--translateY', `${translateY}px`);
-  }
-
-  // إزالة الكشكشة بعد انتهاء الحركة
-  setTimeout(() => {
-    confettiContainer.classList.add("hidden");
-  }, 2000); // بعد 2 ثانية (مدة الأنيميشن)
-}
