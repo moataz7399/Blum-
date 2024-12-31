@@ -100,7 +100,7 @@ let gameTime = 30.00; // مدة اللعبة
 let countdownInterval;
 let totalFalcons;
 let totalBombs;
-const fallSpeed = 5; // سرعة سقوط ثابتة
+const fallSpeed = 300; // سرعة سقوط بالبكسل لكل ثانية
 
 /************************************************************/
 /* تعريف مكافآت الأيام اليومية                             */
@@ -168,7 +168,7 @@ function scheduleEmojis() {
     let spawnTime = i * falconInterval;
     setTimeout(() => {
       if (gameTime <= 0) return;
-      createFallingEmoji('🦅');
+      createFallingEmoji('falcon');
     }, spawnTime * 1000);
   }
 
@@ -176,7 +176,7 @@ function scheduleEmojis() {
     let spawnTime = j * bombInterval;
     setTimeout(() => {
       if (gameTime <= 0) return;
-      createFallingEmoji('💣');
+      createFallingEmoji('bomb');
     }, spawnTime * 1000);
   }
 }
@@ -212,7 +212,7 @@ function endGame() {
 }
 
 /************************************************************/
-/* إنشاء الإيموجي بالسقوط + الضغط                          */
+/* إنشاء الأيقونة بالسقوط + الضغط                           */
 /************************************************************/
 function createFallingEmoji(type) {
   if (gameTime <= 0) return;
@@ -221,27 +221,25 @@ function createFallingEmoji(type) {
   const emojiEl = document.createElement('span');
   emojiEl.classList.add('falling-emoji');
 
-  // تحديد الصورة حسب النوع
-  if (type === '🦅') {
-    emojiEl.style.backgroundImage = "url('https://i.ibb.co/qdC3sPc/Picsart-24-12-26-16-25-14-117.png')";
-  } else if (type === '💣') {
-    emojiEl.style.backgroundImage = "url('https://i.ibb.co/st0V7gb/Picsart-24-12-26-16-26-53-669.png')";
+  // تحديد الأيقونة حسب النوع
+  if (type === 'falcon') {
+    emojiEl.innerHTML = '<i class="fas fa-dove"></i>'; // أيقونة النسر (يمكن استخدام أيقونة أخرى مناسبة)
+    emojiEl.style.color = '#FFD700'; // لون النسر
+  } else if (type === 'bomb') {
+    emojiEl.innerHTML = '<i class="fas fa-bomb"></i>'; // أيقونة القنبلة
+    emojiEl.style.color = '#FF0000'; // لون القنبلة
   }
 
-  // إعداد خصائص CSS
-  emojiEl.style.width = '50px';
-  emojiEl.style.height = '50px';
-
-  // وضع الإيموجي في مكان عشوائي على المحور الأفقي
+  // وضع الأيقونة في مكان عشوائي على المحور الأفقي
   const maxLeft = window.innerWidth - 50;
   emojiEl.style.left = `${Math.random() * maxLeft}px`;
   emojiEl.style.top = '-50px';
 
-  // عند الضغط على الإيموجي
+  // عند الضغط على الأيقونة
   emojiEl.addEventListener('click', () => {
     if (gameTime <= 0) return;
 
-    if (type === '🦅') {
+    if (type === 'falcon') {
       falconScore++;
       document.getElementById('falconScore').textContent = falconScore; // فقط تحديث الرقم
     } else {
@@ -252,10 +250,10 @@ function createFallingEmoji(type) {
       bombEffect(); // استدعاء تأثير القنبلة
     }
 
-    emojiEl.remove(); // إزالة الإيموجي من الشاشة
+    emojiEl.remove(); // إزالة الأيقونة من الشاشة
   });
 
-  // إضافة الإيموجي إلى الشاشة
+  // إضافة الأيقونة إلى الشاشة
   gameOverlay.appendChild(emojiEl);
 
   // استخدام requestAnimationFrame لتحسين الأداء
@@ -266,7 +264,7 @@ function createFallingEmoji(type) {
     if (!lastTimestamp) lastTimestamp = timestamp;
     const delta = timestamp - lastTimestamp;
     lastTimestamp = timestamp;
-    currentTop += fallSpeed * (delta / 16); // تعديل الحركة بناءً على الفرق الزمني
+    currentTop += (fallSpeed * delta) / 1000; // تعديل الحركة بناءً على الفرق الزمني
 
     emojiEl.style.top = `${currentTop}px`;
 
@@ -507,7 +505,7 @@ function initializeDailyLogin() {
       if (isDayUnlocked(dayNumber)) {
         if (!claimedDays.includes(dayNumber)) {
           // فتح الخانة
-          unlockDay(dayItem, true);
+          unlockDay(dayItem, true); // **تحديث الواجهة فورًا**
           // عرض الكشكشة
           showConfetti('confetti-container-login');
           // اهتزاز الهاتف
@@ -556,6 +554,7 @@ function unlockDay(dayItem, isCompleted) {
   if (overlay) {
     if (isCompleted) {
       overlay.innerHTML = '<i class="fas fa-check"></i>'; // أيقونة الصح
+      overlay.classList.remove('hidden'); // **إزالة فئة hidden لجعل overlay مرئيًا**
       overlay.classList.add('completed');
     } else {
       overlay.classList.add('hidden'); // إخفاء التظليل وإيقونة القفل
