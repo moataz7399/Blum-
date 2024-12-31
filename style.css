@@ -32,9 +32,9 @@
   transition: width 5s linear; /* انتقال يستغرق 5 ثوانٍ */
 }
 
+/* تم تغيير خلفية الشاشة الرئيسية إلى سوداء */
 body {
-  background: url('https://i.ibb.co/1m2th6k/Picsart-24-12-26-13-54-43-713.jpg') center/cover no-repeat; /* رابط الخلفية */
-  background-attachment: fixed; /* ثابت أثناء التمرير */
+  background: #000; /* خلفية سوداء */
   color: #fff;
   margin: 0;
   padding: 0;
@@ -267,32 +267,30 @@ header {
   gap: 20px;
 }
 
-/* بطاقات أصغر */
+/* تم تغيير خلفية المربعات إلى رمادي داكن */
 .button-card {
-  background: #1a1a1a;
-  width: 200px; /* إعادة الحجم إلى 200px كما كان سابقًا */
-  padding: 10px; 
+  background: #333333; /* لون رمادي داكن */
+  width: 200px; /* عرض ثابت */
+  padding: 15px; 
   border-radius: 10px;
   margin: 0 auto;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .button-card h3 {
-  font-size: 0.9rem;
-  margin-bottom: 5px;
-}
-
-.button-card .card-number {
-  text-align: left;
-  width: 100%;
-  color: #fff; /* لون النص */
-  margin: 5px 0; /* مسافة */
-  font-size: 1rem; /* حجم النص */
+  font-size: 1rem;
+  margin-bottom: 10px;
+  white-space: pre-line; /* للسماح بوجود أسطر متعددة */
+  color: #fff;
 }
 
 .button-card button {
   display: block;
-  width: 100%;
+  width: 80%; /* تقليل العرض لتحسين التوافق */
   margin: 5px auto;
   padding: 8px;
   background: #fff; /* لون الخلفية الأبيض */
@@ -307,7 +305,7 @@ header {
   background: #555;
 }
 
-/* زر Play */
+/* تخصيص المربع Play ليكون رمادي مع الحفاظ على المسافات */
 .play-container {
   display: flex;
   justify-content: center;
@@ -316,6 +314,7 @@ header {
 .play-container .button-card {
   width: 60%; /* يمتد من اليسار إلى اليمين */
   padding: 20px;
+  background: #333333; /* لون رمادي داكن */
 }
 
 /* إضافة تنسيق جديد للنص تحت زر Play Falcon */
@@ -377,10 +376,12 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #1a1a1a;
+  background: #333333; /* لون رمادي داكن */
+  width: 100%; /* اجعل العرض 100% لملء العمود */
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 10px;
+  height: auto; /* السماح بارتفاع مرن */
 }
 .task-card img {
   width: 60px; height: 60px;
@@ -391,9 +392,15 @@ header {
   flex-grow: 1;
   margin-left: 10px;
 }
+
 .task-card h3, 
 .task-card p {
   color: #fff;
+  text-align: center; /* محاذاة النص إلى الوسط */
+}
+
+.task-card h3 {
+  white-space: pre-line; /* للسماح بوجود أسطر متعددة */
 }
 
 /* أزرار Start/Claim */
@@ -718,19 +725,22 @@ footer {
   border: 2px solid #fff;
   border-radius: 10px;
   width: 100%;
-  height: 150px;
+  height: auto; /* السماح بارتفاع مرن */
+  padding-top: 75%; /* للحفاظ على نسبة العرض إلى الارتفاع */
+  position: relative;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  position: relative;
 }
 
 .day-box img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* تظليل وإيقونة القفل */
 .day-item .overlay {
   position: absolute;
   top: 0;
@@ -781,7 +791,7 @@ footer {
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
   .day-box {
-    height: 120px;
+    padding-top: 75%; /* الحفاظ على نسبة العرض إلى الارتفاع */
   }
   .timer-panel p {
     font-size: 1.5rem;
