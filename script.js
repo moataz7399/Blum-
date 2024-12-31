@@ -674,41 +674,63 @@ document.addEventListener("DOMContentLoaded", () => {
         // تحديث عرض النقاط في الصفحة الرئيسية
         document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
 
-/************************************************************/
-/* وظيفة نسخ معرف المستخدم                                  */
-/************************************************************/
-function copyUserId() {
-  // الحصول على بيانات المستخدم من Telegram Web App
-  const initData = Telegram.WebApp.initData;
-  const initDataObj = new URLSearchParams(initData);
-  const userId = initDataObj.get('user');
+        // تحويل الزر إلى ✓ وإظهار رسالة النجاح
+        button.textContent = '✓';
+        button.classList.add('completed-btn');
+        button.classList.remove('claim-btn');
+        button.disabled = true;
+        
+        // إضافة تأثير الاهتزاز عند الضغط على Claim
+        if (navigator.vibrate) {
+          navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
+        }
 
-  if (userId) {
-    // نسخ معرف المستخدم إلى الحافظة
-    navigator.clipboard.writeText(userId).then(() => {
-      // تحويل الزر إلى ✓ وإظهار رسالة النجاح
-      const copyButton = document.querySelector('button[onclick="copyUserId()"]');
-      if (copyButton) {
-        copyButton.textContent = '✓';
-        copyButton.classList.add('completed-btn');
-        copyButton.disabled = true;
+        // عرض رسالة النجاح
+        showSuccessMessage('Points claimed successfully!');
       }
-
-      // إضافة تأثير الاهتزاز عند الضغط على الزر
-      if (navigator.vibrate) {
-        navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
-      }
-
-      // عرض رسالة النجاح
-      showSuccessMessage('User ID copied to clipboard!');
-    }).catch(err => {
-      console.error('Failed to copy user ID: ', err);
-      showSuccessMessage('Failed to copy user ID.');
     });
-  } else {
-    showSuccessMessage('User ID not found.');
-  }
-}
+  });
 
-// تهيئة خانات الـ 9 أيام
-initializeDailyLogin();
+  /************************************************************/
+  /* وظيفة نسخ معرف المستخدم                                  */
+  /************************************************************/
+  function copyUserId() {
+    // التحقق من أن الصفحة تعمل داخل Telegram Web App
+    if (typeof Telegram !== 'undefined' && Telegram.WebApp.initData) {
+      const initData = Telegram.WebApp.initData;
+      const initDataObj = new URLSearchParams(initData);
+      const userId = initDataObj.get('user');
+
+      if (userId) {
+        // نسخ معرف المستخدم إلى الحافظة
+        navigator.clipboard.writeText(userId).then(() => {
+          // تحويل الزر إلى ✓ وإظهار رسالة النجاح
+          const copyButton = document.querySelector('button[onclick="copyUserId()"]');
+          if (copyButton) {
+            copyButton.textContent = '✓';
+            copyButton.classList.add('completed-btn');
+            copyButton.disabled = true;
+          }
+
+          // إضافة تأثير الاهتزاز عند الضغط على الزر
+          if (navigator.vibrate) {
+            navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
+          }
+
+          // عرض رسالة النجاح
+          showSuccessMessage('User ID copied to clipboard!');
+        }).catch(err => {
+          console.error('Failed to copy user ID: ', err);
+          showSuccessMessage('Failed to copy user ID.');
+        });
+      } else {
+        showSuccessMessage('User ID not found.');
+      }
+    } else {
+      showSuccessMessage('This feature only works inside Telegram Web App.');
+    }
+  }
+
+  // تهيئة خانات الـ 9 أيام
+  initializeDailyLogin();
+});
