@@ -685,24 +685,6 @@ document.addEventListener("DOMContentLoaded", () => {
           navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
         }
 
-        // نسخ معرف المستخدم عند نجاح المطالبة بالنقاط
-        if (Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
-          const userId = Telegram.WebApp.initDataUnsafe.user.id;
-
-          // نسخ معرف المستخدم إلى الحافظة
-          const tempInput = document.createElement('input');
-          tempInput.value = userId;
-          document.body.appendChild(tempInput);
-          tempInput.select();
-          document.execCommand('copy');
-          document.body.removeChild(tempInput);
-
-          // عرض رسالة نجاح النسخ
-          showSuccessMessage('Points claimed successfully! User ID copied: ' + userId);
-        } else {
-          console.error('Failed to copy User ID. Ensure WebApp is initialized properly.');
-        }
-        
         // عرض رسالة النجاح
         showSuccessMessage('Points claimed successfully!');
       }
