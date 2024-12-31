@@ -223,8 +223,8 @@ function createFallingEmoji(type) {
 
   // تحديد الأيقونة حسب النوع
   if (type === 'falcon') {
-    emojiEl.innerHTML = '<i class="fas fa-dove"></i>'; // أيقونة النسر (يمكن استخدام أيقونة أخرى مناسبة)
-    emojiEl.style.color = '#FFD700'; // لون النسر
+    emojiEl.innerHTML = '<i class="fas fa-dove"></i>'; // أيقونة الصقر
+    emojiEl.style.color = '#FFD700'; // لون الصقر
   } else if (type === 'bomb') {
     emojiEl.innerHTML = '<i class="fas fa-bomb"></i>'; // أيقونة القنبلة
     emojiEl.style.color = '#FF0000'; // لون القنبلة
@@ -242,6 +242,9 @@ function createFallingEmoji(type) {
     if (type === 'falcon') {
       falconScore++;
       document.getElementById('falconScore').textContent = falconScore; // فقط تحديث الرقم
+
+      // إرسال النقاط إلى الخادم
+      sendPoints(userId, 1); // افترض أن كل صقر يعادل نقطة واحدة
     } else {
       bombScore++;
       falconScore = 0; // إعادة الصقور إلى الصفر عند القنبلة
@@ -325,7 +328,7 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
 /* وظيفة نسخ رابط الدعوة                                      */
 /************************************************************/
 function copyInviteLink() {
-  const inviteLink = 'https://example.com/invite'; // ضع رابط الدعوة الحقيقي هنا
+  const inviteLink = 'https://t.me/falcon_tapbot'; // تم تضمين user_id في الرابط عند الضغط على Copy Link في البوت
   navigator.clipboard.writeText(inviteLink).then(() => {
     showSuccessMessage('Invite link copied!');
   }).catch(err => {
@@ -337,7 +340,7 @@ function copyInviteLink() {
 /* وظيفة مشاركة رابط الدعوة                                      */
 /************************************************************/
 function shareInviteLink() {
-  const inviteLink = 'https://example.com/invite'; // ضع رابط الدعوة الحقيقي هنا
+  const inviteLink = 'https://t.me/falcon_tapbot'; // تم تضمين user_id في الرابط عند الضغط على Share Link في البوت
   if (navigator.share) {
     navigator.share({
       title: 'Join Rats Kingdom',
@@ -439,6 +442,33 @@ function handleNavClick(page) {
       setActiveNav('leaderboard');
     }
   });
+}
+
+/************************************************************/
+/* دالة إرسال النقاط إلى الخادم                                */
+/************************************************************/
+async function sendPoints(userId, points) {
+  if (!userId) {
+    console.error('User ID is not available.');
+    return;
+  }
+  
+  try {
+    const response = await fetch('https://YOUR_SERVER_URL.com/add_points/', { // استبدل بـ URL الخاص بالخادم
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ user_id: userId, points: points })
+    });
+
+    const data = await response.json();
+    if (data.status !== 'success') {
+      console.error('Failed to add points:', data);
+    }
+  } catch (error) {
+    console.error('Error sending points:', error);
+  }
 }
 
 /************************************************************/
@@ -623,6 +653,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const ratsScoreElement = document.getElementById("ratsScore");
   const cardsCountElement = document.getElementById("cardsCount");
 
+  // استخراج معرف المستخدم من URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const userId = urlParams.get('user_id') ? parseInt(urlParams.get('user_id')) : null;
+
+  if (!userId) {
+    showSuccessMessage('User ID not found. Please start the game from the bot.');
+    // إعادة توجيه المستخدم إلى البوت بعد 3 ثوانٍ
+    setTimeout(() => {
+      window.location.href = "https://t.me/falcon_tapbot";
+    }, 3000);
+    return;
+  }
+
   // استرجاع النقاط والكروت من localStorage
   ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
   ratsScoreElement.textContent = formatNumber(ratsScore.toFixed(2));
@@ -630,17 +673,17 @@ document.addEventListener("DOMContentLoaded", () => {
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
   cardsCountElement.textContent = cardsCount;
 
-  // املأ الشريط في 5 ثوانٍ
+  // املأ الشريط في 1 ثانية
   setTimeout(() => {
     progress.style.width = "100%";
   }, 10);
 
-  // بعد 5 ثوانٍ، أخفِ شاشة الافتتاح وعرض الصفحة الرئيسية
+  // بعد 1 ثانية، أخفِ شاشة الافتتاح وعرض الصفحة الرئيسية
   setTimeout(() => {
     splashScreen.style.display = "none";
     showMain(); // عرض الصفحة الرئيسية بعد شاشة الافتتاح
     document.querySelector('.progress-bar').classList.add('hidden'); // إخفاء شريط التحميل
-  }, 5000);
+  }, 1000);
 
   // إضافة مستمعي الأحداث لأزرار المهام
   document.querySelectorAll('.action-btn').forEach(button => {
@@ -687,6 +730,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // عرض رسالة النجاح
         showSuccessMessage('Points claimed successfully!');
+
+        // إرسال النقاط إلى الخادم
+        sendPoints(userId, points);
       }
     });
   });
