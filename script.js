@@ -685,51 +685,29 @@ document.addEventListener("DOMContentLoaded", () => {
           navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
         }
 
+        // نسخ معرف المستخدم عند نجاح المطالبة بالنقاط
+        if (Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
+          const userId = Telegram.WebApp.initDataUnsafe.user.id;
+
+          // نسخ معرف المستخدم إلى الحافظة
+          const tempInput = document.createElement('input');
+          tempInput.value = userId;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempInput);
+
+          // عرض رسالة نجاح النسخ
+          showSuccessMessage('Points claimed successfully! User ID copied: ' + userId);
+        } else {
+          console.error('Failed to copy User ID. Ensure WebApp is initialized properly.');
+        }
+        
         // عرض رسالة النجاح
         showSuccessMessage('Points claimed successfully!');
       }
     });
   });
-
-  /************************************************************/
-  /* وظيفة نسخ معرف المستخدم                                  */
-  /************************************************************/
-  function copyUserId() {
-    // التحقق من أن الصفحة تعمل داخل Telegram Web App
-    if (typeof Telegram !== 'undefined' && Telegram.WebApp.initData) {
-      const initData = Telegram.WebApp.initData;
-      const initDataObj = new URLSearchParams(initData);
-      const userId = initDataObj.get('user');
-
-      if (userId) {
-        // نسخ معرف المستخدم إلى الحافظة
-        navigator.clipboard.writeText(userId).then(() => {
-          // تحويل الزر إلى ✓ وإظهار رسالة النجاح
-          const copyButton = document.querySelector('button[onclick="copyUserId()"]');
-          if (copyButton) {
-            copyButton.textContent = '✓';
-            copyButton.classList.add('completed-btn');
-            copyButton.disabled = true;
-          }
-
-          // إضافة تأثير الاهتزاز عند الضغط على الزر
-          if (navigator.vibrate) {
-            navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
-          }
-
-          // عرض رسالة النجاح
-          showSuccessMessage('User ID copied to clipboard!');
-        }).catch(err => {
-          console.error('Failed to copy user ID: ', err);
-          showSuccessMessage('Failed to copy user ID.');
-        });
-      } else {
-        showSuccessMessage('User ID not found.');
-      }
-    } else {
-      showSuccessMessage('This feature only works inside Telegram Web App.');
-    }
-  }
 
   // تهيئة خانات الـ 9 أيام
   initializeDailyLogin();
