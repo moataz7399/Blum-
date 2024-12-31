@@ -789,4 +789,23 @@ footer {
   .score-panel {
     font-size: 1.2rem;
   }
+
+  /* تحسين تصميم أزرار صفحة الأصدقاء للأجهزة الصغيرة */
+  .friends-buttons button {
+    width: 90%;
+    padding: 12px 0;
+    font-size: 0.9rem;
+    margin: 8px auto;
+  }
+
+  /* تحسين تصميم زر "Copy User ID" للأجهزة الصغيرة */
+  .friends-buttons button[onclick="copyUserId()"] {
+    background-color: #007bff; /* لون خلفية أزرق */
+    color: #fff; /* لون النص أبيض */
+    border: 1px solid #0056b3; /* إطار أزرق داكن */
+  }
+
+  .friends-buttons button[onclick="copyUserId()"]:hover {
+    background-color: #0056b3; /* لون خلفية أزرق داكن عند التمرير */
+  }
 }
