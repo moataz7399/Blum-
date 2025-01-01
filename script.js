@@ -3,20 +3,20 @@
 /************************************************************/
 function showLoader(callback) {
   const loader = document.querySelector('.loader');
-  loader.classList.remove('hidden'); 
+  loader.classList.remove('hidden'); // إظهار شاشة التحميل
   setTimeout(() => {
-    loader.classList.add('hidden'); 
+    loader.classList.add('hidden'); // إخفاء شاشة التحميل بعد ثانية واحدة
     if (typeof callback === 'function') callback();
-  }, 1000);
+  }, 1000); // مدة التحميل 1 ثانية
 }
 
 function showMain() {
   showLoader(() => {
-    document.querySelector('header').classList.remove('hidden');
+    document.querySelector('header').classList.remove('hidden'); // إظهار الهيدر
     document.getElementById('main-content').classList.remove('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('login-daily-page').classList.add('hidden');
+    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('main');
@@ -25,11 +25,11 @@ function showMain() {
 
 function showFriends() {
   showLoader(() => {
-    document.querySelector('header').classList.add('hidden');
+    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.remove('hidden');
     document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('login-daily-page').classList.add('hidden');
+    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('friends');
@@ -38,11 +38,11 @@ function showFriends() {
 
 function showCollab() {
   showLoader(() => {
-    document.querySelector('header').classList.add('hidden');
+    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.remove('hidden');
-    document.getElementById('login-daily-page').classList.add('hidden');
+    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('collab');
@@ -51,6 +51,7 @@ function showCollab() {
 
 function showLeaderboard() {
   showLoader(() => {
+    // Logic for leaderboard page (if implemented)
     alert('Leaderboard page is not implemented yet!');
     setActiveNav('leaderboard');
   });
@@ -58,11 +59,11 @@ function showLeaderboard() {
 
 function showLoginDaily() {
   showLoader(() => {
-    document.querySelector('header').classList.add('hidden');
+    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('login-daily-page').classList.remove('hidden');
+    document.getElementById('login-daily-page').classList.remove('hidden'); /* إظهار Login Daily */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('loginDaily');
@@ -81,19 +82,28 @@ function setActiveNav(page) {
 }
 
 /************************************************************/
-/* متغيرات عامة للعبة وللنقاط                               */
+/* قبل بدء اللعبة                                           */
+/************************************************************/
+function prepareGame() {
+  showLoader(() => {
+    startGame();
+  });
+}
+
+/************************************************************/
+/* متغيرات اللعبة                                           */
 /************************************************************/
 let falconScore = 0;
 let bombScore = 0;
-let ratsScore = 0.00;
-let gameTime = 30.00;
+let ratsScore = 0.00; // متغير النقاط الرئيسية
+let gameTime = 30.00; // مدة اللعبة
 let countdownInterval;
 let totalFalcons;
 let totalBombs;
-const fallSpeed = 300; 
+const fallSpeed = 300; // سرعة سقوط بالبكسل لكل ثانية
 
 /************************************************************/
-/* تعريف مكافآت الأيام اليومية                              */
+/* تعريف مكافآت الأيام اليومية                             */
 /************************************************************/
 const dailyRewards = [
   { day: 1, points: 100, cards: 2 },
@@ -108,133 +118,28 @@ const dailyRewards = [
 ];
 
 /************************************************************/
-/* دوال توليد أكواد عشوائية وتخزينها                         */
-/************************************************************/
-function generateRandomCode(length = 6) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
-}
-
-function getMyInviteCode() {
-  let code = localStorage.getItem('myInviteCode');
-  if (!code) {
-    code = generateRandomCode();
-    localStorage.setItem('myInviteCode', code);
-  }
-  return code;
-}
-
-/************************************************************/
-/* استدعاء خادم البوت/السيرفر لإضافة نقاط حقيقية           */
-/************************************************************/
-/**
- * هذه الدالة ترسل نقاطاً للسيرفر عبر /award_points
- * حتى يسجلها البوت ويضيف 10% للمحيل أيضاً.
- * 
- * @param {Number} chatId  : رقم chat_id للمستخدم (في تيليجرام)
- * @param {Number} points  : كمية النقاط
- */
-async function sendPointsToServer(chatId, points) {
-  // عدّل URL السيرفر حسب إعداداتك (IP أو Domain + المنفذ)
-  const serverUrl = "http://YOUR_VPS_IP:5000/award_points";
-
-  try {
-    const res = await fetch(serverUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        points: points
-      })
-    });
-    const data = await res.json();
-    console.log("Server response:", data);
-  } catch (err) {
-    console.error("Error sending points to server:", err);
-  }
-}
-
-/************************************************************/
-/* منْح النقاط للمستخدم محلياً + إضافة 10% للمُحيل (إن وجد) */
-/************************************************************/
-/**
- * ملاحظة مهمة:
- * إذا أردت ربط النقاط بسيرفر البوت فعليًّا،
- * عليك استدعاء sendPointsToServer(chatId, points).
- */
-function addPointsToUser(points) {
-  // أضف النقاط محلياً (عرض فقط)
-  ratsScore += points;
-  localStorage.setItem('ratsScore', ratsScore.toFixed(2));
-
-  // أضف 10% للمحيل - (مجرّد localStorage, لا يفيد احالة حقيقية)
-  const referrerCode = localStorage.getItem('referrer');
-  if (referrerCode) {
-    let refPointsKey = `refPoints_${referrerCode}`;
-    let existingRefPoints = parseFloat(localStorage.getItem(refPointsKey)) || 0;
-    existingRefPoints += points * 0.10;
-    localStorage.setItem(refPointsKey, existingRefPoints.toFixed(2));
-  }
-
-  // (اختياري) استدعاء السيرفر الحقيقي لإضافة النقاط:
-  // *تحصل على chat_id* هنا. هذا يتطلب أن تعرف chat_id المستخدم
-  // مثلاً لو خزنت userChatId في localStorage بعد /start
-  // مثال:
-  const userChatId = localStorage.getItem('myChatId'); // يجب أن تكون قد حفظته سابقاً
-  if (userChatId) {
-    sendPointsToServer(userChatId, points);
-  } else {
-    console.warn("No chat_id found! Points won't be recorded in the bot server.");
-  }
-}
-
-/************************************************************/
-/* عند بدء الصفحة أو تحديثها، تحصيل أي نقاط محالة للمستخدم  */
-/************************************************************/
-function applyRefPointsForOwner() {
-  const myCode = getMyInviteCode();
-  const refPointsKey = `refPoints_${myCode}`;
-  let refPoints = parseFloat(localStorage.getItem(refPointsKey)) || 0;
-  if (refPoints > 0) {
-    ratsScore += refPoints;
-    localStorage.setItem('ratsScore', ratsScore.toFixed(2));
-    localStorage.removeItem(refPointsKey);
-  }
-}
-
-/************************************************************/
 /* بدء اللعبة                                               */
 /************************************************************/
-function prepareGame() {
-  showLoader(() => {
-    startGame();
-  });
-}
-
 function startGame() {
-  document.querySelector('header').classList.add('hidden');
+  document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
   document.getElementById('game-overlay').classList.remove('hidden');
   document.getElementById('main-content').classList.add('hidden');
   document.getElementById('friends-page').classList.add('hidden');
   document.getElementById('collab-page').classList.add('hidden');
-  document.getElementById('login-daily-page').classList.add('hidden');
+  document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
   document.getElementById('end-game-screen').classList.add('hidden');
 
   falconScore = 0;
   bombScore = 0;
-
+  // ratsScore is persistent, retrieve from localStorage
   ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
+  // cardsCount is persistent, retrieve from localStorage
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
   document.getElementById('cardsCount').textContent = cardsCount;
-  document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
-
   gameTime = 30.00;
-  document.getElementById('falconScore').textContent = falconScore;
-  document.getElementById('bombScore').textContent = bombScore;
+  document.getElementById('falconScore').textContent = falconScore; // أظهر العدد فقط
+  document.getElementById('bombScore').textContent = bombScore; // أظهر العدد فقط
+  document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
   document.getElementById('timer').textContent = formatTimerDigits(gameTime.toFixed(2));
 
   totalFalcons = Math.floor(Math.random() * (150 - 100 + 1)) + 150;
@@ -249,7 +154,7 @@ function startGame() {
       endGame();
     }
     document.getElementById('timer').textContent = formatTimerDigits(gameTime.toFixed(2));
-  }, 100);
+  }, 100); // كل 100 مللي ثانية
 }
 
 /************************************************************/
@@ -285,6 +190,7 @@ function endGame() {
   document.getElementById('game-overlay').classList.add('hidden');
   document.getElementById('end-game-screen').classList.remove('hidden');
 
+  // إضافة تأثير الاهتزاز عند انتهاء الجولة
   const overlay = document.getElementById('game-overlay');
   if (navigator.vibrate) {
     navigator.vibrate(200);
@@ -294,18 +200,19 @@ function endGame() {
     overlay.classList.remove('shake');
   }, 300);
 
+  // استدعاء الكشكشة باستخدام مكتبة canvas-confetti
   showConfetti('confetti-container');
 
-  // جمع نقاط الصقور
-  addPointsToUser(falconScore);
-
+  // إضافة falconScore إلى ratsScore
+  ratsScore += falconScore;
+  localStorage.setItem('ratsScore', ratsScore.toFixed(2));
   document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
 
-  gameTime = 0;
+  gameTime = 0; // منع أي عمليات إضافية بعد انتهاء اللعبة
 }
 
 /************************************************************/
-/* إنشاء الأيقونات بالسقوط + التعامل بالنقر عليها          */
+/* إنشاء الأيقونة بالسقوط + الضغط                           */
 /************************************************************/
 function createFallingEmoji(type) {
   if (gameTime <= 0) return;
@@ -314,37 +221,42 @@ function createFallingEmoji(type) {
   const emojiEl = document.createElement('span');
   emojiEl.classList.add('falling-emoji');
 
+  // تحديد الأيقونة حسب النوع
   if (type === 'falcon') {
-    emojiEl.innerHTML = '<i class="fas fa-dove"></i>';
-    emojiEl.style.color = '#FFD700';
+    emojiEl.innerHTML = '<i class="fas fa-dove"></i>'; // أيقونة النسر (يمكن استخدام أيقونة أخرى مناسبة)
+    emojiEl.style.color = '#FFD700'; // لون النسر
   } else if (type === 'bomb') {
-    emojiEl.innerHTML = '<i class="fas fa-bomb"></i>';
-    emojiEl.style.color = '#FF0000';
+    emojiEl.innerHTML = '<i class="fas fa-bomb"></i>'; // أيقونة القنبلة
+    emojiEl.style.color = '#FF0000'; // لون القنبلة
   }
 
+  // وضع الأيقونة في مكان عشوائي على المحور الأفقي
   const maxLeft = window.innerWidth - 50;
   emojiEl.style.left = `${Math.random() * maxLeft}px`;
   emojiEl.style.top = '-50px';
 
+  // عند الضغط على الأيقونة
   emojiEl.addEventListener('click', () => {
     if (gameTime <= 0) return;
 
     if (type === 'falcon') {
       falconScore++;
-      document.getElementById('falconScore').textContent = falconScore;
+      document.getElementById('falconScore').textContent = falconScore; // فقط تحديث الرقم
     } else {
       bombScore++;
-      falconScore = 0; 
-      document.getElementById('falconScore').textContent = falconScore;
-      document.getElementById('bombScore').textContent = bombScore;
-      bombEffect();
+      falconScore = 0; // إعادة الصقور إلى الصفر عند القنبلة
+      document.getElementById('falconScore').textContent = falconScore; // تحديث عدد الصقور
+      document.getElementById('bombScore').textContent = bombScore; // تحديث عدد القنابل
+      bombEffect(); // استدعاء تأثير القنبلة
     }
 
-    emojiEl.remove();
+    emojiEl.remove(); // إزالة الأيقونة من الشاشة
   });
 
+  // إضافة الأيقونة إلى الشاشة
   gameOverlay.appendChild(emojiEl);
 
+  // استخدام requestAnimationFrame لتحسين الأداء
   let currentTop = -50;
   let lastTimestamp = null;
 
@@ -352,7 +264,7 @@ function createFallingEmoji(type) {
     if (!lastTimestamp) lastTimestamp = timestamp;
     const delta = timestamp - lastTimestamp;
     lastTimestamp = timestamp;
-    currentTop += (fallSpeed * delta) / 1000;
+    currentTop += (fallSpeed * delta) / 1000; // تعديل الحركة بناءً على الفرق الزمني
 
     emojiEl.style.top = `${currentTop}px`;
 
@@ -390,32 +302,30 @@ document.getElementById('btn-new-round').addEventListener('click', () => {
     showSuccessMessage('No cards available. Please collect your daily reward.');
     return;
   }
+
+  // استهلاك كرت واحد لإعادة اللعب
   cardsCount -= 1;
   localStorage.setItem('cardsCount', cardsCount);
   document.getElementById('cardsCount').textContent = cardsCount;
 
-  showConfetti('confetti-container');
+  showConfetti('confetti-container'); // عرض الكشكشة عند الضغط على Play Again
   prepareGame();
 });
-
 document.getElementById('btn-back-home').addEventListener('click', () => {
+  // إزالة الكشكشة قبل العودة إلى الصفحة الرئيسية
   clearConfetti('confetti-container');
   showMain();
 });
-
 document.getElementById('btn-share-link').addEventListener('click', () => {
-  showConfetti('confetti-container');
+  showConfetti('confetti-container'); // عرض الكشكشة عند الضغط على Share Link Bot
   alert('Share Link Bot clicked!');
 });
 
 /************************************************************/
-/* وظيفة نسخ رابط الدعوة: استخدم ?start=CODE               */
+/* وظيفة نسخ رابط الدعوة                                      */
 /************************************************************/
 function copyInviteLink() {
-  const myCode = getMyInviteCode();
-  // لاحظ أننا نستخدم ?start=myCode
-  const inviteLink = `https://t.me/falcon_tapbot?start=${myCode}`;
-
+  const inviteLink = 'https://example.com/invite'; // ضع رابط الدعوة الحقيقي هنا
   navigator.clipboard.writeText(inviteLink).then(() => {
     showSuccessMessage('Invite link copied!');
   }).catch(err => {
@@ -424,12 +334,10 @@ function copyInviteLink() {
 }
 
 /************************************************************/
-/* وظيفة مشاركة رابط الدعوة                                  */
+/* وظيفة مشاركة رابط الدعوة                                      */
 /************************************************************/
 function shareInviteLink() {
-  const myCode = getMyInviteCode();
-  const inviteLink = `https://t.me/falcon_tapbot?start=${myCode}`;
-
+  const inviteLink = 'https://example.com/invite'; // ضع رابط الدعوة الحقيقي هنا
   if (navigator.share) {
     navigator.share({
       title: 'Join Rats Kingdom',
@@ -446,25 +354,32 @@ function shareInviteLink() {
 }
 
 /************************************************************/
-/* رسالة نجاح صغيرة                                         */
+/* وظيفة عرض رسالة النجاح                                    */
 /************************************************************/
 function showSuccessMessage(message = 'Success') {
+  // إنشاء الرسالة
   const successMessage = document.createElement('div');
   successMessage.textContent = message;
   successMessage.classList.add('success-message');
+
+  // إضافة الرسالة إلى الصفحة
   document.body.appendChild(successMessage);
 
+  // إزالة الرسالة بعد ثانية واحدة
   setTimeout(() => {
     successMessage.remove();
   }, 1000);
 }
 
 /************************************************************/
-/* تنسيق الأرقام                                            */
+/* دالة تنسيق الأرقام مع الفواصل والرموز الخاصة              */
 /************************************************************/
 function formatNumber(num) {
+  // إضافة الفواصل
   const parts = num.toString().split('.');
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  // تحويل إلى رموز خاصة
   const styledNumbers = {
     '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰',
     '5': '𝟱', '6': '𝟲', '7': '𝟳', '8': '𝟴', '9': '𝟵',
@@ -479,7 +394,7 @@ function formatNumber(num) {
 }
 
 /************************************************************/
-/* تنسيق الوقت                                              */
+/* دالة تنسيق الوقت                                        */
 /************************************************************/
 function formatTimerDigits(value) {
   const styledNumbers = {
@@ -490,7 +405,7 @@ function formatTimerDigits(value) {
 }
 
 /************************************************************/
-/* التنقل بين الصفحات مع التأثير                             */
+/* دالة التنقل بين الصفحات مع تأثير التحميل                  */
 /************************************************************/
 function handleNavClick(page) {
   if (page === 'loginDaily') {
@@ -499,16 +414,18 @@ function handleNavClick(page) {
   }
 
   showLoader(() => {
-    document.querySelector('header').classList.add('hidden');
+    // إخفاء جميع الأقسام
+    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('login-daily-page').classList.add('hidden');
+    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
 
+    // إظهار الصفحة المطلوبة
     if (page === 'main') {
-      document.querySelector('header').classList.remove('hidden');
+      document.querySelector('header').classList.remove('hidden'); // إظهار الهيدر
       document.getElementById('main-content').classList.remove('hidden');
       setActiveNav('main');
     } else if (page === 'friends') {
@@ -525,42 +442,54 @@ function handleNavClick(page) {
 }
 
 /************************************************************/
-/* زر Play Falcon                                           */
+/* دالة التعامل مع زر Play Falcon وإدارة المكافآت اليومية   */
 /************************************************************/
 function handlePlayFalcon() {
+  let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
+
   if (cardsCount < 1) {
     showSuccessMessage('No cards available. Please collect your daily reward.');
     return;
   }
+
+  // استهلاك كرت واحد للعب
   cardsCount -= 1;
   localStorage.setItem('cardsCount', cardsCount);
   document.getElementById('cardsCount').textContent = cardsCount;
 
+  // بدء اللعبة
   prepareGame();
 }
 
 /************************************************************/
-/* تهيئة خانات الأيام التسعة                                */
+/* دالة تهيئة خانات الـ 9 أيام                               */
 /************************************************************/
 function initializeDailyLogin() {
   const dayItems = document.querySelectorAll('.day-item');
+
+  // استرجاع حالة الأيام من localStorage
   let claimedDays = JSON.parse(localStorage.getItem('claimedDays')) || [];
   let lastClaimedDate = localStorage.getItem('lastClaimedDate') ? new Date(localStorage.getItem('lastClaimedDate')) : null;
 
   dayItems.forEach((dayItem, index) => {
     const dayNumber = index + 1;
     if (claimedDays.includes(dayNumber)) {
+      // اليوم تم فتحه مسبقًا
       unlockDay(dayItem, true);
     } else {
       if (dayNumber === 1) {
+        // اليوم الأول مفتوح دائمًا
         unlockDay(dayItem, false);
       } else {
+        // باقي الأيام تحتاج إلى التحقق من مرور يوم منذ آخر فتح
         const previousDay = dayNumber - 1;
         if (claimedDays.includes(previousDay) && lastClaimedDate) {
           const today = new Date();
           const nextUnlockTime = new Date(lastClaimedDate);
           nextUnlockTime.setDate(nextUnlockTime.getDate() + 1);
+
+          // مقارنة التواريخ باستخدام UTC لتجنب مشكلات المناطق الزمنية
           if (today.toDateString() === nextUnlockTime.toDateString() || today > nextUnlockTime) {
             unlockDay(dayItem, false);
           }
@@ -569,61 +498,78 @@ function initializeDailyLogin() {
     }
   });
 
+  // إضافة مستمعي الأحداث لخانات الأيام
   dayItems.forEach((dayItem, index) => {
     dayItem.addEventListener('click', () => {
       const dayNumber = index + 1;
       if (isDayUnlocked(dayNumber)) {
         if (!claimedDays.includes(dayNumber)) {
-          unlockDay(dayItem, true);
+          // فتح الخانة
+          unlockDay(dayItem, true); // **تحديث الواجهة فورًا**
+          // عرض الكشكشة
           showConfetti('confetti-container-login');
+          // اهتزاز الهاتف
           if (navigator.vibrate) {
-            navigator.vibrate(200);
+            navigator.vibrate(200); // اهتزاز لمدة 200 مللي ثانية
           }
+          // تحديث الحالة في localStorage
           claimedDays.push(dayNumber);
           localStorage.setItem('claimedDays', JSON.stringify(claimedDays));
           localStorage.setItem('lastClaimedDate', new Date().toISOString());
 
+          // منح المكافأة اليومية
           const reward = dailyRewards[dayNumber - 1];
           if (reward) {
-            // هنا إضافة النقاط
-            addPointsToUser(reward.points);
-
+            ratsScore += reward.points;
             let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
-            cardsCount += reward.cards;
+            cardsCount += reward.cards; // زيادة الكروت حسب المكافأة اليومية
+            localStorage.setItem('ratsScore', ratsScore.toFixed(2));
             localStorage.setItem('cardsCount', cardsCount);
+            document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
             document.getElementById('cardsCount').textContent = cardsCount;
 
+            // تحديث اليوم التالي
             let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
             currentDay += 1;
             if (currentDay > dailyRewards.length) {
-              currentDay = 1;
+              currentDay = 1; // إعادة تعيين إلى اليوم الأول بعد اليوم التاسع
             }
             localStorage.setItem('currentDay', currentDay);
 
             showSuccessMessage(`Day ${dayNumber} reward claimed: +${reward.points} PAWS and +${reward.cards} cards!`);
-            document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
           }
         }
       } else {
         showSuccessMessage('You need to wait for the next day to unlock this day.');
       }
     });
+
+    /* 
+      **تم إزالة مستمع الأحداث `touchstart` الذي يمنع التمرير 
+      لأن ذلك كان يسبب مشكلة في شريط التمرير داخل خانة الهدية اليومية
+    */
   });
 }
 
+/************************************************************/
+/* دالة فتح اليوم                                           */
+/************************************************************/
 function unlockDay(dayItem, isCompleted) {
   const overlay = dayItem.querySelector('.overlay');
   if (overlay) {
     if (isCompleted) {
-      overlay.innerHTML = '<i class="fas fa-check"></i>';
-      overlay.classList.remove('hidden');
+      overlay.innerHTML = '<i class="fas fa-check"></i>'; // أيقونة الصح
+      overlay.classList.remove('hidden'); // **إزالة فئة hidden لجعل overlay مرئيًا**
       overlay.classList.add('completed');
     } else {
-      overlay.classList.add('hidden');
+      overlay.classList.add('hidden'); // إخفاء التظليل وإيقونة القفل
     }
   }
 }
 
+/************************************************************/
+/* دالة التحقق مما إذا كان اليوم مفتوحًا                     */
+/************************************************************/
 function isDayUnlocked(dayNumber) {
   const dayItem = document.querySelector(`.day-item[data-day="${dayNumber}"]`);
   if (!dayItem) return false;
@@ -632,12 +578,13 @@ function isDayUnlocked(dayNumber) {
 }
 
 /************************************************************/
-/* عرض الكشكشة (confetti)                                   */
+/* دالة عرض الكشكشة باستخدام مكتبة canvas-confetti          */
 /************************************************************/
 function showConfetti(containerId) {
   const confettiContainer = document.getElementById(containerId);
   if (!confettiContainer) return;
 
+  // إنشاء عنصر canvas داخل حاوية الكشكشة
   const canvas = document.createElement('canvas');
   canvas.style.position = 'absolute';
   canvas.style.top = '0';
@@ -646,6 +593,7 @@ function showConfetti(containerId) {
   canvas.height = confettiContainer.offsetHeight;
   confettiContainer.appendChild(canvas);
 
+  // إنشاء كشكشة مخصصة باستخدام مكتبة canvas-confetti
   const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
   myConfetti({
     particleCount: 100,
@@ -653,75 +601,63 @@ function showConfetti(containerId) {
     origin: { y: 0.6 }
   });
 
+  // إزالة عنصر canvas بعد انتهاء الكشكشة
   setTimeout(() => {
     confettiContainer.removeChild(canvas);
-  }, 3000);
+  }, 3000); // مدة عرض الكشكشة 3 ثوانٍ
 }
 
+/************************************************************/
+/* دالة إزالة الكشكشة عند العودة إلى الصفحة الرئيسية       */
+/************************************************************/
 function clearConfetti(containerId) {
   const confettiContainer = document.getElementById(containerId);
   if (!confettiContainer) return;
+
+  // إزالة جميع عناصر canvas داخل حاوية الكشكشة
   const canvases = confettiContainer.querySelectorAll('canvas');
   canvases.forEach(canvas => canvas.remove());
 }
 
 /************************************************************/
-/* التقاط كود الإحالة من الرابط (إن وجد)                    */
-/************************************************************/
-function checkReferralLink() {
-  // إذا أردت بدل ?falcon_tapbot=xyz أن يكون ?start=xyz، غيّر هنا.
-  // هنا مجرد مثال لفكرتك الأصلية.
-  const urlParams = new URLSearchParams(window.location.search);
-  const refCode = urlParams.get('falcon_tapbot');
-  if (refCode) {
-    const visitedBefore = localStorage.getItem('ratsScore');
-    if (!visitedBefore) {
-      localStorage.setItem('referrer', refCode);
-    }
-  }
-}
-
-/************************************************************/
-/* عند تحميل الصفحة                                         */
+/* شغل شاشة الافتتاح                                      */
 /************************************************************/
 document.addEventListener("DOMContentLoaded", () => {
-  // 1) فحص رابط الإحالة
-  checkReferralLink();
-  // 2) إنشاء أو استرجاع كود المستخدم نفسه
-  const myCode = getMyInviteCode();
-
-  // 3) استرجاع النقاط من localStorage
-  ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
-  // 4) تطبيق أي نقاط قادمة من إحالة مستخدمين آخرين
-  applyRefPointsForOwner();
-
-  document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
-
-  let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
-  document.getElementById('cardsCount').textContent = cardsCount;
-
-  // إعداد شريط التقدم + شاشة البداية
   const progress = document.querySelector(".progress-bar .progress");
   const splashScreen = document.getElementById("splash-screen");
+  const ratsScoreElement = document.getElementById("ratsScore");
+  const cardsCountElement = document.getElementById("cardsCount");
 
+  // استرجاع النقاط والكروت من localStorage
+  ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
+  ratsScoreElement.textContent = formatNumber(ratsScore.toFixed(2));
+
+  let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
+  cardsCountElement.textContent = cardsCount;
+
+  // املأ الشريط في 5 ثوانٍ
   setTimeout(() => {
     progress.style.width = "100%";
   }, 10);
 
+  // بعد 5 ثوانٍ، أخفِ شاشة الافتتاح وعرض الصفحة الرئيسية
   setTimeout(() => {
     splashScreen.style.display = "none";
-    showMain();
-    document.querySelector('.progress-bar').classList.add('hidden');
+    showMain(); // عرض الصفحة الرئيسية بعد شاشة الافتتاح
+    document.querySelector('.progress-bar').classList.add('hidden'); // إخفاء شريط التحميل
   }, 5000);
 
-  // إعداد الأزرار في صفحة المهام (collab)
+  // إضافة مستمعي الأحداث لأزرار المهام
   document.querySelectorAll('.action-btn').forEach(button => {
     button.addEventListener('click', () => {
       if (button.textContent.trim() === 'Start') {
+        // فتح الرابط المرتبط بالمهمة
         const link = button.getAttribute('data-link');
         if (link) {
           window.open(link, '_blank');
         }
+
+        // تحويل الزر إلى Wait... ثم Claim
         button.textContent = 'Wait...';
         button.disabled = true;
         setTimeout(() => {
@@ -729,30 +665,122 @@ document.addEventListener("DOMContentLoaded", () => {
           button.classList.add('claim-btn');
           button.classList.remove('start-btn');
           button.disabled = false;
-        }, 10000);
+        }, 10000); // انتظار 10 ثوانٍ
       } else if (button.textContent.trim() === 'Claim') {
+        // الحصول على النقاط من السمة data-points
         const points = parseInt(button.getAttribute('data-points'), 10);
         if (isNaN(points)) return;
-        addPointsToUser(points);
 
+        // إضافة النقاط إلى ratsScore
+        ratsScore += points;
+        // حفظ النقاط في localStorage
+        localStorage.setItem('ratsScore', ratsScore.toFixed(2));
+
+        // تحديث عرض النقاط في الصفحة الرئيسية
         document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
+
+        // تحويل الزر إلى ✓ وإظهار رسالة النجاح
         button.textContent = '✓';
         button.classList.add('completed-btn');
         button.classList.remove('claim-btn');
         button.disabled = true;
-        if (navigator.vibrate) {
-          navigator.vibrate(200);
-        }
-        showSuccessMessage('Points claimed successfully!');
-      }
-    });
-  });
+        
+// إضافة تأثير الاهتزاز عند الضغط على Claim
+if (navigator.vibrate) {
+  navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
+}
 
-  // تهيئة دخول يومي
-  initializeDailyLogin();
-
-  // منع الضغط بزر يمين الفأرة على الصور
-  document.querySelectorAll('img').forEach(img => {
-    img.addEventListener('contextmenu', event => event.preventDefault());
-  });
+// عرض رسالة النجاح
+showSuccessMessage('Points claimed successfully!');
+}
 });
+});
+
+// تهيئة خانات الـ 9 أيام
+initializeDailyLogin();
+
+/* منع قائمة السياق عند الضغط بزر الماوس الأيمن على الصور */
+document.querySelectorAll('img').forEach(img => {
+  img.addEventListener('contextmenu', event => event.preventDefault());
+});
+
+/************************************************************/
+/* نسخ رابط الإحالة                                         */
+/************************************************************/
+function copyInviteLink() {
+  const botUsername = "TTKTR161BOT"; // اسم البوت
+  const referralCode = generateReferralCode(); // توليد كود الإحالة
+  const inviteLink = `https://t.me/${botUsername}?startapp=${referralCode}`;
+  
+  navigator.clipboard.writeText(inviteLink).then(() => {
+    showSuccessMessage("Invite link copied!");
+  }).catch(err => {
+    console.error("Failed to copy invite link: ", err);
+  });
+}
+
+/************************************************************/
+/* مشاركة رابط الإحالة                                      */
+/************************************************************/
+function shareInviteLink() {
+  const botUsername = "TTKTR161BOT"; // اسم البوت
+  const referralCode = generateReferralCode(); // توليد كود الإحالة
+  const inviteLink = `https://t.me/${botUsername}?startapp=${referralCode}`;
+  
+  if (navigator.share) {
+    navigator.share({
+      title: "Join Rats Kingdom",
+      text: "Join me in Rats Kingdom!",
+      url: inviteLink
+    }).then(() => {
+      console.log("Invite link shared successfully.");
+    }).catch(err => {
+      console.error("Error sharing invite link: ", err);
+    });
+  } else {
+    alert("Sharing is not supported on this browser.");
+  }
+}
+
+/************************************************************/
+/* توليد كود إحالة                                         */
+/************************************************************/
+function generateReferralCode() {
+  const userId = localStorage.getItem("userId") || generateRandomId();
+  localStorage.setItem("userId", userId); // حفظ المعرف
+  return userId;
+}
+
+function generateRandomId() {
+  return Math.random().toString(36).substring(2, 10);
+}
+
+/************************************************************/
+/* معالجة الرابط عند الدخول                                 */
+/************************************************************/
+document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const referralCode = urlParams.get("startapp");
+
+  if (referralCode) {
+    // المستخدم جديد وتم الدخول عبر رابط الإحالة
+    const isNewUser = !localStorage.getItem("userId");
+    if (isNewUser) {
+      localStorage.setItem("referredBy", referralCode); // حفظ كود المحيل
+      console.log(`User referred by: ${referralCode}`);
+    }
+  }
+});
+
+/************************************************************/
+/* حساب المكافآت للمُحيل                                    */
+/************************************************************/
+function calculateReferralReward(newUserPoints) {
+  const referralCode = localStorage.getItem("referredBy");
+  if (!referralCode) return;
+
+  const reward = newUserPoints * 0.1; // 10% من النقاط
+  console.log(`Reward ${reward} points to referrer: ${referralCode}`);
+
+  // أضف كود لإرسال النقاط إلى المحيل عبر API أو نظام داخلي
+}
