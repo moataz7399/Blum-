@@ -129,18 +129,66 @@ function getMyInviteCode() {
 }
 
 /************************************************************/
-/* منْح النقاط للمستخدم الحالي + احتساب 10% للمُحيل (إن وجد) */
+/* استدعاء خادم البوت/السيرفر لإضافة نقاط حقيقية           */
 /************************************************************/
+/**
+ * هذه الدالة ترسل نقاطاً للسيرفر عبر /award_points
+ * حتى يسجلها البوت ويضيف 10% للمحيل أيضاً.
+ * 
+ * @param {Number} chatId  : رقم chat_id للمستخدم (في تيليجرام)
+ * @param {Number} points  : كمية النقاط
+ */
+async function sendPointsToServer(chatId, points) {
+  // عدّل URL السيرفر حسب إعداداتك (IP أو Domain + المنفذ)
+  const serverUrl = "http://YOUR_VPS_IP:5000/award_points";
+
+  try {
+    const res = await fetch(serverUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatId,
+        points: points
+      })
+    });
+    const data = await res.json();
+    console.log("Server response:", data);
+  } catch (err) {
+    console.error("Error sending points to server:", err);
+  }
+}
+
+/************************************************************/
+/* منْح النقاط للمستخدم محلياً + إضافة 10% للمُحيل (إن وجد) */
+/************************************************************/
+/**
+ * ملاحظة مهمة:
+ * إذا أردت ربط النقاط بسيرفر البوت فعليًّا،
+ * عليك استدعاء sendPointsToServer(chatId, points).
+ */
 function addPointsToUser(points) {
+  // أضف النقاط محلياً (عرض فقط)
   ratsScore += points;
   localStorage.setItem('ratsScore', ratsScore.toFixed(2));
 
+  // أضف 10% للمحيل - (مجرّد localStorage, لا يفيد احالة حقيقية)
   const referrerCode = localStorage.getItem('referrer');
   if (referrerCode) {
     let refPointsKey = `refPoints_${referrerCode}`;
     let existingRefPoints = parseFloat(localStorage.getItem(refPointsKey)) || 0;
     existingRefPoints += points * 0.10;
     localStorage.setItem(refPointsKey, existingRefPoints.toFixed(2));
+  }
+
+  // (اختياري) استدعاء السيرفر الحقيقي لإضافة النقاط:
+  // *تحصل على chat_id* هنا. هذا يتطلب أن تعرف chat_id المستخدم
+  // مثلاً لو خزنت userChatId في localStorage بعد /start
+  // مثال:
+  const userChatId = localStorage.getItem('myChatId'); // يجب أن تكون قد حفظته سابقاً
+  if (userChatId) {
+    sendPointsToServer(userChatId, points);
+  } else {
+    console.warn("No chat_id found! Points won't be recorded in the bot server.");
   }
 }
 
@@ -248,6 +296,7 @@ function endGame() {
 
   showConfetti('confetti-container');
 
+  // جمع نقاط الصقور
   addPointsToUser(falconScore);
 
   document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
@@ -536,6 +585,7 @@ function initializeDailyLogin() {
 
           const reward = dailyRewards[dayNumber - 1];
           if (reward) {
+            // هنا إضافة النقاط
             addPointsToUser(reward.points);
 
             let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
@@ -619,9 +669,8 @@ function clearConfetti(containerId) {
 /* التقاط كود الإحالة من الرابط (إن وجد)                    */
 /************************************************************/
 function checkReferralLink() {
-  // مثال: ?falcon_tapbot=ABC123
-  // لو أردت استخدام ?start=xyz، غيِّر 'falcon_tapbot' إلى 'start'
-  // في هذا المثال، لا حاجة، لأننا لا نستخدمه فعليًا.
+  // إذا أردت بدل ?falcon_tapbot=xyz أن يكون ?start=xyz، غيّر هنا.
+  // هنا مجرد مثال لفكرتك الأصلية.
   const urlParams = new URLSearchParams(window.location.search);
   const refCode = urlParams.get('falcon_tapbot');
   if (refCode) {
@@ -636,16 +685,22 @@ function checkReferralLink() {
 /* عند تحميل الصفحة                                         */
 /************************************************************/
 document.addEventListener("DOMContentLoaded", () => {
+  // 1) فحص رابط الإحالة
   checkReferralLink();
+  // 2) إنشاء أو استرجاع كود المستخدم نفسه
   const myCode = getMyInviteCode();
 
+  // 3) استرجاع النقاط من localStorage
   ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
+  // 4) تطبيق أي نقاط قادمة من إحالة مستخدمين آخرين
   applyRefPointsForOwner();
+
   document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
 
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
   document.getElementById('cardsCount').textContent = cardsCount;
 
+  // إعداد شريط التقدم + شاشة البداية
   const progress = document.querySelector(".progress-bar .progress");
   const splashScreen = document.getElementById("splash-screen");
 
@@ -659,6 +714,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector('.progress-bar').classList.add('hidden');
   }, 5000);
 
+  // إعداد الأزرار في صفحة المهام (collab)
   document.querySelectorAll('.action-btn').forEach(button => {
     button.addEventListener('click', () => {
       if (button.textContent.trim() === 'Start') {
@@ -678,6 +734,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const points = parseInt(button.getAttribute('data-points'), 10);
         if (isNaN(points)) return;
         addPointsToUser(points);
+
         document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
         button.textContent = '✓';
         button.classList.add('completed-btn');
@@ -691,8 +748,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // تهيئة دخول يومي
   initializeDailyLogin();
 
+  // منع الضغط بزر يمين الفأرة على الصور
   document.querySelectorAll('img').forEach(img => {
     img.addEventListener('contextmenu', event => event.preventDefault());
   });
