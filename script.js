@@ -635,29 +635,6 @@ function copyInviteLink() {
 }
 
 /************************************************************/
-/* مشاركة رابط الإحالة                                      */
-/************************************************************/
-function shareInviteLink() {
-  const botUsername = "TTKTR161BOT"; // اسم البوت
-  const referralCode = generateReferralCode(); // توليد كود الإحالة
-  const inviteLink = `https://t.me/${botUsername}?startapp=${referralCode}`;
-  
-  if (navigator.share) {
-    navigator.share({
-      title: "Join Rats Kingdom",
-      text: "Join me in Rats Kingdom!",
-      url: inviteLink
-    }).then(() => {
-      console.log("Invite link shared successfully.");
-    }).catch(err => {
-      console.error("Error sharing invite link: ", err);
-    });
-  } else {
-    alert("Sharing is not supported on this browser.");
-  }
-}
-
-/************************************************************/
 /* توليد كود إحالة                                         */
 /************************************************************/
 function generateReferralCode() {
@@ -694,33 +671,105 @@ document.addEventListener("DOMContentLoaded", () => {
 /* تحديث نقاط المُحيل                                       */
 /************************************************************/
 function updateReferrerPoints(referralCode) {
-  // استرجاع نقاط المحيل
-  const referrerPointsKey = `points_${referralCode}`;
-  let referrerPoints = parseFloat(localStorage.getItem(referrerPointsKey)) || 0;
+  try {
+    // استرجاع نقاط المحيل
+    const referrerPointsKey = `points_${referralCode}`;
+    let referrerPoints = parseFloat(localStorage.getItem(referrerPointsKey)) || 0;
 
-  // استرجاع نقاط المُحال (الجديدة)
-  const referredUserPoints = parseFloat(localStorage.getItem("ratsScore")) || 0;
+    // استرجاع نقاط المُحال
+    const referredUserPoints = parseFloat(localStorage.getItem("ratsScore")) || 0;
 
-  // حساب المكافأة
-  const reward = referredUserPoints * 0.1;
+    // حساب المكافأة
+    const reward = referredUserPoints * 0.1;
 
-  // إضافة المكافأة إلى المحيل
-  referrerPoints += reward;
-  localStorage.setItem(referrerPointsKey, referrerPoints.toFixed(2));
+    // إضافة المكافأة إلى المحيل
+    referrerPoints += reward;
+    localStorage.setItem(referrerPointsKey, referrerPoints.toFixed(2));
 
-  console.log(`Added ${reward.toFixed(2)} points to referrer with code: ${referralCode}`);
+    console.log(`Added ${reward.toFixed(2)} points to referrer with code: ${referralCode}`);
+  } catch (error) {
+    console.error("Error updating referrer points:", error);
+  }
 }
 
 /************************************************************/
-/* حساب المكافآت للمُحال                                   */
+/* شغل شاشة الافتتاح                                       */
 /************************************************************/
-function calculateReferralReward(points) {
-  const referralCode = localStorage.getItem("referredBy");
-  if (!referralCode) {
-    console.log("No referrer found.");
-    return;
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  try {
+    const progress = document.querySelector(".progress-bar .progress");
+    const splashScreen = document.getElementById("splash-screen");
+    const ratsScoreElement = document.getElementById("ratsScore");
+    const cardsCountElement = document.getElementById("cardsCount");
 
-  // تحديث النقاط باستخدام نفس الدالة
-  updateReferrerPoints(referralCode);
+    // استرجاع النقاط والكروت من localStorage
+    ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
+    if (ratsScoreElement) ratsScoreElement.textContent = formatNumber(ratsScore.toFixed(2));
+
+    let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
+    if (cardsCountElement) cardsCountElement.textContent = cardsCount;
+
+    // املأ الشريط في 5 ثوانٍ
+    setTimeout(() => {
+      if (progress) progress.style.width = "100%";
+    }, 10);
+
+    // بعد 5 ثوانٍ، أخفِ شاشة الافتتاح وعرض الصفحة الرئيسية
+    setTimeout(() => {
+      if (splashScreen) splashScreen.style.display = "none";
+      showMain(); // عرض الصفحة الرئيسية بعد شاشة الافتتاح
+      const progressBar = document.querySelector('.progress-bar');
+      if (progressBar) progressBar.classList.add('hidden');
+    }, 5000);
+  } catch (error) {
+    console.error("Error during splash screen initialization:", error);
+  }
+});
+
+/************************************************************/
+/* وظيفة عرض رسالة النجاح                                   */
+/************************************************************/
+function showSuccessMessage(message = 'Success') {
+  try {
+    const successMessage = document.createElement('div');
+    successMessage.textContent = message;
+    successMessage.classList.add('success-message');
+
+    // إضافة الرسالة إلى الصفحة
+    document.body.appendChild(successMessage);
+
+    // إزالة الرسالة بعد ثانية واحدة
+    setTimeout(() => {
+      successMessage.remove();
+    }, 1000);
+  } catch (error) {
+    console.error("Error showing success message:", error);
+  }
+}
+
+/************************************************************/
+/* دالة تنسيق الأرقام                                       */
+/************************************************************/
+function formatNumber(num) {
+  try {
+    // إضافة الفواصل
+    const parts = num.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    // تحويل إلى رموز خاصة
+    const styledNumbers = {
+      '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰',
+      '5': '𝟱', '6': '𝟲', '7': '𝟳', '8': '𝟴', '9': '𝟵',
+      ',': ','
+    };
+    parts[0] = parts[0].split('').map(digit => styledNumbers[digit] || digit).join('');
+    if (parts[1]) {
+      parts[1] = parts[1].split('').map(digit => styledNumbers[digit] || digit).join('');
+      return parts.join('.');
+    }
+    return parts[0];
+  } catch (error) {
+    console.error("Error formatting number:", error);
+    return num;
+  }
 }
