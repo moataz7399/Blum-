@@ -647,56 +647,60 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector('.progress-bar').classList.add('hidden'); // إخفاء شريط التحميل
   }, 5000);
 
-  // إضافة مستمعي الأحداث لأزرار المهام
-  document.querySelectorAll('.action-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      if (button.textContent.trim() === 'Start') {
-        // فتح الرابط المرتبط بالمهمة
-        const link = button.getAttribute('data-link');
-        if (link) {
-          window.open(link, '_blank');
-        }
+/************************************************************/
+/* إضافة مستمعي الأحداث لأزرار المهام                      */
+/************************************************************/
+document.querySelectorAll('.action-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    if (button.textContent.trim() === 'Start') {
+      // فتح الرابط المرتبط بالمهمة
+      const link = button.getAttribute('data-link');
+      if (link) {
+        window.open(link, '_blank');
+      }
 
-        // تحويل الزر إلى Wait... ثم Claim
-        button.textContent = 'Wait...';
-        button.disabled = true;
-        setTimeout(() => {
-          button.textContent = 'Claim';
-          button.classList.add('claim-btn');
-          button.classList.remove('start-btn');
-          button.disabled = false;
-        }, 10000); // انتظار 10 ثوانٍ
-      } else if (button.textContent.trim() === 'Claim') {
-        // الحصول على النقاط من السمة data-points
-        const points = parseInt(button.getAttribute('data-points'), 10);
-        if (isNaN(points)) return;
+      // تحويل الزر إلى Wait... ثم Claim
+      button.textContent = 'Wait...';
+      button.disabled = true;
+      setTimeout(() => {
+        button.textContent = 'Claim';
+        button.classList.add('claim-btn');
+        button.classList.remove('start-btn');
+        button.disabled = false;
+      }, 10000); // انتظار 10 ثوانٍ
+    } else if (button.textContent.trim() === 'Claim') {
+      // الحصول على النقاط من السمة data-points
+      const points = parseInt(button.getAttribute('data-points'), 10);
+      if (isNaN(points)) return;
 
-        // إضافة النقاط إلى ratsScore
-        ratsScore += points;
-        // حفظ النقاط في localStorage
-        localStorage.setItem('ratsScore', ratsScore.toFixed(2));
+      // إضافة النقاط إلى ratsScore
+      ratsScore += points;
+      // حفظ النقاط في localStorage
+      localStorage.setItem('ratsScore', ratsScore.toFixed(2));
 
-        // تحديث عرض النقاط في الصفحة الرئيسية
-        document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
+      // تحديث عرض النقاط في الصفحة الرئيسية
+      document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
 
-        // تحويل الزر إلى ✓ وإظهار رسالة النجاح
-        button.textContent = '✓';
-        button.classList.add('completed-btn');
-        button.classList.remove('claim-btn');
-        button.disabled = true;
-        
-// إضافة تأثير الاهتزاز عند الضغط على Claim
-if (navigator.vibrate) {
-  navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
-}
+      // تحويل الزر إلى ✓ وإظهار رسالة النجاح
+      button.textContent = '✓';
+      button.classList.add('completed-btn');
+      button.classList.remove('claim-btn');
+      button.disabled = true;
 
-// عرض رسالة النجاح
-showSuccessMessage('Points claimed successfully!');
-}
+      // إضافة تأثير الاهتزاز عند الضغط على Claim
+      if (navigator.vibrate) {
+        navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
+      }
+
+      // عرض رسالة النجاح
+      showSuccessMessage('Points claimed successfully!');
+    }
+  });
 });
-});
 
-// تهيئة خانات الـ 9 أيام
+/************************************************************/
+/* تهيئة خانات الـ 9 أيام                                   */
+/************************************************************/
 initializeDailyLogin();
 
 /* منع قائمة السياق عند الضغط بزر الماوس الأيمن على الصور */
@@ -711,7 +715,7 @@ function copyInviteLink() {
   const botUsername = "TTKTR161BOT"; // اسم البوت
   const referralCode = generateReferralCode(); // توليد كود الإحالة
   const inviteLink = `https://t.me/${botUsername}?startapp=${referralCode}`;
-  
+
   navigator.clipboard.writeText(inviteLink).then(() => {
     showSuccessMessage("Invite link copied!");
   }).catch(err => {
@@ -726,7 +730,7 @@ function shareInviteLink() {
   const botUsername = "TTKTR161BOT"; // اسم البوت
   const referralCode = generateReferralCode(); // توليد كود الإحالة
   const inviteLink = `https://t.me/${botUsername}?startapp=${referralCode}`;
-  
+
   if (navigator.share) {
     navigator.share({
       title: "Join Rats Kingdom",
@@ -783,4 +787,26 @@ function calculateReferralReward(newUserPoints) {
   console.log(`Reward ${reward} points to referrer: ${referralCode}`);
 
   // أضف كود لإرسال النقاط إلى المحيل عبر API أو نظام داخلي
+}
+
+/************************************************************/
+/* عرض رسالة النجاح                                         */
+/************************************************************/
+function showSuccessMessage(message) {
+  const successMessage = document.createElement("div");
+  successMessage.textContent = message;
+  successMessage.style.position = "fixed";
+  successMessage.style.bottom = "20px";
+  successMessage.style.left = "50%";
+  successMessage.style.transform = "translateX(-50%)";
+  successMessage.style.backgroundColor = "#28a745";
+  successMessage.style.color = "#fff";
+  successMessage.style.padding = "10px 20px";
+  successMessage.style.borderRadius = "5px";
+  successMessage.style.zIndex = "1000";
+  document.body.appendChild(successMessage);
+
+  setTimeout(() => {
+    successMessage.remove();
+  }, 2000);
 }
