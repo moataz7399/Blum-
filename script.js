@@ -620,102 +620,13 @@ function clearConfetti(containerId) {
 }
 
 /************************************************************/
-/* شغل شاشة الافتتاح                                      */
-/************************************************************/
-document.addEventListener("DOMContentLoaded", () => {
-  const progress = document.querySelector(".progress-bar .progress");
-  const splashScreen = document.getElementById("splash-screen");
-  const ratsScoreElement = document.getElementById("ratsScore");
-  const cardsCountElement = document.getElementById("cardsCount");
-
-  // استرجاع النقاط والكروت من localStorage
-  ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
-  ratsScoreElement.textContent = formatNumber(ratsScore.toFixed(2));
-
-  let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
-  cardsCountElement.textContent = cardsCount;
-
-  // املأ الشريط في 5 ثوانٍ
-  setTimeout(() => {
-    progress.style.width = "100%";
-  }, 10);
-
-  // بعد 5 ثوانٍ، أخفِ شاشة الافتتاح وعرض الصفحة الرئيسية
-  setTimeout(() => {
-    splashScreen.style.display = "none";
-    showMain(); // عرض الصفحة الرئيسية بعد شاشة الافتتاح
-    document.querySelector('.progress-bar').classList.add('hidden'); // إخفاء شريط التحميل
-  }, 5000);
-
-/************************************************************/
-/* إضافة مستمعي الأحداث لأزرار المهام                      */
-/************************************************************/
-document.querySelectorAll('.action-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    if (button.textContent.trim() === 'Start') {
-      // فتح الرابط المرتبط بالمهمة
-      const link = button.getAttribute('data-link');
-      if (link) {
-        window.open(link, '_blank');
-      }
-
-      // تحويل الزر إلى Wait... ثم Claim
-      button.textContent = 'Wait...';
-      button.disabled = true;
-      setTimeout(() => {
-        button.textContent = 'Claim';
-        button.classList.add('claim-btn');
-        button.classList.remove('start-btn');
-        button.disabled = false;
-      }, 10000); // انتظار 10 ثوانٍ
-    } else if (button.textContent.trim() === 'Claim') {
-      // الحصول على النقاط من السمة data-points
-      const points = parseInt(button.getAttribute('data-points'), 10);
-      if (isNaN(points)) return;
-
-      // إضافة النقاط إلى ratsScore
-      ratsScore += points;
-      // حفظ النقاط في localStorage
-      localStorage.setItem('ratsScore', ratsScore.toFixed(2));
-
-      // تحديث عرض النقاط في الصفحة الرئيسية
-      document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
-
-      // تحويل الزر إلى ✓ وإظهار رسالة النجاح
-      button.textContent = '✓';
-      button.classList.add('completed-btn');
-      button.classList.remove('claim-btn');
-      button.disabled = true;
-
-      // إضافة تأثير الاهتزاز عند الضغط على Claim
-      if (navigator.vibrate) {
-        navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
-      }
-
-      // عرض رسالة النجاح
-      showSuccessMessage('Points claimed successfully!');
-    }
-  });
-});
-
-/************************************************************/
-/* تهيئة خانات الـ 9 أيام                                   */
-/************************************************************/
-initializeDailyLogin();
-
-/* منع قائمة السياق عند الضغط بزر الماوس الأيمن على الصور */
-document.querySelectorAll('img').forEach(img => {
-  img.addEventListener('contextmenu', event => event.preventDefault());
-});
-
-/************************************************************/
 /* نسخ رابط الإحالة                                         */
 /************************************************************/
 function copyInviteLink() {
   const botUsername = "TTKTR161BOT"; // اسم البوت
   const referralCode = generateReferralCode(); // توليد كود الإحالة
   const inviteLink = `https://t.me/${botUsername}?startapp=${referralCode}`;
-
+  
   navigator.clipboard.writeText(inviteLink).then(() => {
     showSuccessMessage("Invite link copied!");
   }).catch(err => {
@@ -730,7 +641,7 @@ function shareInviteLink() {
   const botUsername = "TTKTR161BOT"; // اسم البوت
   const referralCode = generateReferralCode(); // توليد كود الإحالة
   const inviteLink = `https://t.me/${botUsername}?startapp=${referralCode}`;
-
+  
   if (navigator.share) {
     navigator.share({
       title: "Join Rats Kingdom",
@@ -790,23 +701,87 @@ function calculateReferralReward(newUserPoints) {
 }
 
 /************************************************************/
-/* عرض رسالة النجاح                                         */
+/* شغل شاشة الافتتاح                                      */
 /************************************************************/
-function showSuccessMessage(message) {
-  const successMessage = document.createElement("div");
-  successMessage.textContent = message;
-  successMessage.style.position = "fixed";
-  successMessage.style.bottom = "20px";
-  successMessage.style.left = "50%";
-  successMessage.style.transform = "translateX(-50%)";
-  successMessage.style.backgroundColor = "#28a745";
-  successMessage.style.color = "#fff";
-  successMessage.style.padding = "10px 20px";
-  successMessage.style.borderRadius = "5px";
-  successMessage.style.zIndex = "1000";
-  document.body.appendChild(successMessage);
+document.addEventListener("DOMContentLoaded", () => {
+  const progress = document.querySelector(".progress-bar .progress");
+  const splashScreen = document.getElementById("splash-screen");
+  const ratsScoreElement = document.getElementById("ratsScore");
+  const cardsCountElement = document.getElementById("cardsCount");
 
+  // استرجاع النقاط والكروت من localStorage
+  ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
+  ratsScoreElement.textContent = formatNumber(ratsScore.toFixed(2));
+
+  let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
+  cardsCountElement.textContent = cardsCount;
+
+  // املأ الشريط في 5 ثوانٍ
   setTimeout(() => {
-    successMessage.remove();
-  }, 2000);
-}
+    progress.style.width = "100%";
+  }, 10);
+
+  // بعد 5 ثوانٍ، أخفِ شاشة الافتتاح وعرض الصفحة الرئيسية
+  setTimeout(() => {
+    splashScreen.style.display = "none";
+    showMain(); // عرض الصفحة الرئيسية بعد شاشة الافتتاح
+    document.querySelector('.progress-bar').classList.add('hidden'); // إخفاء شريط التحميل
+  }, 5000);
+
+  // إضافة مستمعي الأحداث لأزرار المهام
+  document.querySelectorAll('.action-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      if (button.textContent.trim() === 'Start') {
+        // فتح الرابط المرتبط بالمهمة
+        const link = button.getAttribute('data-link');
+        if (link) {
+          window.open(link, '_blank');
+        }
+
+        // تحويل الزر إلى Wait... ثم Claim
+        button.textContent = 'Wait...';
+        button.disabled = true;
+        setTimeout(() => {
+          button.textContent = 'Claim';
+          button.classList.add('claim-btn');
+          button.classList.remove('start-btn');
+          button.disabled = false;
+        }, 10000); // انتظار 10 ثوانٍ
+      } else if (button.textContent.trim() === 'Claim') {
+        // الحصول على النقاط من السمة data-points
+        const points = parseInt(button.getAttribute('data-points'), 10);
+        if (isNaN(points)) return;
+
+        // إضافة النقاط إلى ratsScore
+        ratsScore += points;
+        // حفظ النقاط في localStorage
+        localStorage.setItem('ratsScore', ratsScore.toFixed(2));
+
+        // تحديث عرض النقاط في الصفحة الرئيسية
+        document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
+
+        // تحويل الزر إلى ✓ وإظهار رسالة النجاح
+        button.textContent = '✓';
+        button.classList.add('completed-btn');
+        button.classList.remove('claim-btn');
+        button.disabled = true;
+        
+        // إضافة تأثير الاهتزاز عند الضغط على Claim
+        if (navigator.vibrate) {
+          navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
+        }
+
+        // عرض رسالة النجاح
+        showSuccessMessage('Points claimed successfully!');
+      }
+    });
+  });
+
+  // تهيئة خانات الـ 9 أيام
+  initializeDailyLogin();
+
+  /* منع قائمة السياق عند الضغط بزر الماوس الأيمن على الصور */
+  document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('contextmenu', event => event.preventDefault());
+  });
+});
