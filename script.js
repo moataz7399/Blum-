@@ -691,13 +691,16 @@ document.addEventListener("DOMContentLoaded", () => {
 /* حساب المكافآت للمُحيل                                    */
 /************************************************************/
 function calculateReferralReward(newUserPoints) {
-  const referralCode = localStorage.getItem("referredBy");
-  if (!referralCode) return;
+  const referralCode = localStorage.getItem("referredBy"); // استرجاع كود المحيل
+  if (!referralCode) return; // إذا لم يكن هناك محيل، لا تفعل شيئًا
 
-  const reward = newUserPoints * 0.1; // 10% من النقاط
-  console.log(`Reward ${reward} points to referrer: ${referralCode}`);
+  const reward = newUserPoints * 0.1; // حساب المكافأة بنسبة 10%
+  const referrerPointsKey = `points_${referralCode}`; // مفتاح النقاط للمحيل
+  let referrerPoints = parseFloat(localStorage.getItem(referrerPointsKey)) || 0; // استرجاع نقاط المحيل الحالية
+  referrerPoints += reward; // إضافة المكافأة
+  localStorage.setItem(referrerPointsKey, referrerPoints.toFixed(2)); // حفظ النقاط الجديدة
 
-  // أضف كود لإرسال النقاط إلى المحيل عبر API أو نظام داخلي
+  console.log(`Rewarded ${reward.toFixed(2)} points to referrer with code: ${referralCode}`);
 }
 
 /************************************************************/
@@ -752,13 +755,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const points = parseInt(button.getAttribute('data-points'), 10);
         if (isNaN(points)) return;
 
-        // إضافة النقاط إلى ratsScore
+        // إضافة النقاط إلى المستخدم
         ratsScore += points;
-        // حفظ النقاط في localStorage
         localStorage.setItem('ratsScore', ratsScore.toFixed(2));
-
-        // تحديث عرض النقاط في الصفحة الرئيسية
         document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
+
+        // حساب مكافأة المحيل
+        calculateReferralReward(points);
 
         // تحويل الزر إلى ✓ وإظهار رسالة النجاح
         button.textContent = '✓';
