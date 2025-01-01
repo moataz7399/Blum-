@@ -10,6 +10,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="style.css"> <!-- تم تعديل الرابط هنا -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
   <!-- شريط التحميل الأخضر في أعلى الصفحة -->
@@ -35,19 +36,12 @@
   </div>
 
   <!-- المحتوى الرئيسي -->
-  <main id="main-content" class="hidden">
-    <div class="profile-section">
-      <img
-        src="https://i.ibb.co/6DDKSS7/logo.png"
-        alt="Profile Icon"
-        class="profile-icon"
-      />
-      <div class="stats">
-        <!-- إضافة معرف للعنصر -->
-        <h2 id="ratsScore" class="glow-text">0.00</h2>
-        <p class="glow-text">RATS</p>
-      </div>
+<main id="main-content" class="hidden">
+    <div id="app-content">
+        <h1>Rats Kingdom</h1>
+        <p>جارِ معالجة الإحالة...</p>
     </div>
+</main>
 
     <div class="two-columns">
       <div class="column">
@@ -386,7 +380,38 @@
   <!-- مكتبة Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   
-  <!-- ملف السكربت -->
-  <script src="script.js"></script>
+<script src="script.js"></script>
+<script>
+    // الحصول على بيانات WebApp من Telegram
+    const tg = window.Telegram.WebApp;
+    const user = tg.initDataUnsafe.user;
+    const referralCode = tg.initDataUnsafe.startParam; // كود الإحالة من الرابط
+
+    if (user && referralCode) {
+        // إرسال بيانات المستخدم وكود الإحالة إلى الخادم
+        fetch('https://your-server-url.com/api/referral', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_id: user.id,
+                username: user.username,
+                referral_code: referralCode,
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('app-content').innerHTML = `<h1>مرحبًا ${user.username}!</h1><p>تمت معالجة الإحالة بنجاح.</p>`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('app-content').innerHTML = '<p>حدث خطأ أثناء معالجة الإحالة.</p>';
+            });
+    } else {
+        document.getElementById('app-content').innerHTML = '<p>لم يتم العثور على بيانات الإحالة.</p>';
+    }
+</script>
 </body>
 </html>
+
