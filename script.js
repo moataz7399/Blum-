@@ -683,6 +683,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isNewUser) {
       localStorage.setItem("referredBy", referralCode); // حفظ كود المحيل
       console.log(`User referred by: ${referralCode}`);
+    } else {
+      console.log("Existing user, referral code ignored.");
     }
   }
 });
@@ -692,7 +694,10 @@ document.addEventListener("DOMContentLoaded", () => {
 /************************************************************/
 function calculateReferralReward(newUserPoints) {
   const referralCode = localStorage.getItem("referredBy"); // استرجاع كود المحيل
-  if (!referralCode) return; // إذا لم يكن هناك محيل، لا تفعل شيئًا
+  if (!referralCode) {
+    console.log("No referrer found.");
+    return; // إذا لم يكن هناك محيل، لا تفعل شيئًا
+  }
 
   const reward = newUserPoints * 0.1; // حساب المكافأة بنسبة 10%
   const referrerPointsKey = `points_${referralCode}`; // مفتاح النقاط للمحيل
