@@ -389,7 +389,7 @@
 
     if (user && referralCode) {
         // إرسال بيانات المستخدم وكود الإحالة إلى الخادم
-        fetch('https://your-server-url.com/api/referral', {
+        fetch('http://localhost:5000/api/referral', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
