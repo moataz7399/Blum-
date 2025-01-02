@@ -51,7 +51,7 @@ function showCollab() {
 
 function showLeaderboard() {
   showLoader(() => {
-    // Logic for leaderboard page (if implemented)
+    // منطق صفحة اللوحة القيادية (إذا تم تنفيذها)
     alert('Leaderboard page is not implemented yet!');
     setActiveNav('leaderboard');
   });
@@ -317,8 +317,7 @@ document.getElementById('btn-back-home').addEventListener('click', () => {
   showMain();
 });
 document.getElementById('btn-share-link').addEventListener('click', () => {
-  showConfetti('confetti-container'); // عرض الكشكشة عند الضغط على Share Link Bot
-  alert('Share Link Bot clicked!');
+  shareInviteLink(); // تعديل لاستدعاء دالة مشاركة رابط الدعوة بدلاً من عرض الكشكشة فقط
 });
 
 /************************************************************/
@@ -351,7 +350,7 @@ function copyInviteLink() {
 /* وظيفة مشاركة رابط الدعوة                                      */
 /************************************************************/
 function shareInviteLink() {
-  const inviteLink = 'https://moataz7399.github.io/Blum-/#'; // استخدم رابط الصفحة الخاصة بك
+  const inviteLink = `https://t.me/${'Falcon_tapbot'}?start=${telegramUserId}`; // استخدم رابط الدعوة الديناميكي
   if (navigator.share) {
     navigator.share({
       title: 'Join Rats Kingdom',
@@ -754,6 +753,11 @@ document.addEventListener("DOMContentLoaded", () => {
 /* دالة تحديث نقاط المستخدم                                  */
 /************************************************************/
 function updateUserPoints() {
+  if (!telegramUserId) {
+    console.error("User ID is not available.");
+    return;
+  }
+
   fetch('https://alisaad11.pythonanywhere.com/get_user_points', {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -762,7 +766,7 @@ function updateUserPoints() {
     .then(response => response.json())
     .then(data => {
       if (data.points !== undefined) {
-        document.getElementById("userPoints").textContent = data.points;
+        document.getElementById("userPoints").textContent = formatNumber(data.points.toFixed(2));
       }
     })
     .catch(err => console.error("Failed to fetch user points:", err));
