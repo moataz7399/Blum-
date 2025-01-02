@@ -745,4 +745,25 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     console.warn('Telegram Web Apps API not found.');
   }
+
+  // استدعاء دالة updateUserPoints عند تحميل الصفحة
+  updateUserPoints();
 });
+
+/************************************************************/
+/* دالة تحديث نقاط المستخدم                                  */
+/************************************************************/
+function updateUserPoints() {
+  fetch('https://alisaad11.pythonanywhere.com/get_user_points', {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id: telegramUserId })
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.points !== undefined) {
+        document.getElementById("userPoints").textContent = data.points;
+      }
+    })
+    .catch(err => console.error("Failed to fetch user points:", err));
+}
