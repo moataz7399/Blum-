@@ -51,7 +51,7 @@ function showCollab() {
 
 function showLeaderboard() {
   showLoader(() => {
-    // منطق صفحة اللوحة القيادية (إذا تم تنفيذها)
+    // Logic for leaderboard page (if implemented)
     alert('Leaderboard page is not implemented yet!');
     setActiveNav('leaderboard');
   });
@@ -317,7 +317,8 @@ document.getElementById('btn-back-home').addEventListener('click', () => {
   showMain();
 });
 document.getElementById('btn-share-link').addEventListener('click', () => {
-  shareInviteLink(); // تعديل لاستدعاء دالة مشاركة رابط الدعوة بدلاً من عرض الكشكشة فقط
+  showConfetti('confetti-container'); // عرض الكشكشة عند الضغط على Share Link Bot
+  alert('Share Link Bot clicked!');
 });
 
 /************************************************************/
@@ -326,18 +327,16 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
 let telegramUserId = null; // متغير لتخزين معرف المستخدم
 
 function copyInviteLink() {
-  const botUsername = 'Falcon_tapbot'; // اسم البوت الخاص بك
-  const userId = telegramUserId; // يجب أن يحتوي على user_id الخاص بالمستخدم
+  const botUsername = 'Falcon_tapbot'; // اسم البوت
+  const userId = telegramUserId; // معرف المستخدم
 
   if (!userId) {
     alert('Unable to retrieve your user ID. Please try again.');
     return;
   }
 
-  // إنشاء الرابط المطلوب
   const inviteLink = `https://t.me/${botUsername}?start=${userId}`;
 
-  // نسخ الرابط إلى الحافظة
   navigator.clipboard.writeText(inviteLink).then(() => {
     showSuccessMessage('Invite link copied!');
   }).catch(err => {
@@ -350,7 +349,7 @@ function copyInviteLink() {
 /* وظيفة مشاركة رابط الدعوة                                      */
 /************************************************************/
 function shareInviteLink() {
-  const inviteLink = `https://t.me/${'Falcon_tapbot'}?start=${telegramUserId}`; // استخدم رابط الدعوة الديناميكي
+  const inviteLink = 'https://moataz7399.github.io/Blum-/#'; // استخدم رابط الصفحة الخاصة بك
   if (navigator.share) {
     navigator.share({
       title: 'Join Rats Kingdom',
@@ -717,48 +716,40 @@ document.addEventListener("DOMContentLoaded", () => {
     img.addEventListener('contextmenu', event => event.preventDefault());
   });
 
-  /* تهيئة Telegram Web Apps */
-  if (window.Telegram && window.Telegram.WebApp) {
-    window.Telegram.WebApp.ready();
+/* تهيئة Telegram Web Apps */
+if (window.Telegram && window.Telegram.WebApp) {
+  window.Telegram.WebApp.ready();
 
-    // استلام بيانات المستخدم من Telegram
-    telegramUserId = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.id : null;
+  // استلام بيانات المستخدم من Telegram
+  telegramUserId = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.id : null;
 
-    if (telegramUserId) {
-      // إرسال معرف المستخدم إلى الخادم الخلفي
-      fetch('https://your-pythonanywhere-domain.com/receive_user_id', { // استبدل بـ URL الخادم الخاص بك
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ user_id: telegramUserId })
-      })
+  if (telegramUserId) {
+    // إرسال معرف المستخدم إلى الخادم الخلفي
+    fetch('https://alisaad11.pythonanywhere.com', { // استبدل بـ URL الخادم الخاص بك
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ user_id: telegramUserId })
+    })
       .then(response => response.json())
       .then(data => {
         console.log('User ID sent successfully:', data);
+
+        // استدعاء دالة تحديث النقاط بعد إرسال معرف المستخدم
+        updateUserPoints();
       })
       .catch((error) => {
         console.error('Error sending user ID:', error);
       });
-    }
-  } else {
-    console.warn('Telegram Web Apps API not found.');
   }
+} else {
+  console.warn('Telegram Web Apps API not found.');
+}
 
-  // استدعاء دالة updateUserPoints عند تحميل الصفحة
-  updateUserPoints();
-});
-
-/************************************************************/
-/* دالة تحديث نقاط المستخدم                                  */
-/************************************************************/
+/* تحديث نقاط المستخدم */
 function updateUserPoints() {
-  if (!telegramUserId) {
-    console.error("User ID is not available.");
-    return;
-  }
-
-  fetch('https://alisaad11.pythonanywhere.com/get_user_points', {
+  fetch(`https://alisaad11.pythonanywhere.com/get_user_points`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ user_id: telegramUserId })
@@ -766,8 +757,15 @@ function updateUserPoints() {
     .then(response => response.json())
     .then(data => {
       if (data.points !== undefined) {
-        document.getElementById("userPoints").textContent = formatNumber(data.points.toFixed(2));
+        document.getElementById("userPoints").textContent = data.points;
       }
     })
     .catch(err => console.error("Failed to fetch user points:", err));
 }
+
+// استدعاء تهيئة Telegram Web App عند تحميل الصفحة
+document.addEventListener("DOMContentLoaded", () => {
+  if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.ready();
+  }
+});
