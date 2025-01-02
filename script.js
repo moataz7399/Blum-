@@ -325,31 +325,41 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
 /* وظيفة نسخ رابط الدعوة                                      */
 /************************************************************/
 function copyInviteLink() {
-  const inviteLink = 'https://example.com/invite'; // ضع رابط الدعوة الحقيقي هنا
-  navigator.clipboard.writeText(inviteLink).then(() => {
-    showSuccessMessage('Invite link copied!');
-  }).catch(err => {
-    console.error('Failed to copy invite link: ', err);
-  });
+  const user = window.Telegram.WebApp.initDataUnsafe.user;
+  if (user) {
+    const inviteLink = `https://t.me/Falcon_tapbot?start=${user.id}`;
+    navigator.clipboard.writeText(inviteLink).then(() => {
+      showSuccessMessage('Invite link copied!');
+    }).catch(err => {
+      console.error('Failed to copy invite link: ', err);
+    });
+  } else {
+    showSuccessMessage('Unable to retrieve user information.');
+  }
 }
 
 /************************************************************/
 /* وظيفة مشاركة رابط الدعوة                                      */
 /************************************************************/
 function shareInviteLink() {
-  const inviteLink = 'https://example.com/invite'; // ضع رابط الدعوة الحقيقي هنا
-  if (navigator.share) {
-    navigator.share({
-      title: 'Join Rats Kingdom',
-      text: 'Join me in Rats Kingdom!',
-      url: inviteLink
-    }).then(() => {
-      console.log('Invite link shared successfully.');
-    }).catch(err => {
-      console.error('Error sharing invite link: ', err);
-    });
+  const user = window.Telegram.WebApp.initDataUnsafe.user;
+  if (user) {
+    const inviteLink = `https://t.me/Falcon_tapbot?start=${user.id}`;
+    if (navigator.share) {
+      navigator.share({
+        title: 'Join Rats Kingdom',
+        text: 'Join me in Rats Kingdom!',
+        url: inviteLink
+      }).then(() => {
+        console.log('Invite link shared successfully.');
+      }).catch(err => {
+        console.error('Error sharing invite link: ', err);
+      });
+    } else {
+      alert('Share not supported on this browser.');
+    }
   } else {
-    alert('Share not supported on this browser.');
+    showSuccessMessage('Unable to retrieve user information.');
   }
 }
 
@@ -620,148 +630,6 @@ function clearConfetti(containerId) {
 }
 
 /************************************************************/
-/* وظائف API لجلب المستخدم ورابط الدعوة وتحديث النقاط        */
-/************************************************************/
-
-async function copyInviteLink() {
-  const userId = await getTelegramUserId();
-  const response = await fetch("/generate_invite_link", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ user_id: userId }),
-  });
-  const data = await response.json();
-  if (data.invite_link) {
-    navigator.clipboard.writeText(data.invite_link).then(() => {
-      showSuccessMessage("Invite link copied!");
-    });
-  } else {
-    showSuccessMessage("Failed to generate invite link.");
-  }
-}
-
-async function getTelegramUserId() {
-  return new Promise((resolve) => {
-    if (Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
-      resolve(Telegram.WebApp.initDataUnsafe.user.id);
-    } else {
-      console.error("Telegram WebApp not initialized");
-      resolve(null);
-    }
-  });
-}
-
-async function updatePoints(points) {
-  const userId = await getTelegramUserId();
-  const response = await fetch("/update_points", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ user_id: userId, points: points }),
-  });
-  const data = await response.json();
-  if (data.status === "success") {
-    showSuccessMessage("Points updated successfully!");
-  } else {
-    console.error(data.message);
-  }
-}
-
-/************************************************************/
-/* تنقل بين الصفحات + Loader                                */
-/************************************************************/
-function showLoader(callback) {
-  const loader = document.querySelector(".loader");
-  loader.classList.remove("hidden"); // إظهار شاشة التحميل
-  setTimeout(() => {
-    loader.classList.add("hidden"); // إخفاء شاشة التحميل بعد ثانية واحدة
-    if (typeof callback === "function") callback();
-  }, 1000); // مدة التحميل 1 ثانية
-}
-
-function showMain() {
-  showLoader(() => {
-    document.querySelector("header").classList.remove("hidden"); // إظهار الهيدر
-    document.getElementById("main-content").classList.remove("hidden");
-    document.getElementById("friends-page").classList.add("hidden");
-    document.getElementById("collab-page").classList.add("hidden");
-    document.getElementById("login-daily-page").classList.add("hidden"); /* إخفاء Login Daily */
-    document.getElementById("game-overlay").classList.add("hidden");
-    document.getElementById("end-game-screen").classList.add("hidden");
-    setActiveNav("main");
-  });
-}
-
-function showFriends() {
-  showLoader(() => {
-    document.querySelector("header").classList.add("hidden"); // إخفاء الهيدر
-    document.getElementById("main-content").classList.add("hidden");
-    document.getElementById("friends-page").classList.remove("hidden");
-    document.getElementById("collab-page").classList.add("hidden");
-    document.getElementById("login-daily-page").classList.add("hidden"); /* إخفاء Login Daily */
-    document.getElementById("game-overlay").classList.add("hidden");
-    document.getElementById("end-game-screen").classList.add("hidden");
-    setActiveNav("friends");
-  });
-}
-
-function setActiveNav(page) {
-  const navLinks = document.querySelectorAll(".bottom-nav a");
-  navLinks.forEach((link) => {
-    if (link.getAttribute("onclick") === `handleNavClick('${page}')`) {
-      link.classList.add("active");
-    } else {
-      link.classList.remove("active");
-    }
-  });
-}
-
-/************************************************************/
-/* وظائف إضافية: عرض رسالة النجاح                          */
-/************************************************************/
-function showSuccessMessage(message = "Success") {
-  const successMessage = document.createElement("div");
-  successMessage.textContent = message;
-  successMessage.classList.add("success-message");
-
-  // إضافة الرسالة إلى الصفحة
-  document.body.appendChild(successMessage);
-
-  // إزالة الرسالة بعد ثانية واحدة
-  setTimeout(() => {
-    successMessage.remove();
-  }, 1000);
-}
-
-/************************************************************/
-/* دالة التعامل مع زر Copy Invite Link                     */
-/************************************************************/
-document.querySelectorAll(".friends-buttons button").forEach((button) => {
-  button.addEventListener("click", async () => {
-    if (button.textContent.includes("Copy")) {
-      await copyInviteLink();
-    }
-  });
-});
-
-/************************************************************/
-/* إعداد Telegram WebApp عند التحميل                        */
-/************************************************************/
-document.addEventListener("DOMContentLoaded", () => {
-  const splashScreen = document.getElementById("splash-screen");
-  const progress = document.querySelector(".progress-bar .progress");
-
-  setTimeout(() => {
-    progress.style.width = "100%";
-  }, 10);
-
-  setTimeout(() => {
-    splashScreen.style.display = "none";
-    showMain(); // عرض الصفحة الرئيسية بعد شاشة الافتتاح
-    document.querySelector(".progress-bar").classList.add("hidden"); // إخفاء شريط التحميل
-  }, 5000);
-});
-
-/************************************************************/
 /* شغل شاشة الافتتاح                                      */
 /************************************************************/
 document.addEventListener("DOMContentLoaded", () => {
@@ -845,4 +713,23 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('img').forEach(img => {
     img.addEventListener('contextmenu', event => event.preventDefault());
   });
+
+  // إرسال معرف المستخدم إلى السيرفر عند تحميل الصفحة
+  const user = window.Telegram.WebApp.initDataUnsafe.user;
+  if (user) {
+    // يمكنك إرسال معرف المستخدم إلى السيرفر هنا إذا لزم الأمر
+    console.log(`User ID: ${user.id}`);
+    // على سبيل المثال، يمكنك استخدام fetch لإرسال المعرف إلى السيرفر
+    // fetch(`/api/get_user/${user.id}`)
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     if (data.error) {
+    //       // المستخدم ليس مسجلاً، يمكن إظهار رسالة أو إجراء آخر
+    //     } else {
+    //       // المستخدم مسجل، تحديث النقاط أو غيرها
+    //       document.getElementById('ratsScore').textContent = formatNumber(data.points.toFixed(2));
+    //     }
+    //   })
+    //   .catch(error => console.error('Error:', error));
+  }
 });
