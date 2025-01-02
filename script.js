@@ -327,15 +327,23 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
 let telegramUserId = null; // متغير لتخزين معرف المستخدم
 
 function copyInviteLink() {
-  if (!telegramUserId) {
-    showSuccessMessage('Unable to retrieve your Telegram ID.');
+  const botUsername = 'Falcon_tapbot'; // اسم البوت الخاص بك
+  const userId = telegramUserId; // يجب أن يحتوي على user_id الخاص بالمستخدم
+
+  if (!userId) {
+    alert('Unable to retrieve your user ID. Please try again.');
     return;
   }
 
-  navigator.clipboard.writeText(telegramUserId.toString()).then(() => {
-    showSuccessMessage('Your Telegram ID copied to clipboard!');
+  // إنشاء الرابط المطلوب
+  const inviteLink = `https://t.me/${botUsername}?start=${userId}`;
+
+  // نسخ الرابط إلى الحافظة
+  navigator.clipboard.writeText(inviteLink).then(() => {
+    showSuccessMessage('Invite link copied!');
   }).catch(err => {
-    console.error('Failed to copy Telegram ID: ', err);
+    console.error('Failed to copy invite link: ', err);
+    alert('Failed to copy the link. Please try again.');
   });
 }
 
@@ -719,7 +727,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (telegramUserId) {
       // إرسال معرف المستخدم إلى الخادم الخلفي
-      fetch('https://alisaad11.pythonanywhere.com', { // استبدل بـ URL الخادم الخاص بك
+      fetch('https://your-pythonanywhere-domain.com/receive_user_id', { // استبدل بـ URL الخادم الخاص بك
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
