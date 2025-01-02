@@ -324,47 +324,38 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
 /************************************************************/
 /* وظيفة نسخ رابط الدعوة                                      */
 /************************************************************/
-function copyInviteLink() {
-  // التحقق من وجود بيانات Telegram
-  if (window.Telegram && window.Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
-    const userId = Telegram.WebApp.initDataUnsafe.user.id; // استخراج معرف المستخدم
-    const inviteLink = `https://t.me/Falcon_tapbot?start=${userId}`; // إنشاء رابط الإحالة
+let telegramUserId = null; // متغير لتخزين معرف المستخدم
 
-    // نسخ الرابط إلى الحافظة
-    navigator.clipboard.writeText(inviteLink).then(() => {
-      showSuccessMessage("تم نسخ رابط الإحالة بنجاح!"); // عرض رسالة نجاح
-    }).catch(err => {
-      alert("حدث خطأ أثناء نسخ الرابط: " + err); // عرض رسالة خطأ
-    });
-  } else {
-    alert("لم يتم العثور على بيانات المستخدم. تأكد من فتح الصفحة داخل بوت Telegram."); // تحذير إذا لم يتم العثور على البيانات
+function copyInviteLink() {
+  if (!telegramUserId) {
+    showSuccessMessage('Unable to retrieve your Telegram ID.');
+    return;
   }
+
+  navigator.clipboard.writeText(telegramUserId.toString()).then(() => {
+    showSuccessMessage('Your Telegram ID copied to clipboard!');
+  }).catch(err => {
+    console.error('Failed to copy Telegram ID: ', err);
+  });
 }
 
 /************************************************************/
 /* وظيفة مشاركة رابط الدعوة                                      */
 /************************************************************/
 function shareInviteLink() {
-  // التحقق من وجود بيانات Telegram
-  if (window.Telegram && window.Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
-    const userId = Telegram.WebApp.initDataUnsafe.user.id; // استخراج معرف المستخدم
-    const inviteLink = `https://t.me/Falcon_tapbot?start=${userId}`; // إنشاء رابط الإحالة
-
-    if (navigator.share) {
-      navigator.share({
-        title: 'Join Rats Kingdom',
-        text: 'Join me in Rats Kingdom!',
-        url: inviteLink
-      }).then(() => {
-        console.log('Invite link shared successfully.');
-      }).catch(err => {
-        console.error('Error sharing invite link: ', err);
-      });
-    } else {
-      alert('Share not supported on this browser.');
-    }
+  const inviteLink = 'https://moataz7399.github.io/Blum-/#'; // استخدم رابط الصفحة الخاصة بك
+  if (navigator.share) {
+    navigator.share({
+      title: 'Join Rats Kingdom',
+      text: 'Join me in Rats Kingdom!',
+      url: inviteLink
+    }).then(() => {
+      console.log('Invite link shared successfully.');
+    }).catch(err => {
+      console.error('Error sharing invite link: ', err);
+    });
   } else {
-    alert("لم يتم العثور على بيانات المستخدم. تأكد من فتح الصفحة داخل بوت Telegram."); // تحذير إذا لم يتم العثور على البيانات
+    alert('Share not supported on this browser.');
   }
 }
 
@@ -373,24 +364,17 @@ function shareInviteLink() {
 /************************************************************/
 function showSuccessMessage(message = 'Success') {
   // إنشاء الرسالة
-  const successMessage = document.createElement("div");
+  const successMessage = document.createElement('div');
   successMessage.textContent = message;
-  successMessage.style.position = "fixed";
-  successMessage.style.bottom = "20px";
-  successMessage.style.left = "50%";
-  successMessage.style.transform = "translateX(-50%)";
-  successMessage.style.backgroundColor = "#28a745";
-  successMessage.style.color = "#fff";
-  successMessage.style.padding = "10px 20px";
-  successMessage.style.borderRadius = "5px";
-  successMessage.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
-  successMessage.style.zIndex = "1000";
+  successMessage.classList.add('success-message');
 
+  // إضافة الرسالة إلى الصفحة
   document.body.appendChild(successMessage);
 
+  // إزالة الرسالة بعد ثانية واحدة
   setTimeout(() => {
     successMessage.remove();
-  }, 2000);
+  }, 1000);
 }
 
 /************************************************************/
@@ -726,69 +710,31 @@ document.addEventListener("DOMContentLoaded", () => {
     img.addEventListener('contextmenu', event => event.preventDefault());
   });
 
-  // إرسال معرف المستخدم إلى السيرفر عند تحميل الصفحة
-  const user = window.Telegram.WebApp.initDataUnsafe.user;
-  if (user) {
-    // يمكنك إرسال معرف المستخدم إلى السيرفر هنا إذا لزم الأمر
-    console.log(`User ID: ${user.id}`);
-    // على سبيل المثال، يمكنك استخدام fetch لإرسال المعرف إلى السيرفر
-    // fetch(`/api/get_user/${user.id}`)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     if (data.error) {
-    //       // المستخدم ليس مسجلاً، يمكن إظهار رسالة أو إجراء آخر
-    //     } else {
-    //       // المستخدم مسجل، تحديث النقاط أو غيرها
-    //       document.getElementById('ratsScore').textContent = formatNumber(data.points.toFixed(2));
-    //     }
-    //   })
-    //   .catch(error => console.error('Error:', error));
-  }
-});
+  /* تهيئة Telegram Web Apps */
+  if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.ready();
 
-/************************************************************/
-/* وظيفة نسخ رابط الدعوة                                      */
-/************************************************************/
-function copyInviteLink() {
-  // التحقق من وجود بيانات Telegram
-  if (window.Telegram && window.Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
-    const userId = Telegram.WebApp.initDataUnsafe.user.id; // استخراج معرف المستخدم
-    const inviteLink = `https://t.me/Falcon_tapbot?start=${userId}`; // إنشاء رابط الإحالة
+    // استلام بيانات المستخدم من Telegram
+    telegramUserId = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.id : null;
 
-    // نسخ الرابط إلى الحافظة
-    navigator.clipboard.writeText(inviteLink).then(() => {
-      showSuccessMessage("تم نسخ رابط الإحالة بنجاح!"); // عرض رسالة نجاح
-    }).catch(err => {
-      alert("حدث خطأ أثناء نسخ الرابط: " + err); // عرض رسالة خطأ
-    });
-  } else {
-    alert("لم يتم العثور على بيانات المستخدم. تأكد من فتح الصفحة داخل بوت Telegram."); // تحذير إذا لم يتم العثور على البيانات
-  }
-}
-
-/************************************************************/
-/* وظيفة مشاركة رابط الدعوة                                      */
-/************************************************************/
-function shareInviteLink() {
-  // التحقق من وجود بيانات Telegram
-  if (window.Telegram && window.Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
-    const userId = Telegram.WebApp.initDataUnsafe.user.id; // استخراج معرف المستخدم
-    const inviteLink = `https://t.me/Falcon_tapbot?start=${userId}`; // إنشاء رابط الإحالة
-
-    if (navigator.share) {
-      navigator.share({
-        title: 'Join Rats Kingdom',
-        text: 'Join me in Rats Kingdom!',
-        url: inviteLink
-      }).then(() => {
-        console.log('Invite link shared successfully.');
-      }).catch(err => {
-        console.error('Error sharing invite link: ', err);
+    if (telegramUserId) {
+      // إرسال معرف المستخدم إلى الخادم الخلفي
+      fetch('https://alisaad11.pythonanywhere.com', { // استبدل بـ URL الخادم الخاص بك
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user_id: telegramUserId })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('User ID sent successfully:', data);
+      })
+      .catch((error) => {
+        console.error('Error sending user ID:', error);
       });
-    } else {
-      alert('Share not supported on this browser.');
     }
   } else {
-    alert("لم يتم العثور على بيانات المستخدم. تأكد من فتح الصفحة داخل بوت Telegram."); // تحذير إذا لم يتم العثور على البيانات
+    console.warn('Telegram Web Apps API not found.');
   }
-}
+});
