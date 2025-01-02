@@ -325,41 +325,31 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
 /* وظيفة نسخ رابط الدعوة                                      */
 /************************************************************/
 function copyInviteLink() {
-  const user = window.Telegram.WebApp.initDataUnsafe.user;
-  if (user) {
-    const inviteLink = `https://t.me/Falcon_tapbot?start=${user.id}`;
-    navigator.clipboard.writeText(inviteLink).then(() => {
-      showSuccessMessage('Invite link copied!');
-    }).catch(err => {
-      console.error('Failed to copy invite link: ', err);
-    });
-  } else {
-    showSuccessMessage('Unable to retrieve user information.');
-  }
+  const inviteLink = 'https://example.com/invite'; // ضع رابط الدعوة الحقيقي هنا
+  navigator.clipboard.writeText(inviteLink).then(() => {
+    showSuccessMessage('Invite link copied!');
+  }).catch(err => {
+    console.error('Failed to copy invite link: ', err);
+  });
 }
 
 /************************************************************/
 /* وظيفة مشاركة رابط الدعوة                                      */
 /************************************************************/
 function shareInviteLink() {
-  const user = window.Telegram.WebApp.initDataUnsafe.user;
-  if (user) {
-    const inviteLink = `https://t.me/Falcon_tapbot?start=${user.id}`;
-    if (navigator.share) {
-      navigator.share({
-        title: 'Join Rats Kingdom',
-        text: 'Join me in Rats Kingdom!',
-        url: inviteLink
-      }).then(() => {
-        console.log('Invite link shared successfully.');
-      }).catch(err => {
-        console.error('Error sharing invite link: ', err);
-      });
-    } else {
-      alert('Share not supported on this browser.');
-    }
+  const inviteLink = 'https://example.com/invite'; // ضع رابط الدعوة الحقيقي هنا
+  if (navigator.share) {
+    navigator.share({
+      title: 'Join Rats Kingdom',
+      text: 'Join me in Rats Kingdom!',
+      url: inviteLink
+    }).then(() => {
+      console.log('Invite link shared successfully.');
+    }).catch(err => {
+      console.error('Error sharing invite link: ', err);
+    });
   } else {
-    showSuccessMessage('Unable to retrieve user information.');
+    alert('Share not supported on this browser.');
   }
 }
 
@@ -657,6 +647,46 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector('.progress-bar').classList.add('hidden'); // إخفاء شريط التحميل
   }, 5000);
 
+// دالة لنسخ رابط الإحالة
+function copyInviteLink() {
+  // التحقق من وجود بيانات Telegram
+  if (window.Telegram && window.Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
+    const userId = Telegram.WebApp.initDataUnsafe.user.id; // استخراج معرف المستخدم
+    const inviteLink = `https://t.me/Falcon_tapbot?start=${userId}`; // إنشاء رابط الإحالة
+
+    // نسخ الرابط إلى الحافظة
+    navigator.clipboard.writeText(inviteLink).then(() => {
+      showSuccessMessage("تم نسخ رابط الإحالة بنجاح!"); // عرض رسالة نجاح
+    }).catch(err => {
+      alert("حدث خطأ أثناء نسخ الرابط: " + err); // عرض رسالة خطأ
+    });
+  } else {
+    alert("لم يتم العثور على بيانات المستخدم. تأكد من فتح الصفحة داخل بوت Telegram."); // تحذير إذا لم يتم العثور على البيانات
+  }
+}
+
+// دالة لعرض رسالة نجاح (اختياري)
+function showSuccessMessage(message) {
+  const successMessage = document.createElement("div");
+  successMessage.textContent = message;
+  successMessage.style.position = "fixed";
+  successMessage.style.bottom = "20px";
+  successMessage.style.left = "50%";
+  successMessage.style.transform = "translateX(-50%)";
+  successMessage.style.backgroundColor = "#28a745";
+  successMessage.style.color = "#fff";
+  successMessage.style.padding = "10px 20px";
+  successMessage.style.borderRadius = "5px";
+  successMessage.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+  successMessage.style.zIndex = "1000";
+
+  document.body.appendChild(successMessage);
+
+  setTimeout(() => {
+    successMessage.remove();
+  }, 2000);
+}
+
   // إضافة مستمعي الأحداث لأزرار المهام
   document.querySelectorAll('.action-btn').forEach(button => {
     button.addEventListener('click', () => {
@@ -713,23 +743,4 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('img').forEach(img => {
     img.addEventListener('contextmenu', event => event.preventDefault());
   });
-
-  // إرسال معرف المستخدم إلى السيرفر عند تحميل الصفحة
-  const user = window.Telegram.WebApp.initDataUnsafe.user;
-  if (user) {
-    // يمكنك إرسال معرف المستخدم إلى السيرفر هنا إذا لزم الأمر
-    console.log(`User ID: ${user.id}`);
-    // على سبيل المثال، يمكنك استخدام fetch لإرسال المعرف إلى السيرفر
-    // fetch(`/api/get_user/${user.id}`)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     if (data.error) {
-    //       // المستخدم ليس مسجلاً، يمكن إظهار رسالة أو إجراء آخر
-    //     } else {
-    //       // المستخدم مسجل، تحديث النقاط أو غيرها
-    //       document.getElementById('ratsScore').textContent = formatNumber(data.points.toFixed(2));
-    //     }
-    //   })
-    //   .catch(error => console.error('Error:', error));
-  }
 });
