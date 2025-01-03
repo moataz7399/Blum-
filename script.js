@@ -573,7 +573,7 @@ function unlockDay(dayItem, isCompleted) {
   if (overlay) {
     if (isCompleted) {
       overlay.innerHTML = '<i class="fas fa-check"></i>'; // أيقونة الصح
-      overlay.classList.remove('hidden'); // **إزالة فئة hidden لجعل overlay مرئيًا**
+      overlay.classList.remove('hidden'); // إزالة فئة hidden لجعل overlay مرئيًا
       overlay.classList.add('completed');
     } else {
       overlay.classList.add('hidden'); // إخفاء التظليل وإيقونة القفل
