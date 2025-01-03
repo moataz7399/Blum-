@@ -6,7 +6,15 @@
   font-family: 'Arial', sans-serif;
 }
 
-/* منع تفعيل قائمة السياق والاختيارات على الصور */
+/* منع تفعيل قائمة السياق والاختيارات على الصور والعناصر الأخرى */
+body * {
+  user-select: none; /* منع تحديد النص */
+}
+
+button, input, textarea, select {
+  user-select: auto; /* السماح بتحديد النص في العناصر التفاعلية */
+}
+
 img {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -290,7 +298,7 @@ header .glow-text,
 }
 
 .glow-text {
-  text-shadow: none;
+  text-shadow: none; /* إزالة التوهج */
 }
 
 .hidden {
@@ -360,6 +368,11 @@ header {
 .button-card h3 {
   font-size: 0.9rem;
   margin-bottom: 5px;
+}
+
+.button-card p {
+  font-size: 0.7rem; /* تقليل حجم الخط */
+  color: #fff;
 }
 
 .button-card .card-number {
@@ -474,6 +487,7 @@ header {
 .task-card h3, 
 .task-card p {
   color: #fff;
+  font-size: 0.9rem; /* تقليل حجم الخط */
 }
 
 /* أزرار Start/Claim */
@@ -524,7 +538,7 @@ header {
 
 .falling-emoji {
   position: absolute;
-  font-size: 2rem;
+  font-size: 3rem; /* زيادة حجم الأيقونة */
   color: #fff;
   cursor: pointer;
   user-select: none;
@@ -556,7 +570,7 @@ header {
 #falconScore, #bombScore {
   font-size: 1.4rem;
   color: #fff;
-  text-shadow: 0 0 3px #fff, 0 0 6px #ff0, 0 0 10px #ff0;
+  /* تم إزالة text-shadow لإزالة التوهج */
 }
 
 .timer-panel {
