@@ -9,7 +9,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="style.css"> <!-- تم تعديل الرابط هنا -->
+  <link rel="stylesheet" href="style.css">
   
   <!-- Telegram Web Apps JavaScript API -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -21,9 +21,7 @@
   </div>
 
   <!-- شاشة التحميل -->
-  <div id="splash-screen">
-    <!-- يمكن وضع محتويات شاشة التحميل هنا إذا لزم الأمر -->
-  </div>
+  <div id="splash-screen"></div>
 
   <!-- الهيدر -->
   <header class="hidden">
@@ -44,7 +42,6 @@
         src="https://i.ibb.co/6DDKSS7/logo.png"
         alt="Profile Icon"
         class="profile-icon"
-        draggable="false" <!-- منع سحب الصورة -->
       />
       <div class="stats">
         <!-- إضافة معرف للعنصر -->
@@ -102,13 +99,14 @@
   <!-- صفحة الأصدقاء -->
   <div id="friends-page" class="hidden">
     <div class="friends-section">
-      <img
-        src="https://i.ibb.co/6DDKSS7/logo.png"
-        alt="Profile Icon"
-        class="profile-icon"
-        draggable="false" <!-- منع سحب الصورة -->
-      />
+      <img src="https://i.ibb.co/6DDKSS7/logo.png" alt="Profile Icon" class="profile-icon" />
       <h2 class="glow-text">𝗜𝗻𝘃𝗶𝘁𝗲 𝗳𝗿𝗶𝗲𝗻𝗱𝘀 𝗮𝗻𝗱 𝗴𝗲𝘁 𝗺𝗼𝗿𝗲 𝗥𝗔𝗧𝗦</h2>
+      
+      <!-- عداد الأصدقاء المدعوين -->
+      <div class="invite-counter">
+        <p class="glow-text">Friends invited: <span id="friendsCount">0</span></p>
+      </div>
+
       <div class="friends-buttons">
         <button onclick="copyInviteLink()">𝐂𝐨𝐩𝐲 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
         <button onclick="shareInviteLink()">𝐒𝐡𝐚𝐫𝐞 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
@@ -116,7 +114,6 @@
 
       <!-- إضافة المربع الجديد -->
       <div class="friends-table">
-        <!-- يمكنك إضافة محتويات الجدول هنا -->
         <p style="text-align: center; color: #fff;">This is your custom table area</p>
       </div>
     </div>
@@ -130,7 +127,6 @@
         <img 
           src="https://i.ibb.co/xJH1Qpz/Picsart-24-12-26-03-59-05-253.png" 
           alt="Put ... next to your name"
-          draggable="false" <!-- منع سحب الصورة -->
         />
         <div>
           <h3 class="glow-text">Put ... next to your name</h3>
@@ -144,7 +140,6 @@
         <img 
           src="https://i.ibb.co/V9FPRbL/Picsart-24-12-26-03-07-35-183.png" 
           alt="Follow Telegram Channel"
-          draggable="false" <!-- منع سحب الصورة -->
         />
         <div>
           <h3 class="glow-text">Follow Telegram Channel</h3>
@@ -158,7 +153,6 @@
         <img 
           src="https://i.ibb.co/BV0tDyw/Picsart-24-12-26-03-13-44-267.png"
           alt="Follow us on X"
-          draggable="false" <!-- منع سحب الصورة -->
         />
         <div>
           <h3 class="glow-text">Follow us on X</h3>
@@ -172,7 +166,6 @@
         <img 
           src="https://i.ibb.co/N28QCRM/Picsart-24-12-26-03-23-37-573.png"
           alt="Boost Channel"
-          draggable="false" <!-- منع سحب الصورة -->
         />
         <div>
           <h3 class="glow-text">Boost Channel</h3>
@@ -187,7 +180,6 @@
         <img 
           src="https://i.ibb.co/wNqSmVn/Picsart-24-12-26-10-58-21-444.png" 
           alt="YouTube Subscribe"
-          draggable="false" <!-- منع سحب الصورة -->
         />
         <div>
           <h3 class="glow-text">Subscribe to our YouTube channel</h3>
@@ -202,7 +194,6 @@
         <img 
           src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
           alt="Invite 3 Friends"
-          draggable="false" <!-- منع سحب الصورة -->
         />
         <div>
           <h3 class="glow-text">Invite 3 friends</h3>
@@ -216,7 +207,6 @@
         <img 
           src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
           alt="Invite 5 Friends"
-          draggable="false" <!-- منع سحب الصورة -->
         />
         <div>
           <h3 class="glow-text">Invite 5 friends</h3>
@@ -230,7 +220,6 @@
         <img 
           src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
           alt="Invite 25 Friends"
-          draggable="false" <!-- منع سحب الصورة -->
         />
         <div>
           <h3 class="glow-text">Invite 25 friends</h3>
@@ -249,10 +238,9 @@
       <p class="header-subtitle">Log in daily to the bot and get mysterious rewards</p>
     </div>
     <div class="login-daily-table">
-      <!-- الخانات من 1 إلى 9 -->
       <div class="day-item" data-day="1">
         <div class="day-box">
-          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="1 Day" draggable="false" /> <!-- منع سحب الصورة -->
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="1 Day">
           <div class="overlay">
             <i class="fas fa-lock"></i>
           </div>
@@ -261,7 +249,7 @@
       </div>
       <div class="day-item" data-day="2">
         <div class="day-box">
-          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="2 Day" draggable="false" /> <!-- منع سحب الصورة -->
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="2 Day">
           <div class="overlay">
             <i class="fas fa-lock"></i>
           </div>
@@ -270,7 +258,7 @@
       </div>
       <div class="day-item" data-day="3">
         <div class="day-box">
-          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="3 Day" draggable="false" /> <!-- منع سحب الصورة -->
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="3 Day">
           <div class="overlay">
             <i class="fas fa-lock"></i>
           </div>
@@ -279,7 +267,7 @@
       </div>
       <div class="day-item" data-day="4">
         <div class="day-box">
-          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="4 Day" draggable="false" /> <!-- منع سحب الصورة -->
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="4 Day">
           <div class="overlay">
             <i class="fas fa-lock"></i>
           </div>
@@ -288,7 +276,7 @@
       </div>
       <div class="day-item" data-day="5">
         <div class="day-box">
-          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="5 Day" draggable="false" /> <!-- منع سحب الصورة -->
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="5 Day">
           <div class="overlay">
             <i class="fas fa-lock"></i>
           </div>
@@ -297,7 +285,7 @@
       </div>
       <div class="day-item" data-day="6">
         <div class="day-box">
-          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="6 Day" draggable="false" /> <!-- منع سحب الصورة -->
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="6 Day">
           <div class="overlay">
             <i class="fas fa-lock"></i>
           </div>
@@ -306,7 +294,7 @@
       </div>
       <div class="day-item" data-day="7">
         <div class="day-box">
-          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="7 Day" draggable="false" /> <!-- منع سحب الصورة -->
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="7 Day">
           <div class="overlay">
             <i class="fas fa-lock"></i>
           </div>
@@ -315,7 +303,7 @@
       </div>
       <div class="day-item" data-day="8">
         <div class="day-box">
-          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="8 Day" draggable="false" /> <!-- منع سحب الصورة -->
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="8 Day">
           <div class="overlay">
             <i class="fas fa-lock"></i>
           </div>
@@ -324,14 +312,13 @@
       </div>
       <div class="day-item" data-day="9">
         <div class="day-box">
-          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="9 Day" draggable="false" /> <!-- منع سحب الصورة -->
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="9 Day">
           <div class="overlay">
             <i class="fas fa-lock"></i>
           </div>
         </div>
         <div class="day-label">9 Day</div>
       </div>
-      <!-- تم حذف الخانة العاشرة -->
     </div>
     <!-- إضافة حاوية الكشكشة في صفحة Login Daily -->
     <div id="confetti-container-login" class="confetti-container"></div>
@@ -340,8 +327,8 @@
   <!-- واجهة اللعبة -->
   <div id="game-overlay" class="hidden">
     <div class="score-panel">
-      <p>falcon : <span id="falconScore">0</span></p>
-      <p>bombs : <span id="bombScore">0</span></p>
+      <p>𝗙𝗮𝗹𝗰𝗼𝗻𝘀: <span id="falconScore">0</span></p>
+      <p>𝗕𝗼𝗺𝗯𝘀: <span id="bombScore">0</span></p>
     </div>
     <div class="timer-panel">
       <p id="timer">30.00</p>
@@ -398,6 +385,12 @@
 
   <!-- مكتبة Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  
+  <script src="script.js"></script>
+</body>
+</html>
+
+ src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   
   <script src="script.js"></script>
 </body>
