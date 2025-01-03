@@ -573,7 +573,7 @@ function unlockDay(dayItem, isCompleted) {
   if (overlay) {
     if (isCompleted) {
       overlay.innerHTML = '<i class="fas fa-check"></i>'; // أيقونة الصح
-      overlay.classList.remove('hidden'); // إزالة فئة hidden لجعل overlay مرئيًا
+      overlay.classList.remove('hidden'); // **إزالة فئة hidden لجعل overlay مرئيًا**
       overlay.classList.add('completed');
     } else {
       overlay.classList.add('hidden'); // إخفاء التظليل وإيقونة القفل
@@ -663,6 +663,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // إضافة مستمعي الأحداث لأزرار المهام
   document.querySelectorAll('.action-btn').forEach(button => {
+    const dataLink = button.getAttribute('data-link');
+    const claimedTasks = JSON.parse(localStorage.getItem('claimedTasks')) || [];
+
+    if (claimedTasks.includes(dataLink)) {
+      // إذا كانت المهمة قد تم تنفيذها مسبقًا
+      button.textContent = '✓';
+      button.classList.add('completed-btn');
+      button.disabled = true;
+    }
+
     button.addEventListener('click', () => {
       if (button.textContent.trim() === 'Start') {
         // فتح الرابط المرتبط بالمهمة
@@ -675,10 +685,14 @@ document.addEventListener("DOMContentLoaded", () => {
         button.textContent = 'Wait...';
         button.disabled = true;
         setTimeout(() => {
-          button.textContent = 'Claim';
-          button.classList.add('claim-btn');
-          button.classList.remove('start-btn');
-          button.disabled = false;
+          // تحقق مما إذا كانت المهمة قد تم تنفيذها مسبقًا قبل التحويل إلى Claim
+          const updatedClaimedTasks = JSON.parse(localStorage.getItem('claimedTasks')) || [];
+          if (!updatedClaimedTasks.includes(link)) {
+            button.textContent = 'Claim';
+            button.classList.add('claim-btn');
+            button.classList.remove('start-btn');
+            button.disabled = false;
+          }
         }, 10000); // انتظار 10 ثوانٍ
       } else if (button.textContent.trim() === 'Claim') {
         // الحصول على النقاط من السمة data-points
@@ -698,7 +712,15 @@ document.addEventListener("DOMContentLoaded", () => {
         button.classList.add('completed-btn');
         button.classList.remove('claim-btn');
         button.disabled = true;
-        
+
+        // إضافة المهمة إلى قائمة المهام المنجزة
+        let claimedTasks = JSON.parse(localStorage.getItem('claimedTasks')) || [];
+        const dataLink = button.getAttribute('data-link');
+        if (dataLink && !claimedTasks.includes(dataLink)) {
+          claimedTasks.push(dataLink);
+          localStorage.setItem('claimedTasks', JSON.stringify(claimedTasks));
+        }
+
         // إضافة تأثير الاهتزاز عند الضغط على Claim
         if (navigator.vibrate) {
           navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
@@ -716,6 +738,11 @@ document.addEventListener("DOMContentLoaded", () => {
   /* منع قائمة السياق عند الضغط بزر الماوس الأيمن على الصور */
   document.querySelectorAll('img').forEach(img => {
     img.addEventListener('contextmenu', event => event.preventDefault());
+  });
+
+  /* منع قائمة السياق عند الضغط بزر الماوس الأيمن على روابط التنقل */
+  document.querySelectorAll('.bottom-nav a').forEach(link => {
+    link.addEventListener('contextmenu', event => event.preventDefault());
   });
 
   /* تهيئة Telegram Web Apps */
