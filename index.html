@@ -387,11 +387,33 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   
   <script src="script.js"></script>
-</body>
-</html>
 
- src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-  
-  <script src="script.js"></script>
+  <!-- توليد رابط الدعوة -->
+  <script>
+    function copyInviteLink() {
+      let inviteLink = generateInviteLink(); 
+      navigator.clipboard.writeText(inviteLink);
+      alert("Invite link copied!");
+    }
+
+    function shareInviteLink() {
+      let inviteLink = generateInviteLink();
+      navigator.share({
+        title: 'Invite Link',
+        text: 'Join my team on RATS Kingdom!',
+        url: inviteLink
+      });
+    }
+
+    function generateInviteLink() {
+      let userId = getCurrentUserId(); // جلب معرف المستخدم الحالي
+      return `https://web.telegram.org/k/#@Falcon_Community_Bot?start=${userId}`; // رابط مباشر إلى ويب تليجرام مع معرّف المستخدم
+    }
+
+    function getCurrentUserId() {
+      return "USER123"; // استبدل بمعرف المستخدم الديناميكي من قاعدة البيانات أو الجلسة
+    }
+  </script>
+
 </body>
 </html>
