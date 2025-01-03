@@ -26,20 +26,6 @@ img {
   pointer-events: auto; /* تأكد من إمكانية التفاعل مع الصور */
 }
 
-/* منع التحديد والتظليل على العناصر المتعلقة بالهدية اليومية */
-.day-item, .day-box {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version */
-  -webkit-user-drag: none; /* Disable image drag in Safari */
-  /* touch-action: none; */ /* إزالة هذه الخاصية للسماح بالتمرير */
-  -webkit-tap-highlight-color: transparent; /* إزالة التظليل عند الضغط على العناصر في Safari */
-  outline: none; /* إزالة أي خطوط خارجية */
-}
-
 /* شريط التحميل الأخضر في أعلى الصفحة */
 .progress-bar {
   position: fixed; /* ثابت في الصفحة */
@@ -137,7 +123,7 @@ body {
 /* إصلاح شريط التمرير لصفحة Login Daily */
 .login-daily-table {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   grid-gap: 20px;
   width: 100%;
   max-width: 800px;
