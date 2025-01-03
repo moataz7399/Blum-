@@ -253,6 +253,11 @@ function createFallingEmoji(type) {
     emojiEl.remove(); // إزالة الأيقونة من الشاشة
   });
 
+  // منع ظهور قائمة السياق عند الضغط المطول
+  emojiEl.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+
   // إضافة الأيقونة إلى الشاشة
   gameOverlay.appendChild(emojiEl);
 
@@ -317,8 +322,7 @@ document.getElementById('btn-back-home').addEventListener('click', () => {
   showMain();
 });
 document.getElementById('btn-share-link').addEventListener('click', () => {
-  showConfetti('confetti-container'); // عرض الكشكشة عند الضغط على Share Link Bot
-  alert('Share Link Bot clicked!');
+  shareInviteLink(); // استخدم وظيفة مشاركة الرابط بدلاً من عرض الكشكشة
 });
 
 /************************************************************/
@@ -672,6 +676,23 @@ document.addEventListener("DOMContentLoaded", () => {
       button.classList.add('completed-btn');
       button.disabled = true;
     }
+
+    // منع ظهور قائمة السياق عند الضغط المطول على الأزرار
+    button.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+    });
+
+    // منع التفاعل طويل الأمد (long-press) عبر إضافة مستمعي touchend و touchstart
+    let touchTimer;
+    button.addEventListener('touchstart', (e) => {
+      touchTimer = setTimeout(() => {
+        e.preventDefault();
+      }, 500); // منع بعد نصف ثانية من الضغط المطول
+    });
+
+    button.addEventListener('touchend', () => {
+      clearTimeout(touchTimer);
+    });
 
     button.addEventListener('click', () => {
       if (button.textContent.trim() === 'Start') {
