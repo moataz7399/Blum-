@@ -17,6 +17,7 @@ function showMain() {
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
     document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
+    document.getElementById('leaderboard-page').classList.add('hidden'); /* إخفاء Leaderboard */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('main');
@@ -30,6 +31,7 @@ function showFriends() {
     document.getElementById('friends-page').classList.remove('hidden');
     document.getElementById('collab-page').classList.add('hidden');
     document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
+    document.getElementById('leaderboard-page').classList.add('hidden'); /* إخفاء Leaderboard */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('friends');
@@ -43,6 +45,7 @@ function showCollab() {
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.remove('hidden');
     document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
+    document.getElementById('leaderboard-page').classList.add('hidden'); /* إخفاء Leaderboard */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('collab');
@@ -51,9 +54,28 @@ function showCollab() {
 
 function showLeaderboard() {
   showLoader(() => {
-    // Logic for leaderboard page (if implemented)
-    alert('Leaderboard page is not implemented yet!');
+    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
+    document.getElementById('main-content').classList.add('hidden');
+    document.getElementById('friends-page').classList.add('hidden');
+    document.getElementById('collab-page').classList.add('hidden');
+    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
+    document.getElementById('game-overlay').classList.add('hidden');
+    document.getElementById('end-game-screen').classList.add('hidden');
+    document.getElementById('leaderboard-page').classList.remove('hidden');
+
     setActiveNav('leaderboard');
+
+    // Populate leaderboard data
+    if (telegramUsername) {
+      document.getElementById('leaderboard-username').textContent = `@${telegramUsername}`;
+    } else {
+      document.getElementById('leaderboard-username').textContent = telegramFirstName;
+    }
+
+    document.getElementById('leaderboard-points').textContent = `${formatNumber(ratsScore.toFixed(2))} FALCON`;
+
+    // Set ranking
+    document.getElementById('leaderboard-rank').textContent = `#1`;
   });
 }
 
@@ -64,6 +86,7 @@ function showLoginDaily() {
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
     document.getElementById('login-daily-page').classList.remove('hidden'); /* إظهار Login Daily */
+    document.getElementById('leaderboard-page').classList.add('hidden'); /* إخفاء Leaderboard */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('loginDaily');
@@ -127,6 +150,7 @@ function startGame() {
   document.getElementById('friends-page').classList.add('hidden');
   document.getElementById('collab-page').classList.add('hidden');
   document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
+  document.getElementById('leaderboard-page').classList.add('hidden'); /* إخفاء Leaderboard */
   document.getElementById('end-game-screen').classList.add('hidden');
 
   falconScore = 0;
@@ -325,6 +349,8 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
 /* وظيفة نسخ رابط الدعوة                                      */
 /************************************************************/
 let telegramUserId = null; // متغير لتخزين معرف المستخدم
+let telegramUsername = null; // متغير لتخزين اسم المستخدم
+let telegramFirstName = null; // متغير لتخزين الاسم الأول
 
 function copyInviteLink() {
   const botUsername = 'Falcon_tapbot'; // اسم البوت الخاص بك
@@ -434,6 +460,7 @@ function handleNavClick(page) {
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
     document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
+    document.getElementById('leaderboard-page').classList.add('hidden'); /* إخفاء Leaderboard */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
 
@@ -563,9 +590,6 @@ function initializeDailyLogin() {
       لأن ذلك كان يسبب مشكلة في شريط التمرير داخل خانة الهدية اليومية
     */
   });
-
-  // تهيئة حالة الأزرار بناءً على المهام المكتملة
-  initializeTaskButtons();
 }
 
 /************************************************************/
@@ -591,7 +615,7 @@ function isDayUnlocked(dayNumber) {
   const dayItem = document.querySelector(`.day-item[data-day="${dayNumber}"]`);
   if (!dayItem) return false;
   const overlay = dayItem.querySelector('.overlay');
-  return (overlay && (overlay.classList.contains('hidden') || overlay.classList.contains('completed')));
+  return (overlay && overlay.classList.contains('hidden')) || (overlay && overlay.classList.contains('completed'));
 }
 
 /************************************************************/
@@ -667,14 +691,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // إضافة مستمعي الأحداث لأزرار المهام
   document.querySelectorAll('.action-btn').forEach(button => {
     button.addEventListener('click', () => {
-      const taskId = button.getAttribute('data-link'); // استخدام الرابط كمعرف فريد
-      const claimedTasks = JSON.parse(localStorage.getItem('claimedTasks')) || [];
-
-      if (claimedTasks.includes(taskId)) {
-        showSuccessMessage('This task has already been completed.');
-        return;
-      }
-
       if (button.textContent.trim() === 'Start') {
         // فتح الرابط المرتبط بالمهمة
         const link = button.getAttribute('data-link');
@@ -709,11 +725,7 @@ document.addEventListener("DOMContentLoaded", () => {
         button.classList.add('completed-btn');
         button.classList.remove('claim-btn');
         button.disabled = true;
-
-        // إضافة المهمة إلى قائمة المهام المكتملة
-        claimedTasks.push(taskId);
-        localStorage.setItem('claimedTasks', JSON.stringify(claimedTasks));
-
+        
         // إضافة تأثير الاهتزاز عند الضغط على Claim
         if (navigator.vibrate) {
           navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
@@ -738,7 +750,10 @@ document.addEventListener("DOMContentLoaded", () => {
     window.Telegram.WebApp.ready();
 
     // استلام بيانات المستخدم من Telegram
-    telegramUserId = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.id : null;
+    const user = window.Telegram.WebApp.initDataUnsafe.user;
+    telegramUserId = user ? user.id : null;
+    telegramUsername = user ? user.username : null;
+    telegramFirstName = user ? user.first_name : 'Unknown';
 
     if (telegramUserId) {
       // إرسال معرف المستخدم إلى الخادم الخلفي
@@ -761,19 +776,3 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn('Telegram Web Apps API not found.');
   }
 });
-
-/************************************************************/
-/* دالة تهيئة حالة الأزرار بناءً على المهام المكتملة       */
-/************************************************************/
-function initializeTaskButtons() {
-  const claimedTasks = JSON.parse(localStorage.getItem('claimedTasks')) || [];
-  document.querySelectorAll('.action-btn').forEach(button => {
-    const taskId = button.getAttribute('data-link');
-    if (claimedTasks.includes(taskId)) {
-      button.textContent = '✓';
-      button.classList.add('completed-btn');
-      button.classList.remove('start-btn', 'claim-btn');
-      button.disabled = true;
-    }
-  });
-}
