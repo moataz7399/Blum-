@@ -253,11 +253,6 @@ function createFallingEmoji(type) {
     emojiEl.remove(); // إزالة الأيقونة من الشاشة
   });
 
-  // منع ظهور قائمة السياق عند الضغط المطول
-  emojiEl.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-  });
-
   // إضافة الأيقونة إلى الشاشة
   gameOverlay.appendChild(emojiEl);
 
@@ -322,7 +317,8 @@ document.getElementById('btn-back-home').addEventListener('click', () => {
   showMain();
 });
 document.getElementById('btn-share-link').addEventListener('click', () => {
-  shareInviteLink(); // استخدم وظيفة مشاركة الرابط بدلاً من عرض الكشكشة
+  showConfetti('confetti-container'); // عرض الكشكشة عند الضغط على Share Link Bot
+  alert('Share Link Bot clicked!');
 });
 
 /************************************************************/
@@ -567,6 +563,9 @@ function initializeDailyLogin() {
       لأن ذلك كان يسبب مشكلة في شريط التمرير داخل خانة الهدية اليومية
     */
   });
+
+  // تهيئة حالة الأزرار بناءً على المهام المكتملة
+  initializeTaskButtons();
 }
 
 /************************************************************/
@@ -592,7 +591,7 @@ function isDayUnlocked(dayNumber) {
   const dayItem = document.querySelector(`.day-item[data-day="${dayNumber}"]`);
   if (!dayItem) return false;
   const overlay = dayItem.querySelector('.overlay');
-  return (overlay && overlay.classList.contains('hidden')) || (overlay && overlay.classList.contains('completed'));
+  return (overlay && (overlay.classList.contains('hidden') || overlay.classList.contains('completed')));
 }
 
 /************************************************************/
@@ -667,34 +666,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // إضافة مستمعي الأحداث لأزرار المهام
   document.querySelectorAll('.action-btn').forEach(button => {
-    const dataLink = button.getAttribute('data-link');
-    const claimedTasks = JSON.parse(localStorage.getItem('claimedTasks')) || [];
-
-    if (claimedTasks.includes(dataLink)) {
-      // إذا كانت المهمة قد تم تنفيذها مسبقًا
-      button.textContent = '✓';
-      button.classList.add('completed-btn');
-      button.disabled = true;
-    }
-
-    // منع ظهور قائمة السياق عند الضغط المطول على الأزرار
-    button.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-    });
-
-    // منع التفاعل طويل الأمد (long-press) عبر إضافة مستمعي touchend و touchstart
-    let touchTimer;
-    button.addEventListener('touchstart', (e) => {
-      touchTimer = setTimeout(() => {
-        e.preventDefault();
-      }, 500); // منع بعد نصف ثانية من الضغط المطول
-    });
-
-    button.addEventListener('touchend', () => {
-      clearTimeout(touchTimer);
-    });
-
     button.addEventListener('click', () => {
+      const taskId = button.getAttribute('data-link'); // استخدام الرابط كمعرف فريد
+      const claimedTasks = JSON.parse(localStorage.getItem('claimedTasks')) || [];
+
+      if (claimedTasks.includes(taskId)) {
+        showSuccessMessage('This task has already been completed.');
+        return;
+      }
+
       if (button.textContent.trim() === 'Start') {
         // فتح الرابط المرتبط بالمهمة
         const link = button.getAttribute('data-link');
@@ -706,14 +686,10 @@ document.addEventListener("DOMContentLoaded", () => {
         button.textContent = 'Wait...';
         button.disabled = true;
         setTimeout(() => {
-          // تحقق مما إذا كانت المهمة قد تم تنفيذها مسبقًا قبل التحويل إلى Claim
-          const updatedClaimedTasks = JSON.parse(localStorage.getItem('claimedTasks')) || [];
-          if (!updatedClaimedTasks.includes(link)) {
-            button.textContent = 'Claim';
-            button.classList.add('claim-btn');
-            button.classList.remove('start-btn');
-            button.disabled = false;
-          }
+          button.textContent = 'Claim';
+          button.classList.add('claim-btn');
+          button.classList.remove('start-btn');
+          button.disabled = false;
         }, 10000); // انتظار 10 ثوانٍ
       } else if (button.textContent.trim() === 'Claim') {
         // الحصول على النقاط من السمة data-points
@@ -734,13 +710,9 @@ document.addEventListener("DOMContentLoaded", () => {
         button.classList.remove('claim-btn');
         button.disabled = true;
 
-        // إضافة المهمة إلى قائمة المهام المنجزة
-        let claimedTasks = JSON.parse(localStorage.getItem('claimedTasks')) || [];
-        const dataLink = button.getAttribute('data-link');
-        if (dataLink && !claimedTasks.includes(dataLink)) {
-          claimedTasks.push(dataLink);
-          localStorage.setItem('claimedTasks', JSON.stringify(claimedTasks));
-        }
+        // إضافة المهمة إلى قائمة المهام المكتملة
+        claimedTasks.push(taskId);
+        localStorage.setItem('claimedTasks', JSON.stringify(claimedTasks));
 
         // إضافة تأثير الاهتزاز عند الضغط على Claim
         if (navigator.vibrate) {
@@ -759,11 +731,6 @@ document.addEventListener("DOMContentLoaded", () => {
   /* منع قائمة السياق عند الضغط بزر الماوس الأيمن على الصور */
   document.querySelectorAll('img').forEach(img => {
     img.addEventListener('contextmenu', event => event.preventDefault());
-  });
-
-  /* منع قائمة السياق عند الضغط بزر الماوس الأيمن على روابط التنقل */
-  document.querySelectorAll('.bottom-nav a').forEach(link => {
-    link.addEventListener('contextmenu', event => event.preventDefault());
   });
 
   /* تهيئة Telegram Web Apps */
@@ -794,3 +761,19 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn('Telegram Web Apps API not found.');
   }
 });
+
+/************************************************************/
+/* دالة تهيئة حالة الأزرار بناءً على المهام المكتملة       */
+/************************************************************/
+function initializeTaskButtons() {
+  const claimedTasks = JSON.parse(localStorage.getItem('claimedTasks')) || [];
+  document.querySelectorAll('.action-btn').forEach(button => {
+    const taskId = button.getAttribute('data-link');
+    if (claimedTasks.includes(taskId)) {
+      button.textContent = '✓';
+      button.classList.add('completed-btn');
+      button.classList.remove('start-btn', 'claim-btn');
+      button.disabled = true;
+    }
+  });
+}
