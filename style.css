@@ -4,26 +4,18 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Arial', sans-serif;
+  user-select: none; /* منع تحديد النصوص بشكل عام */
+  -webkit-touch-callout: none; /* منع قائمة السياق على iOS Safari */
+  -webkit-user-select: none; /* منع تحديد النصوص على Safari */
+  -khtml-user-select: none; /* منع تحديد النصوص على Konqueror HTML */
+  -moz-user-select: none; /* منع تحديد النصوص على Firefox */
+  -ms-user-select: none; /* منع تحديد النصوص على Internet Explorer/Edge */
+  pointer-events: auto; /* التأكد من إمكانية التفاعل مع العناصر */
 }
 
-/* منع تفعيل قائمة السياق والاختيارات على الصور والعناصر الأخرى */
-body * {
-  user-select: none; /* منع تحديد النص */
-}
-
-button, input, textarea, select {
-  user-select: auto; /* السماح بتحديد النص في العناصر التفاعلية */
-}
-
+/* منع تفعيل قائمة السياق والاختيارات على الصور */
 img {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version */
   -webkit-user-drag: none; /* Disable image drag in Safari */
-  pointer-events: auto; /* تأكد من إمكانية التفاعل مع الصور */
 }
 
 /* شريط التحميل الأخضر في أعلى الصفحة */
@@ -123,7 +115,7 @@ body {
 /* إصلاح شريط التمرير لصفحة Login Daily */
 .login-daily-table {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
   width: 100%;
   max-width: 800px;
@@ -279,12 +271,14 @@ body {
 header .glow-text,
 #game-overlay .score-panel p,
 #end-game-screen .stats-line {
-  text-shadow: 0 0 3px rgba(255,255,255,0.7),
-               0 0 6px rgba(255,255,255,0.5);
+  /* إزالة التوهج من score-panel p */
+  /* text-shadow: 0 0 3px rgba(255,255,255,0.7),
+               0 0 6px rgba(255,255,255,0.5); */
+  text-shadow: none;
 }
 
 .glow-text {
-  text-shadow: none; /* إزالة التوهج */
+  text-shadow: none;
 }
 
 .hidden {
@@ -352,13 +346,8 @@ header {
 }
 
 .button-card h3 {
-  font-size: 0.9rem;
+  font-size: 1.2rem; /* زيادة حجم الخط */
   margin-bottom: 5px;
-}
-
-.button-card p {
-  font-size: 0.7rem; /* تقليل حجم الخط */
-  color: #fff;
 }
 
 .button-card .card-number {
@@ -399,7 +388,7 @@ header {
 
 /* إضافة تنسيق جديد للنص تحت زر Play Falcon */
 .cards-label {
-  font-size: 0.8rem;
+  font-size: 1rem; /* زيادة حجم الخط */
   text-align: left;
   margin-top: 5px;
   color: #fff;
@@ -462,7 +451,7 @@ header {
   margin-bottom: 10px;
 }
 .task-card img {
-  width: 60px; height: 60px;
+  width: 80px; height: 80px; /* زيادة حجم الصور */
   border-radius: 5px;
   object-fit: cover;
 }
@@ -473,7 +462,7 @@ header {
 .task-card h3, 
 .task-card p {
   color: #fff;
-  font-size: 0.9rem; /* تقليل حجم الخط */
+  font-size: 1rem; /* زيادة حجم الخط */
 }
 
 /* أزرار Start/Claim */
@@ -513,7 +502,7 @@ header {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: #000 url("https://i.ibb.co/jfjCkVM/image.png") center/cover no-repeat;
+  background: #000; /* خلفية سوداء */
   z-index: 9998; 
   overflow: hidden;
 }
@@ -524,7 +513,7 @@ header {
 
 .falling-emoji {
   position: absolute;
-  font-size: 3rem; /* زيادة حجم الأيقونة */
+  font-size: 3rem; /* زيادة حجم الأيقونات */
   color: #fff;
   cursor: pointer;
   user-select: none;
@@ -546,6 +535,7 @@ header {
 .score-panel p {
   margin: 5px 0; /* مسافة بين الأسطر */
   color: #fff; /* لون النص أبيض */
+  text-shadow: none; /* إزالة التوهج */
 }
 
 .score-panel span {
@@ -556,7 +546,7 @@ header {
 #falconScore, #bombScore {
   font-size: 1.4rem;
   color: #fff;
-  /* تم إزالة text-shadow لإزالة التوهج */
+  text-shadow: none; /* إزالة التوهج */
 }
 
 .timer-panel {
@@ -609,11 +599,9 @@ header {
   font-size: 1.4rem;
   margin: 10px 0;
   font-weight: bold;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+  text-shadow: none; /* إزالة التوهج */
 }
-.line-text {
-  margin-right: 5px;
-}
+
 .buttons-container {
   margin-top: 20px;
   display: flex;
@@ -712,7 +700,7 @@ footer {
   justify-content: center;
   margin: 10px 0;
   font-weight: bold;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+  text-shadow: none; /* إزالة التوهج */
 }
 
 /* تصميم رسالة النجاح */
@@ -750,14 +738,14 @@ footer {
   font-weight: bold;
   font-size: 1.5rem;
   color: #fff;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+  text-shadow: none; /* إزالة التوهج */
 }
 
 .header-subtitle {
   font-weight: normal;
   font-size: 1rem;
   color: #fff;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+  text-shadow: none; /* إزالة التوهج */
 }
 
 .login-daily-table {
@@ -846,7 +834,7 @@ footer {
   margin-top: 10px;
   font-size: 1.2rem;
   color: #fff;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+  text-shadow: none; /* إزالة التوهج */
 }
 
 /* تحسين التصميم للأجهزة الصغيرة */
