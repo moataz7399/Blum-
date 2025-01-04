@@ -65,17 +65,15 @@ function showLeaderboard() {
 
     setActiveNav('leaderboard');
 
-    // Populate leaderboard data
-    if (telegramUsername) {
-      document.getElementById('leaderboard-username').textContent = `@${telegramUsername}`;
-    } else {
-      document.getElementById('leaderboard-username').textContent = telegramFirstName;
-    }
+    // إعداد بيانات المستخدم
+    const username = telegramUsername ? `@${telegramUsername}` : telegramFirstName;
+    const points = formatNumber(ratsScore.toFixed(2));
+    const rank = `#77,588`; // يمكنك تحديث الرقم بناءً على البيانات الديناميكية
 
-    document.getElementById('leaderboard-points').textContent = `${formatNumber(ratsScore.toFixed(2))} FALCON`;
-
-    // Set ranking
-    document.getElementById('leaderboard-rank').textContent = `#1`;
+    // تحديث بيانات اللوحة
+    document.getElementById('leaderboard-username').textContent = username;
+    document.getElementById('leaderboard-points').textContent = `${points} FALCON`;
+    document.getElementById('leaderboard-rank').textContent = rank;
   });
 }
 
