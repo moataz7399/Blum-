@@ -894,43 +894,45 @@ footer {
 }
 
 .leaderboard-box {
-  background-color: #fff;
-  border-radius: 15px;
-  width: 90%;
-  max-width: 600px;
-  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff; /* لون خلفية الصندوق */
+  border-radius: 20px; /* تقويس أقوى */
+  padding: 10px 20px; /* مسافة داخلية */
+  margin: 15px 0; /* مسافة بين الصناديق */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+}
+
+.leaderboard-left {
   display: flex;
   align-items: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .leaderboard-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
   object-fit: cover;
-  margin-right: 20px;
-}
-
-.leaderboard-info {
-  flex-grow: 1;
+  margin-right: 10px;
 }
 
 .leaderboard-info h2 {
-  margin-bottom: 5px;
+  font-size: 1rem;
+  font-weight: bold;
   color: #000;
+  margin: 0;
 }
 
 .leaderboard-info p {
-  font-size: 0.9rem;
-  color: #000;
+  font-size: 0.8rem;
+  color: #555;
+  margin: 2px 0 0;
 }
 
-.leaderboard-rank {
-  margin-left: auto;
-}
-
-.leaderboard-rank span {
+.leaderboard-right {
+  font-size: 1rem;
   font-weight: bold;
   color: #000;
 }
+ 
