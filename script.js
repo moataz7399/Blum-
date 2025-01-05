@@ -15,7 +15,8 @@ function showPage(targetId) {
 function setActiveNav(page) {
   const navLinks = document.querySelectorAll('.bottom-nav a');
   navLinks.forEach(link => {
-    if (link.getAttribute('onclick') === `handleNavClick('${page}')`) {
+    const targetPage = link.getAttribute('onclick').match(/handleNavClick\('(\w+)'\)/);
+    if (targetPage && targetPage[1] === page) {
       link.classList.add('active');
     } else {
       link.classList.remove('active');
@@ -116,13 +117,9 @@ const dailyRewards = [
 /************************************************************/
 function startGame() {
   document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
-  document.getElementById('game-overlay').classList.remove('hidden');
   showPage('game-overlay');
-  showPage('main-content'); // تأكد من أن المحتوى الرئيسي مخفي
-  showPage('friends-page').classList.remove('active');
-  showPage('collab-page').classList.remove('active');
-  showPage('login-daily-page').classList.remove('active'); /* إخفاء Login Daily */
-  showPage('end-game-screen').classList.remove('active');
+  document.getElementById('game-overlay').classList.remove('hidden');
+  document.getElementById('end-game-screen').classList.remove('active');
 
   falconScore = 0;
   bombScore = 0;
