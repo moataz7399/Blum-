@@ -9,7 +9,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="style.css"> <!-- تم تعديل الرابط هنا -->
+  <link rel="stylesheet" href="style.css">
   
   <!-- Telegram Web Apps JavaScript API -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -22,7 +22,7 @@
 
   <!-- شاشة التحميل -->
   <div id="splash-screen">
-    <!-- يمكن وضع محتويات شاشة التحميل هنا إذا لزم الأمر -->
+    <!-- محتويات شاشة التحميل يمكن إضافتها هنا -->
   </div>
 
   <!-- الهيدر -->
@@ -46,7 +46,6 @@
         class="profile-icon"
       />
       <div class="stats">
-        <!-- إضافة معرف للعنصر -->
         <h2 id="ratsScore" class="glow-text">0.00</h2>
         <p class="glow-text">RATS</p>
       </div>
@@ -114,7 +113,7 @@
 
       <!-- إضافة المربع الجديد -->
       <div class="friends-table">
-        <!-- يمكنك إضافة محتويات الجدول هنا -->
+        <!-- محتويات الجدول يمكن إضافتها هنا -->
         <p style="text-align: center; color: #fff;">This is your custom table area</p>
       </div>
     </div>
@@ -133,7 +132,6 @@
           <h3 class="glow-text">Put ... next to your name</h3>
           <p class="glow-text">+6,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="6000" data-link="https://example.com/task1">Start</button>
       </div>
       <!-- مهمة 2 -->
@@ -146,7 +144,6 @@
           <h3 class="glow-text">Follow Telegram Channel</h3>
           <p class="glow-text">+250 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="250" data-link="https://t.me/Falcon_Community_Bot">Start</button>
       </div>
       <!-- مهمة 3 -->
@@ -159,7 +156,6 @@
           <h3 class="glow-text">Follow us on X</h3>
           <p class="glow-text">+2,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="2000" data-link="https://www.twitter.com/@Falcon_Communiity">Start</button>
       </div>
       <!-- مهمة 4 -->
@@ -172,7 +168,6 @@
           <h3 class="glow-text">Boost Channel</h3>
           <p class="glow-text">+5,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="5000" data-link="https://example.com/task4">Start</button>
       </div>
       
@@ -186,7 +181,6 @@
           <h3 class="glow-text">Subscribe to our YouTube channel</h3>
           <p class="glow-text">+3,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="3000" data-link="https://www.youtube.com/@Falcon_Communiity">Start</button>
       </div>
 
@@ -200,7 +194,6 @@
           <h3 class="glow-text">Invite 3 friends</h3>
           <p class="glow-text">+3,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="3000" data-link="https://example.com/invite3">Start</button>
       </div>
       <!-- Invite 5 friends -->
@@ -213,7 +206,6 @@
           <h3 class="glow-text">Invite 5 friends</h3>
           <p class="glow-text">+5,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="5000" data-link="https://example.com/invite5">Start</button>
       </div>
       <!-- Invite 25 friends -->
@@ -226,7 +218,6 @@
           <h3 class="glow-text">Invite 25 friends</h3>
           <p class="glow-text">+30,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="30000" data-link="https://example.com/invite25">Start</button>
       </div>
     </div>
@@ -243,7 +234,7 @@
       <div class="day-item" data-day="1">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="1 Day">
-          <div class="overlay">
+          <div class="overlay hidden">
             <i class="fas fa-lock"></i>
           </div>
         </div>
@@ -252,7 +243,7 @@
       <div class="day-item" data-day="2">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="2 Day">
-          <div class="overlay">
+          <div class="overlay hidden">
             <i class="fas fa-lock"></i>
           </div>
         </div>
@@ -261,7 +252,7 @@
       <div class="day-item" data-day="3">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="3 Day">
-          <div class="overlay">
+          <div class="overlay hidden">
             <i class="fas fa-lock"></i>
           </div>
         </div>
@@ -270,7 +261,7 @@
       <div class="day-item" data-day="4">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="4 Day">
-          <div class="overlay">
+          <div class="overlay hidden">
             <i class="fas fa-lock"></i>
           </div>
         </div>
@@ -279,7 +270,7 @@
       <div class="day-item" data-day="5">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="5 Day">
-          <div class="overlay">
+          <div class="overlay hidden">
             <i class="fas fa-lock"></i>
           </div>
         </div>
@@ -288,7 +279,7 @@
       <div class="day-item" data-day="6">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="6 Day">
-          <div class="overlay">
+          <div class="overlay hidden">
             <i class="fas fa-lock"></i>
           </div>
         </div>
@@ -297,7 +288,7 @@
       <div class="day-item" data-day="7">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="7 Day">
-          <div class="overlay">
+          <div class="overlay hidden">
             <i class="fas fa-lock"></i>
           </div>
         </div>
@@ -306,7 +297,7 @@
       <div class="day-item" data-day="8">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="8 Day">
-          <div class="overlay">
+          <div class="overlay hidden">
             <i class="fas fa-lock"></i>
           </div>
         </div>
@@ -315,20 +306,19 @@
       <div class="day-item" data-day="9">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="9 Day">
-          <div class="overlay">
+          <div class="overlay hidden">
             <i class="fas fa-lock"></i>
           </div>
         </div>
         <div class="day-label">9 Day</div>
       </div>
-      <!-- تم حذف الخانة العاشرة -->
     </div>
     <!-- إضافة حاوية الكشكشة في صفحة Login Daily -->
     <div id="confetti-container-login" class="confetti-container"></div>
   </div>
 
   <!-- واجهة اللعبة -->
-  <div id="game-overlay" class="hidden">
+  <div id="game-overlay" class="hidden page">
     <div class="score-panel">
       <p>𝗙𝗮𝗹𝗰𝗼𝗻𝘀: <span id="falconScore">0</span></p>
       <p>𝗕𝗼𝗺𝗯𝘀: <span id="bombScore">0</span></p>
@@ -338,7 +328,7 @@
     </div>
   </div>
 
-  <div id="end-game-screen" class="hidden end-game-screen">
+  <div id="end-game-screen" class="hidden page end-game-screen">
     <div class="end-content">
       <!-- إضافة حاوية الكشكشة داخل شاشة نهاية اللعبة -->
       <div id="confetti-container" class="confetti-container"></div>
