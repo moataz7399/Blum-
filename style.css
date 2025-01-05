@@ -332,6 +332,19 @@ header {
   border: 2px solid #fff;
 }
 
+.stats {
+  margin-top: 10px;
+}
+
+.stats h2 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+.stats p {
+  font-size: 1rem;
+}
+
 /* عمودان جنباً لجنب بلا لف */
 .two-columns {
   display: flex;
@@ -869,70 +882,62 @@ footer {
   .score-panel {
     font-size: 1.2rem;
   }
-
-  /* تعديل تصميم Leaderboard للموبايل */
-  .leaderboard-box {
-    flex-direction: column;
-    align-items: center;
-  }
-  .leaderboard-icon {
-    margin-right: 0;
-    margin-bottom: 15px;
-  }
-  .leaderboard-rank {
-    margin-left: 0;
-    margin-top: 10px;
-  }
 }
 
-/* تصميم Leaderboard Page */
-#leaderboard-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* تصميم Leaderboard */
+.leaderboard-section {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .leaderboard-box {
+  background-color: #ffffff; /* لون الخلفية أبيض */
+  width: 100%; /* امتداد من اليمين إلى اليسار */
+  max-width: 800px; /* تحديد الحد الأقصى للعرض */
+  border-radius: 15px; /* تقوس الزوايا */
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  background-color: #fff; /* لون خلفية الصندوق */
-  border-radius: 20px; /* تقويس أقوى */
-  padding: 10px 20px; /* مسافة داخلية */
-  margin: 15px 0; /* مسافة بين الصناديق */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* ظل خفيف */
-}
-
-.leaderboard-left {
-  display: flex;
-  align-items: center;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* ظل خفيف للمربع */
 }
 
 .leaderboard-icon {
-  width: 50px;
+  width: 50px; /* حجم الصورة */
   height: 50px;
-  border-radius: 10px;
+  border-radius: 50%;
   object-fit: cover;
-  margin-right: 10px;
+  margin-right: 15px;
 }
 
-.leaderboard-info h2 {
-  font-size: 1rem;
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.username {
+  font-size: 1.2rem;
   font-weight: bold;
   color: #000;
-  margin: 0;
 }
 
-.leaderboard-info p {
-  font-size: 0.8rem;
+.user-points {
+  font-size: 0.9rem;
   color: #555;
-  margin: 2px 0 0;
+  margin-top: 5px;
 }
 
-.leaderboard-right {
+.user-points::after {
+  content: " FALCON";
+  color: #555;
+}
+
+.user-rank {
   font-size: 1rem;
   font-weight: bold;
   color: #000;
 }
- 
