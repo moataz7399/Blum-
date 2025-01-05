@@ -16,8 +16,8 @@ function showMain() {
     document.getElementById('main-content').classList.remove('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
+    document.getElementById('leaderboard-page').classList.add('hidden'); // إخفاء Leaderboard
     document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
-    document.getElementById('leaderboard-page').classList.add('hidden'); /* إخفاء Leaderboard */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('main');
@@ -30,8 +30,8 @@ function showFriends() {
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.remove('hidden');
     document.getElementById('collab-page').classList.add('hidden');
+    document.getElementById('leaderboard-page').classList.add('hidden'); // إخفاء Leaderboard
     document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
-    document.getElementById('leaderboard-page').classList.add('hidden'); /* إخفاء Leaderboard */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('friends');
@@ -44,8 +44,8 @@ function showCollab() {
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.remove('hidden');
+    document.getElementById('leaderboard-page').classList.add('hidden'); // إخفاء Leaderboard
     document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
-    document.getElementById('leaderboard-page').classList.add('hidden'); /* إخفاء Leaderboard */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('collab');
@@ -54,16 +54,21 @@ function showCollab() {
 
 function showLeaderboard() {
   showLoader(() => {
-    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
+    // إخفاء جميع الأقسام
+    document.querySelector('header').classList.add('hidden');
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
-    document.getElementById('leaderboard-page').classList.remove('hidden'); /* إظهار Leaderboard */
+    document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
+
+    // إظهار صفحة Leaderboard
+    document.getElementById('leaderboard-page').classList.remove('hidden');
     setActiveNav('leaderboard');
-    fetchLeaderboardData(); // جلب بيانات Leaderboard
+
+    // جلب بيانات Leaderboard من الخادم
+    fetchLeaderboardData();
   });
 }
 
@@ -73,8 +78,8 @@ function showLoginDaily() {
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
+    document.getElementById('leaderboard-page').classList.add('hidden'); // إخفاء Leaderboard
     document.getElementById('login-daily-page').classList.remove('hidden'); /* إظهار Login Daily */
-    document.getElementById('leaderboard-page').classList.add('hidden'); /* إخفاء Leaderboard */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('loginDaily');
@@ -137,8 +142,8 @@ function startGame() {
   document.getElementById('main-content').classList.add('hidden');
   document.getElementById('friends-page').classList.add('hidden');
   document.getElementById('collab-page').classList.add('hidden');
+  document.getElementById('leaderboard-page').classList.add('hidden'); // إخفاء Leaderboard
   document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
-  document.getElementById('leaderboard-page').classList.add('hidden'); /* إخفاء Leaderboard */
   document.getElementById('end-game-screen').classList.add('hidden');
 
   falconScore = 0;
@@ -306,7 +311,7 @@ function bombEffect() {
 }
 
 /************************************************************/
-/* أزرار شاشة النهاية                                      */
+/* دوال أزرار شاشة النهاية                                  */
 /************************************************************/
 document.getElementById('btn-new-round').addEventListener('click', () => {
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
@@ -337,7 +342,6 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
 /* وظيفة نسخ رابط الدعوة                                      */
 /************************************************************/
 let telegramUserId = null; // متغير لتخزين معرف المستخدم
-let telegramUsername = null; // متغير لتخزين اسم المستخدم على تيليجرام
 
 function copyInviteLink() {
   const botUsername = 'Falcon_tapbot'; // اسم البوت الخاص بك
@@ -446,8 +450,8 @@ function handleNavClick(page) {
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
+    document.getElementById('leaderboard-page').classList.add('hidden'); // إخفاء Leaderboard
     document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
-    document.getElementById('leaderboard-page').classList.add('hidden'); /* إخفاء Leaderboard */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
 
@@ -648,33 +652,99 @@ function clearConfetti(containerId) {
 }
 
 /************************************************************/
-/* دالة جلب بيانات Leaderboard                              */
+/* دوال صفحة Leaderboard                                  */
 /************************************************************/
-function fetchLeaderboardData() {
-  if (!telegramUserId) {
-    console.warn('Telegram user ID not available.');
-    document.getElementById('telegramUsername').textContent = 'Unknown User';
-    document.getElementById('userPoints').textContent = '0 FALCON';
-    document.getElementById('userRank').textContent = '#--';
-    return;
-  }
 
-  // استبدل 'https://alisaad11.pythonanywhere.com/leaderboard' بـ URL الخادم الخاص بك الذي يعيد بيانات المستخدم
-  fetch(`https://alisaad11.pythonanywhere.com/leaderboard?user_id=${telegramUserId}`)
+/* جلب بيانات Leaderboard وعرضها */
+function fetchLeaderboardData() {
+  // استبدل هذا الرابط بواجهة API الخاصة بك لجلب بيانات الـ Leaderboard
+  // لأغراض الاختبار، سأستخدم بيانات ثابتة
+  const mockData = [
+    {
+      username: 'FalconMaster',
+      name: 'محمد علي',
+      points: 1500000,
+      rank: 1
+    },
+    {
+      username: 'UserTelegram',
+      name: 'أحمد محمد',
+      points: 1200000,
+      rank: 2
+    },
+    {
+      username: null,
+      name: 'سارة أحمد',
+      points: 1100000,
+      rank: 3
+    },
+    // أضف المزيد من المستخدمين حسب الحاجة
+  ];
+
+  // بدلاً من استخدام fetch، سأستخدم البيانات الثابتة
+  // إذا كنت تملك واجهة API، قم بإلغاء التعليق عن الكود أدناه واستخدم رابط API الخاص بك
+  /*
+  fetch('https://example.com/api/leaderboard')
     .then(response => response.json())
     .then(data => {
-      // افترض أن البيانات تحتوي على { username: '...', points: 1234, rank: 5678 }
-      const { username, points, rank } = data;
-      document.getElementById('telegramUsername').textContent = username || 'Unknown User';
-      document.getElementById('userPoints').textContent = `${formatNumber(points)} FALCON`;
-      document.getElementById('userRank').textContent = `#${formatNumber(rank)}`;
+      populateLeaderboard(data);
     })
     .catch(error => {
       console.error('Error fetching leaderboard data:', error);
-      document.getElementById('telegramUsername').textContent = 'Unknown User';
-      document.getElementById('userPoints').textContent = '0 FALCON';
-      document.getElementById('userRank').textContent = '#--';
+      alert('فشل في جلب بيانات الـ Leaderboard.');
     });
+  */
+
+  // استخدام البيانات الثابتة للتجربة
+  populateLeaderboard(mockData);
+}
+
+/* تعبئة بيانات Leaderboard في الـ HTML */
+function populateLeaderboard(data) {
+  const leaderboardContainer = document.querySelector('.leaderboard-box');
+  
+  // تنظيف المحتوى الحالي
+  leaderboardContainer.innerHTML = '';
+
+  data.forEach(user => {
+    // إنشاء عنصر المستخدم في الـ Leaderboard
+    const entry = document.createElement('div');
+    entry.classList.add('leaderboard-entry');
+
+    // صورة الصقر
+    const falconImg = document.createElement('img');
+    falconImg.src = 'https://i.ibb.co/h8G6Rrt/11zon-cropped-3.png'; // رابط صورة الصقر
+    falconImg.alt = 'Falcon Icon';
+    falconImg.classList.add('leaderboard-falcon');
+
+    // معلومات المستخدم
+    const userInfo = document.createElement('div');
+    userInfo.classList.add('leaderboard-user-info');
+
+    const username = document.createElement('span');
+    username.classList.add('username');
+    username.textContent = user.username || user.name;
+
+    const points = document.createElement('span');
+    points.classList.add('points');
+    points.innerHTML = `${formatNumber(user.points)} <span class="falcon-text">FALCON</span>`;
+
+    userInfo.appendChild(username);
+    userInfo.appendChild(points);
+
+    // ترتيب المستخدم
+    const rank = document.createElement('div');
+    rank.classList.add('leaderboard-rank');
+    rank.textContent = `#${formatNumber(user.rank)}`;
+
+    // إضافة العناصر إلى الـ entry
+    entry.appendChild(falconImg);
+    entry.appendChild(userInfo);
+    entry.appendChild(rank);
+
+    // إضافة الـ entry إلى الـ container
+    leaderboardContainer.appendChild(entry);
+  });
 }
 
 /************************************************************/
@@ -768,8 +838,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // استلام بيانات المستخدم من Telegram
     telegramUserId = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.id : null;
-    telegramUsername = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.username : null;
-    const telegramName = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.first_name : 'Unknown User';
 
     if (telegramUserId) {
       // إرسال معرف المستخدم إلى الخادم الخلفي
@@ -783,49 +851,12 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(response => response.json())
       .then(data => {
         console.log('User ID sent successfully:', data);
-        // تحديث معلومات المستخدم في Leaderboard إذا كانت الصفحة مفتوحة
-        if (!document.getElementById('leaderboard-page').classList.contains('hidden')) {
-          fetchLeaderboardData();
-        }
       })
       .catch((error) => {
         console.error('Error sending user ID:', error);
       });
     }
-
-    // تحديث معلومات المستخدم في الصفحة الرئيسية أو أخرى إذا لزم الأمر
-    // يمكن إضافة هنا أي تحديثات أخرى تتعلق بالمستخدم
   } else {
     console.warn('Telegram Web Apps API not found.');
   }
-}
-
-/************************************************************/
-/* دالة التعامل مع Leaderboard                            */
-/************************************************************/
-function fetchLeaderboardData() {
-  if (!telegramUserId) {
-    console.warn('Telegram user ID not available.');
-    document.getElementById('telegramUsername').textContent = 'Unknown User';
-    document.getElementById('userPoints').textContent = '0 FALCON';
-    document.getElementById('userRank').textContent = '#--';
-    return;
-  }
-
-  // استبدل 'https://alisaad11.pythonanywhere.com/leaderboard' بـ URL الخادم الخاص بك الذي يعيد بيانات المستخدم
-  fetch(`https://alisaad11.pythonanywhere.com/leaderboard?user_id=${telegramUserId}`)
-    .then(response => response.json())
-    .then(data => {
-      // افترض أن البيانات تحتوي على { username: '...', points: 1234, rank: 5678 }
-      const { username, points, rank } = data;
-      document.getElementById('telegramUsername').textContent = username || 'Unknown User';
-      document.getElementById('userPoints').textContent = `${formatNumber(points)} FALCON`;
-      document.getElementById('userRank').textContent = `#${formatNumber(rank)}`;
-    })
-    .catch(error => {
-      console.error('Error fetching leaderboard data:', error);
-      document.getElementById('telegramUsername').textContent = 'Unknown User';
-      document.getElementById('userPoints').textContent = '0 FALCON';
-      document.getElementById('userRank').textContent = '#--';
-    });
-}
+});
