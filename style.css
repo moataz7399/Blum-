@@ -332,19 +332,6 @@ header {
   border: 2px solid #fff;
 }
 
-.stats {
-  margin-top: 10px;
-}
-
-.stats h2 {
-  font-size: 2rem;
-  margin-bottom: 5px;
-}
-
-.stats p {
-  font-size: 1rem;
-}
-
 /* عمودان جنباً لجنب بلا لف */
 .two-columns {
   display: flex;
@@ -882,62 +869,91 @@ footer {
   .score-panel {
     font-size: 1.2rem;
   }
+
+  /* تعديل Leaderboard للأجهزة الصغيرة */
+  .leaderboard-entry {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .leaderboard-rank {
+    align-self: flex-end;
+    margin-top: 10px;
+  }
 }
 
-/* تصميم Leaderboard */
-.leaderboard-section {
+/* تصميم صفحة Leaderboard */
+#leaderboard-page {
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.leaderboard-container {
+  width: 100%;
+  max-width: 1200px; /* يمكنك تعديل الحد الأقصى للعرض حسب الحاجة */
+  margin: 0 auto;
+}
+
 .leaderboard-box {
-  background-color: #ffffff; /* لون الخلفية أبيض */
-  width: 100%; /* امتداد من اليمين إلى اليسار */
-  max-width: 800px; /* تحديد الحد الأقصى للعرض */
-  border-radius: 15px; /* تقوس الزوايا */
+  width: 100%;
+}
+
+.leaderboard-entry {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #fff;
+  border-radius: 10px;
   padding: 15px 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* ظل خفيف للمربع */
+  margin-bottom: 15px;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-.leaderboard-icon {
-  width: 50px; /* حجم الصورة */
+.leaderboard-falcon {
+  width: 50px;
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 15px;
 }
 
-.user-info {
+.leaderboard-user-info {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-left: 15px;
+  flex-grow: 1;
 }
 
 .username {
   font-size: 1.2rem;
+  color: #fff;
   font-weight: bold;
-  color: #000;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
 }
 
-.user-points {
-  font-size: 0.9rem;
-  color: #555;
+.points {
+  font-size: 1rem;
+  color: #fff;
   margin-top: 5px;
 }
 
-.user-points::after {
-  content: " FALCON";
-  color: #555;
+.falcon-text {
+  font-size: 1rem;
 }
 
-.user-rank {
-  font-size: 1rem;
+.leaderboard-rank {
+  font-size: 1.2rem;
+  color: #fff;
   font-weight: bold;
-  color: #000;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+}
+
+/* دوائر ملونة */
+.confetti.circle {
+  border-radius: 50%;
+  background-color: #0000ff; /* لون الدائرة الأزرق */
 }
