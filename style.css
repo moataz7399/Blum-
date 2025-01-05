@@ -58,6 +58,18 @@ img {
   transition: width 5s linear; /* انتقال يستغرق 5 ثوانٍ */
 }
 
+/* صفحات الموقع */
+.page {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+.page.active {
+  opacity: 1;
+  visibility: visible;
+}
+
 body {
   background: url('https://i.ibb.co/1m2th6k/Picsart-24-12-26-13-54-43-713.jpg') center/cover no-repeat; /* رابط الخلفية */
   background-attachment: fixed; /* ثابت أثناء التمرير */
@@ -355,6 +367,7 @@ header {
   border-radius: 10px;
   margin: 0 auto;
   text-align: center;
+  transition: transform 0.2s; /* إضافة انتقال لتحسين تأثير النقر */
 }
 
 .button-card h3 {
@@ -381,7 +394,7 @@ header {
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold; /* اجعل النص غامقاً */
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s; /* إضافة انتقال لتحسين تأثير النقر */
 }
 .button-card button:hover {
   background: #555;
@@ -425,7 +438,7 @@ header {
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s; /* إضافة انتقال لتحسين تأثير النقر */
 }
 .friends-buttons button:hover {
   background: #e5e5e5;
@@ -484,7 +497,7 @@ header {
   padding: 10px 30px;
   border: none;
   font-size: 1rem;
-  transition: background 0.3s, color 0.3s;
+  transition: background 0.3s, color 0.3s, transform 0.2s; /* إضافة انتقال لتحسين تأثير النقر */
   cursor: pointer;
 }
 .claim-btn {
@@ -494,7 +507,7 @@ header {
   padding: 10px 30px;
   border: none;
   font-size: 1rem;
-  transition: background 0.3s, color 0.3s;
+  transition: background 0.3s, color 0.3s, transform 0.2s; /* إضافة انتقال لتحسين تأثير النقر */
   cursor: pointer;
 }
 .completed-btn {
@@ -637,7 +650,7 @@ header {
   font-weight: bold;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out, transform 0.2s; /* إضافة انتقال لتحسين تأثير النقر */
   cursor: pointer;
 }
 
@@ -672,8 +685,23 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: color 0.3s;
+  transition: color 0.3s, border-bottom 0.3s; /* إضافة انتقال لتحسين تأثير النقر */
   flex: 1; /* لتوزيع الأزرار بالتساوي */
+  position: relative; /* لإضافة الخط تحت الزر */
+}
+.bottom-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background-color: #fff;
+  transition: width 0.3s;
+}
+.bottom-nav a.active::after {
+  width: 100%;
 }
 .bottom-nav a i {
   font-size: 1.5rem; /* حجم الأيقونة */
@@ -684,35 +712,20 @@ footer {
   color: #fff; /* لون النص عند التمرير */
 }
 
-.bottom-nav a.active {
-  color: #fff; /* لون النص عند التفعيل */
+/* أزرار مشتركة */
+button {
+  transition: transform 0.2s;
 }
 
-.end-image {
-  width: 150px; /* حجم الصورة */
-  height: auto;
-  margin-bottom: 20px; /* مسافة أسفل الصورة */
-}
-
-.icon {
-  width: 30px; /* حجم الأيقونة */
-  height: auto;
-  margin-right: 10px; /* مسافة بين الأيقونة والنص */
-  vertical-align: middle; /* محاذاة وسط الأيقونة مع النص */
-}
-
-.line-text {
-  font-size: 1.4rem;
-  margin-left: 5px; /* مسافة بين النص ورقم النتيجة */
-}
-
-.stats-line {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px 0;
-  font-weight: bold;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+/* أزرار ثابتة */
+.button-card button,
+.friends-buttons button,
+#end-game-screen button,
+.start-btn,
+.claim-btn,
+.completed-btn,
+#playFalconBtn {
+  transition: background 0.3s, transform 0.2s;
 }
 
 /* تصميم رسالة النجاح */
@@ -870,104 +883,3 @@ footer {
     font-size: 1.2rem;
   }
 }
-
-/* --------------------------------------------------------- */
-/* التعديلات والإضافات الجديدة تبدأ هنا                      */
-/* --------------------------------------------------------- */
-
-/* تأثير التنقل بين الصفحات */
-.page {
-  display: none;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-.page.active {
-  display: flex;
-  opacity: 1;
-}
-
-/* تأثيرات الأزرار التفاعلية */
-.interactive-button {
-  background: linear-gradient(135deg, #6A5ACD, #483D8B);
-  color: #FFFFFF;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.interactive-button::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform 0.5s ease;
-  border-radius: 50%;
-  z-index: 1;
-}
-
-.interactive-button:hover {
-  box-shadow: 0 5px 15px rgba(106, 90, 205, 0.5);
-  transform: translateY(-3px);
-}
-
-.interactive-button:active::after {
-  transform: translate(-50%, -50%) scale(1);
-}
-
-/* إضافة تأثيرات الأزرار عند النقر */
-.interactive-button.clicked {
-  transform: scale(0.95);
-}
-.interactive-button.clicked {
-  transform: scale(1);
-}
-
-/* تأثير الظلال تحت الأزرار النشطة في الفوتر */
-.bottom-nav .nav-button.active::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30px;
-  height: 3px;
-  background-color: #fff;
-  border-radius: 2px;
-  animation: shake 0.3s;
-}
-
-/* التأكيد على الأزرار النشطة */
-.bottom-nav .nav-button.active {
-  position: relative;
-  color: #fff;
-}
-
-/* اهتزاز خفيف عند التنقل بين الأزرار */
-@keyframes shake-navigation {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-2px); }
-  50% { transform: translateX(2px); }
-  75% { transform: translateX(-2px); }
-  100% { transform: translateX(0); }
-}
-
-.bottom-nav .nav-button {
-  position: relative;
-}
-
-.bottom-nav .nav-button.active {
-  animation: shake-navigation 0.3s;
-}
-
-/* --------------------------------------------------------- */
-/* التعديلات والإضافات الجديدة تنتهي هنا                      */
-/* --------------------------------------------------------- */
