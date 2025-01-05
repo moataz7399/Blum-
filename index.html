@@ -26,7 +26,7 @@
   </div>
 
   <!-- الهيدر -->
-  <header class="hidden">
+  <header class="hidden page" id="home-page">
     <div class="top-bar">
       <h1 class="glow-text">RATS Kingdom</h1>
     </div>
@@ -38,7 +38,7 @@
   </div>
 
   <!-- المحتوى الرئيسي -->
-  <main id="main-content" class="hidden">
+  <main id="main-content" class="hidden page">
     <div class="profile-section">
       <img
         src="https://i.ibb.co/6DDKSS7/logo.png"
@@ -56,7 +56,7 @@
       <div class="column">
         <div class="button-card">
           <h3 class="glow-text">𝐘𝐨𝐮𝐭𝐮𝐛𝐞 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</h3>
-          <button onclick="window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');">
+          <button class="interactive-button" onclick="window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');">
             Subscribe
           </button>
         </div>
@@ -64,7 +64,7 @@
         <!-- Follow X -->
         <div class="button-card">
           <h3 class="glow-text">𝐅𝐨𝐥𝐥𝐨𝐰 𝐗</h3>
-          <button onclick="window.open('https://www.twitter.com/@Falcon_Communiity', '_blank');">
+          <button class="interactive-button" onclick="window.open('https://www.twitter.com/@Falcon_Communiity', '_blank');">
             Follow
           </button>
         </div>
@@ -75,7 +75,7 @@
         <!-- Telegram Channel -->
         <div class="button-card">
           <h3 class="glow-text">𝐓𝐞𝐥𝐞𝐠𝐫𝐚𝐦 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</h3>
-          <button onclick="window.open('https://t.me/Falcon_Community_Bot', '_blank');">
+          <button class="interactive-button" onclick="window.open('https://t.me/Falcon_Community_Bot', '_blank');">
             Join
           </button>
         </div>
@@ -83,7 +83,7 @@
         <!-- Share Link Bot -->
         <div class="button-card">
           <h3 class="glow-text">𝐒𝐡𝐚𝐫𝐞 𝐋𝐢𝐧𝐤 𝐁𝐨𝐭</h3>
-          <button onclick="shareInviteLink()">Share</button>
+          <button class="interactive-button" onclick="shareInviteLink()">Share</button>
         </div>
       </div>
     </div>
@@ -93,23 +93,23 @@
       <div class="button-card">
         <h3 class="glow-text">𝐏𝐥𝐚𝐲 𝐅𝐚𝐥𝐜𝐨𝐧</h3>
         <p class="cards-label">» ᴄᴀʀᴅꜱ : <span id="cardsCount">0</span></p>
-        <button id="playFalconBtn" onclick="handlePlayFalcon()">Play</button>
+        <button id="playFalconBtn" class="interactive-button" onclick="handlePlayFalcon()">Play</button>
       </div>
     </div>
   </main>
 
   <!-- صفحة الأصدقاء -->
-  <div id="friends-page" class="hidden">
+  <div id="friends-page" class="hidden page">
     <div class="friends-section">
       <img
         src="https://i.ibb.co/6DDKSS7/logo.png"
         alt="Profile Icon"
-        class="profile-icon"
+        class="profile-icon interactive-button"
       />
       <h2 class="glow-text">𝗜𝗻𝘃𝗶𝘁𝗲 𝗳𝗿𝗶𝗲𝗻𝗱𝘀 𝗮𝗻𝗱 𝗴𝗲𝘁 𝗺𝗼𝗿𝗲 𝗥𝗔𝗧𝗦</h2>
       <div class="friends-buttons">
-        <button onclick="copyInviteLink()">𝐂𝐨𝐩𝐲 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
-        <button onclick="shareInviteLink()">𝐒𝐡𝐚𝐫𝐞 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
+        <button class="interactive-button" onclick="copyInviteLink()">𝐂𝐨𝐩𝐲 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
+        <button class="interactive-button" onclick="shareInviteLink()">𝐒𝐡𝐚𝐫𝐞 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
       </div>
 
       <!-- إضافة المربع الجديد -->
@@ -120,29 +120,8 @@
     </div>
   </div>
 
-  <!-- صفحة Leaderboard الجديدة -->
-  <div id="leaderboard-page" class="hidden">
-    <div class="leaderboard-container">
-      <!-- المربع الرئيسي للـ Leaderboard -->
-      <div class="leaderboard-box">
-        <!-- يمكن أن يتم تعبئة هذا القسم ديناميكيًا باستخدام JavaScript -->
-        <!-- مثال على صف مستخدم في الـ Leaderboard -->
-        <!-- هذا مثال ثابت للتوضيح، سيتم استبداله بالبيانات الحقيقية -->
-        <!-- يمكنك إزالة هذا المثال عند تعبئة البيانات الديناميكية -->
-        <div class="leaderboard-entry">
-          <img src="https://i.ibb.co/h8G6Rrt/11zon-cropped-3.png" alt="Falcon Icon" class="leaderboard-falcon">
-          <div class="leaderboard-user-info">
-            <span class="username">UserTelegram</span>
-            <span class="points">1,000,000 <span class="falcon-text">FALCON</span></span>
-          </div>
-          <div class="leaderboard-rank">#100,000</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Collab -->
-  <div id="collab-page" class="hidden">
+  <div id="collab-page" class="hidden page">
     <div class="tasks-section">
       <!-- مهمة 1 -->
       <div class="task-card">
@@ -155,7 +134,7 @@
           <p class="glow-text">+6,000 PAWS</p>
         </div>
         <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="6000" data-link="https://example.com/task1">Start</button>
+        <button class="action-btn start-btn interactive-button" data-points="6000" data-link="https://example.com/task1">Start</button>
       </div>
       <!-- مهمة 2 -->
       <div class="task-card">
@@ -168,7 +147,7 @@
           <p class="glow-text">+250 PAWS</p>
         </div>
         <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="250" data-link="https://t.me/Falcon_Community_Bot">Start</button>
+        <button class="action-btn start-btn interactive-button" data-points="250" data-link="https://t.me/Falcon_Community_Bot">Start</button>
       </div>
       <!-- مهمة 3 -->
       <div class="task-card">
@@ -181,7 +160,7 @@
           <p class="glow-text">+2,000 PAWS</p>
         </div>
         <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="2000" data-link="https://www.twitter.com/@Falcon_Communiity">Start</button>
+        <button class="action-btn start-btn interactive-button" data-points="2000" data-link="https://www.twitter.com/@Falcon_Communiity">Start</button>
       </div>
       <!-- مهمة 4 -->
       <div class="task-card">
@@ -194,7 +173,7 @@
           <p class="glow-text">+5,000 PAWS</p>
         </div>
         <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="5000" data-link="https://example.com/task4">Start</button>
+        <button class="action-btn start-btn interactive-button" data-points="5000" data-link="https://example.com/task4">Start</button>
       </div>
       
       <!-- مهمة 5: Subscribe to YouTube -->
@@ -208,7 +187,7 @@
           <p class="glow-text">+3,000 PAWS</p>
         </div>
         <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="3000" data-link="https://www.youtube.com/@Falcon_Communiity">Start</button>
+        <button class="action-btn start-btn interactive-button" data-points="3000" data-link="https://www.youtube.com/@Falcon_Communiity">Start</button>
       </div>
 
       <!-- Invite 3 friends -->
@@ -222,7 +201,7 @@
           <p class="glow-text">+3,000 PAWS</p>
         </div>
         <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="3000" data-link="https://example.com/invite3">Start</button>
+        <button class="action-btn start-btn interactive-button" data-points="3000" data-link="https://example.com/invite3">Start</button>
       </div>
       <!-- Invite 5 friends -->
       <div class="task-card">
@@ -235,7 +214,7 @@
           <p class="glow-text">+5,000 PAWS</p>
         </div>
         <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="5000" data-link="https://example.com/invite5">Start</button>
+        <button class="action-btn start-btn interactive-button" data-points="5000" data-link="https://example.com/invite5">Start</button>
       </div>
       <!-- Invite 25 friends -->
       <div class="task-card">
@@ -248,13 +227,13 @@
           <p class="glow-text">+30,000 PAWS</p>
         </div>
         <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="30000" data-link="https://example.com/invite25">Start</button>
+        <button class="action-btn start-btn interactive-button" data-points="30000" data-link="https://example.com/invite25">Start</button>
       </div>
     </div>
   </div>
 
   <!-- Login Daily Page -->
-  <div id="login-daily-page" class="hidden">
+  <div id="login-daily-page" class="hidden page">
     <div class="login-daily-header">
       <h2 class="header-title">Daily Entry 🎁</h2>
       <p class="header-subtitle">Log in daily to the bot and get mysterious rewards</p>
@@ -349,7 +328,7 @@
   </div>
 
   <!-- واجهة اللعبة -->
-  <div id="game-overlay" class="hidden">
+  <div id="game-overlay" class="hidden page">
     <div class="score-panel">
       <p>𝗙𝗮𝗹𝗰𝗼𝗻𝘀: <span id="falconScore">0</span></p>
       <p>𝗕𝗼𝗺𝗯𝘀: <span id="bombScore">0</span></p>
@@ -359,26 +338,26 @@
     </div>
   </div>
 
-  <div id="end-game-screen" class="hidden end-game-screen">
+  <div id="end-game-screen" class="hidden end-game-screen page">
     <div class="end-content">
       <!-- إضافة حاوية الكشكشة داخل شاشة نهاية اللعبة -->
       <div id="confetti-container" class="confetti-container"></div>
 
       <div class="buttons-container">
         <!-- زر Play Again -->
-        <button id="btn-new-round">
+        <button id="btn-new-round" class="interactive-button">
           <span class="btn-icon"><i class="fas fa-play"></i></span> 
           <span class="btn-text">𝐏𝐥𝐚𝐲 𝐚𝐠𝐚𝐢𝐧</span>
         </button>
 
         <!-- زر Return Home -->
-        <button id="btn-back-home">
+        <button id="btn-back-home" class="interactive-button">
           <span class="btn-icon"><i class="fas fa-arrow-left"></i></span> 
           <span class="btn-text">𝐁𝐚𝐜𝐤</span>
         </button>
 
         <!-- زر Share Link Bot -->
-        <button id="btn-share-link">
+        <button id="btn-share-link" class="interactive-button">
           <span class="btn-icon"><i class="fas fa-share"></i></span> 
           <span class="btn-text">𝐒𝐡𝐚𝐫𝐞 𝐋𝐢𝐧𝐤 𝐁𝐨𝐭</span>
         </button>
@@ -388,22 +367,22 @@
 
   <!-- فوتر -->
   <footer>
-    <nav class="bottom-nav">
-      <a href="#" class="active glow-text" onclick="handleNavClick('main')">
+    <nav class="bottom-nav navbar">
+      <button class="nav-button active" data-target="home-page">
         <i class="fas fa-home"></i> Home
-      </a>
-      <a href="#" class="glow-text" onclick="handleNavClick('collab')">
+      </button>
+      <button class="nav-button" data-target="collab-page">
         <i class="fas fa-handshake"></i> Collab
-      </a>
-      <a href="#" class="glow-text" onclick="handleNavClick('loginDaily')">
+      </button>
+      <button class="nav-button" data-target="login-daily-page">
         <i class="fas fa-calendar-check"></i> Login Daily
-      </a>
-      <a href="#" class="glow-text" onclick="handleNavClick('leaderboard')">
+      </button>
+      <button class="nav-button" data-target="leaderboard-page">
         <i class="fas fa-trophy"></i> Leaderboard
-      </a>
-      <a href="#" class="glow-text" onclick="handleNavClick('friends')">
+      </button>
+      <button class="nav-button" data-target="friends-page">
         <i class="fas fa-user-friends"></i> Friends
-      </a>
+      </button>
     </nav>
   </footer>
 
