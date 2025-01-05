@@ -59,21 +59,11 @@ function showLeaderboard() {
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
     document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
+    document.getElementById('leaderboard-page').classList.remove('hidden'); /* إظهار Leaderboard */
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.remove('hidden');
-
     setActiveNav('leaderboard');
-
-    // إعداد بيانات المستخدم
-    const username = telegramUsername ? `@${telegramUsername}` : telegramFirstName;
-    const points = formatNumber(ratsScore.toFixed(2));
-    const rank = `#77,588`; // يمكنك تحديث الرقم بناءً على البيانات الديناميكية
-
-    // تحديث بيانات اللوحة
-    document.getElementById('leaderboard-username').textContent = username;
-    document.getElementById('leaderboard-points').textContent = `${points} FALCON`;
-    document.getElementById('leaderboard-rank').textContent = rank;
+    fetchLeaderboardData(); // جلب بيانات Leaderboard
   });
 }
 
@@ -347,8 +337,7 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
 /* وظيفة نسخ رابط الدعوة                                      */
 /************************************************************/
 let telegramUserId = null; // متغير لتخزين معرف المستخدم
-let telegramUsername = null; // متغير لتخزين اسم المستخدم
-let telegramFirstName = null; // متغير لتخزين الاسم الأول
+let telegramUsername = null; // متغير لتخزين اسم المستخدم على تيليجرام
 
 function copyInviteLink() {
   const botUsername = 'Falcon_tapbot'; // اسم البوت الخاص بك
@@ -659,6 +648,36 @@ function clearConfetti(containerId) {
 }
 
 /************************************************************/
+/* دالة جلب بيانات Leaderboard                              */
+/************************************************************/
+function fetchLeaderboardData() {
+  if (!telegramUserId) {
+    console.warn('Telegram user ID not available.');
+    document.getElementById('telegramUsername').textContent = 'Unknown User';
+    document.getElementById('userPoints').textContent = '0 FALCON';
+    document.getElementById('userRank').textContent = '#--';
+    return;
+  }
+
+  // استبدل 'https://alisaad11.pythonanywhere.com/leaderboard' بـ URL الخادم الخاص بك الذي يعيد بيانات المستخدم
+  fetch(`https://alisaad11.pythonanywhere.com/leaderboard?user_id=${telegramUserId}`)
+    .then(response => response.json())
+    .then(data => {
+      // افترض أن البيانات تحتوي على { username: '...', points: 1234, rank: 5678 }
+      const { username, points, rank } = data;
+      document.getElementById('telegramUsername').textContent = username || 'Unknown User';
+      document.getElementById('userPoints').textContent = `${formatNumber(points)} FALCON`;
+      document.getElementById('userRank').textContent = `#${formatNumber(rank)}`;
+    })
+    .catch(error => {
+      console.error('Error fetching leaderboard data:', error);
+      document.getElementById('telegramUsername').textContent = 'Unknown User';
+      document.getElementById('userPoints').textContent = '0 FALCON';
+      document.getElementById('userRank').textContent = '#--';
+    });
+}
+
+/************************************************************/
 /* شغل شاشة الافتتاح                                      */
 /************************************************************/
 document.addEventListener("DOMContentLoaded", () => {
@@ -748,10 +767,9 @@ document.addEventListener("DOMContentLoaded", () => {
     window.Telegram.WebApp.ready();
 
     // استلام بيانات المستخدم من Telegram
-    const user = window.Telegram.WebApp.initDataUnsafe.user;
-    telegramUserId = user ? user.id : null;
-    telegramUsername = user ? user.username : null;
-    telegramFirstName = user ? user.first_name : 'Unknown';
+    telegramUserId = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.id : null;
+    telegramUsername = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.username : null;
+    const telegramName = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.first_name : 'Unknown User';
 
     if (telegramUserId) {
       // إرسال معرف المستخدم إلى الخادم الخلفي
@@ -765,12 +783,49 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(response => response.json())
       .then(data => {
         console.log('User ID sent successfully:', data);
+        // تحديث معلومات المستخدم في Leaderboard إذا كانت الصفحة مفتوحة
+        if (!document.getElementById('leaderboard-page').classList.contains('hidden')) {
+          fetchLeaderboardData();
+        }
       })
       .catch((error) => {
         console.error('Error sending user ID:', error);
       });
     }
+
+    // تحديث معلومات المستخدم في الصفحة الرئيسية أو أخرى إذا لزم الأمر
+    // يمكن إضافة هنا أي تحديثات أخرى تتعلق بالمستخدم
   } else {
     console.warn('Telegram Web Apps API not found.');
   }
-});
+}
+
+/************************************************************/
+/* دالة التعامل مع Leaderboard                            */
+/************************************************************/
+function fetchLeaderboardData() {
+  if (!telegramUserId) {
+    console.warn('Telegram user ID not available.');
+    document.getElementById('telegramUsername').textContent = 'Unknown User';
+    document.getElementById('userPoints').textContent = '0 FALCON';
+    document.getElementById('userRank').textContent = '#--';
+    return;
+  }
+
+  // استبدل 'https://alisaad11.pythonanywhere.com/leaderboard' بـ URL الخادم الخاص بك الذي يعيد بيانات المستخدم
+  fetch(`https://alisaad11.pythonanywhere.com/leaderboard?user_id=${telegramUserId}`)
+    .then(response => response.json())
+    .then(data => {
+      // افترض أن البيانات تحتوي على { username: '...', points: 1234, rank: 5678 }
+      const { username, points, rank } = data;
+      document.getElementById('telegramUsername').textContent = username || 'Unknown User';
+      document.getElementById('userPoints').textContent = `${formatNumber(points)} FALCON`;
+      document.getElementById('userRank').textContent = `#${formatNumber(rank)}`;
+    })
+    .catch(error => {
+      console.error('Error fetching leaderboard data:', error);
+      document.getElementById('telegramUsername').textContent = 'Unknown User';
+      document.getElementById('userPoints').textContent = '0 FALCON';
+      document.getElementById('userRank').textContent = '#--';
+    });
+}
