@@ -869,91 +869,105 @@ footer {
   .score-panel {
     font-size: 1.2rem;
   }
-
-  /* تعديل Leaderboard للأجهزة الصغيرة */
-  .leaderboard-entry {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .leaderboard-rank {
-    align-self: flex-end;
-    margin-top: 10px;
-  }
 }
 
-/* تصميم صفحة Leaderboard */
-#leaderboard-page {
-  padding: 20px;
+/* --------------------------------------------------------- */
+/* التعديلات والإضافات الجديدة تبدأ هنا                      */
+/* --------------------------------------------------------- */
+
+/* تأثير التنقل بين الصفحات */
+.page {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.page.active {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  opacity: 1;
 }
 
-.leaderboard-container {
-  width: 100%;
-  max-width: 1200px; /* يمكنك تعديل الحد الأقصى للعرض حسب الحاجة */
-  margin: 0 auto;
-}
-
-.leaderboard-box {
-  width: 100%;
-}
-
-.leaderboard-entry {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #fff;
-  border-radius: 10px;
-  padding: 15px 20px;
-  margin-bottom: 15px;
-  width: 100%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.leaderboard-falcon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.leaderboard-user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 15px;
-  flex-grow: 1;
-}
-
-.username {
-  font-size: 1.2rem;
-  color: #fff;
-  font-weight: bold;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
-}
-
-.points {
+/* تأثيرات الأزرار التفاعلية */
+.interactive-button {
+  background: linear-gradient(135deg, #6A5ACD, #483D8B);
+  color: #FFFFFF;
+  border: none;
+  padding: 10px 20px;
   font-size: 1rem;
-  color: #fff;
-  margin-top: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.falcon-text {
-  font-size: 1rem;
-}
-
-.leaderboard-rank {
-  font-size: 1.2rem;
-  color: #fff;
-  font-weight: bold;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
-}
-
-/* دوائر ملونة */
-.confetti.circle {
+.interactive-button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s ease;
   border-radius: 50%;
-  background-color: #0000ff; /* لون الدائرة الأزرق */
+  z-index: 1;
 }
+
+.interactive-button:hover {
+  box-shadow: 0 5px 15px rgba(106, 90, 205, 0.5);
+  transform: translateY(-3px);
+}
+
+.interactive-button:active::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* إضافة تأثيرات الأزرار عند النقر */
+.interactive-button.clicked {
+  transform: scale(0.95);
+}
+.interactive-button.clicked {
+  transform: scale(1);
+}
+
+/* تأثير الظلال تحت الأزرار النشطة في الفوتر */
+.bottom-nav .nav-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 3px;
+  background-color: #fff;
+  border-radius: 2px;
+  animation: shake 0.3s;
+}
+
+/* التأكيد على الأزرار النشطة */
+.bottom-nav .nav-button.active {
+  position: relative;
+  color: #fff;
+}
+
+/* اهتزاز خفيف عند التنقل بين الأزرار */
+@keyframes shake-navigation {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  50% { transform: translateX(2px); }
+  75% { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
+
+.bottom-nav .nav-button {
+  position: relative;
+}
+
+.bottom-nav .nav-button.active {
+  animation: shake-navigation 0.3s;
+}
+
+/* --------------------------------------------------------- */
+/* التعديلات والإضافات الجديدة تنتهي هنا                      */
+/* --------------------------------------------------------- */
