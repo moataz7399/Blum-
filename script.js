@@ -1,5 +1,62 @@
 /************************************************************/
-/* تنقل بين الصفحات + Loader                                */
+/* تحديد الأزرار والصفحات                                 */
+/************************************************************/
+const navButtons = document.querySelectorAll('.nav-button');
+const pages = document.querySelectorAll('.page');
+const interactiveButtons = document.querySelectorAll('.interactive-button');
+
+/************************************************************/
+/* إضافة تأثير التنقل بين الصفحات مع تأثير الفايد           */
+/************************************************************/
+navButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const target = button.getAttribute('data-target');
+    if (!target) return;
+
+    // إزالة فئة active من جميع الصفحات والأزرار
+    pages.forEach(page => page.classList.remove('active'));
+    navButtons.forEach(btn => btn.classList.remove('active'));
+
+    // إضافة فئة active للصفحة المستهدفة والزر النشط
+    const targetPage = document.getElementById(target);
+    if (targetPage) {
+      targetPage.classList.add('active');
+    }
+    button.classList.add('active');
+
+    // إضافة تأثير الاهتزاز الخفيف للزر النشط
+    button.classList.add('clicked');
+    setTimeout(() => {
+      button.classList.remove('clicked');
+    }, 300);
+
+    // اهتزاز الهاتف عند التنقل بين الأزرار
+    if (navigator.vibrate) {
+      navigator.vibrate(100); // اهتزاز لمدة 100 مللي ثانية
+    }
+  });
+});
+
+/************************************************************/
+/* إضافة تأثيرات الأزرار التفاعلية عند النقر                */
+/************************************************************/
+interactiveButtons.forEach(button => {
+  button.addEventListener('click', (e) => {
+    // إضافة فئة clicked لتطبيق تأثير النقر
+    button.classList.add('clicked');
+    setTimeout(() => {
+      button.classList.remove('clicked');
+    }, 200);
+
+    // اهتزاز الهاتف عند النقر على الأزرار
+    if (navigator.vibrate) {
+      navigator.vibrate(50); // اهتزاز لمدة 50 مللي ثانية
+    }
+  });
+});
+
+/************************************************************/
+/* شاشة التحميل + التنقل بين الصفحات                     */
 /************************************************************/
 function showLoader(callback) {
   const loader = document.querySelector('.loader');
@@ -12,84 +69,55 @@ function showLoader(callback) {
 
 function showMain() {
   showLoader(() => {
-    document.querySelector('header').classList.remove('hidden'); // إظهار الهيدر
-    document.getElementById('main-content').classList.remove('hidden');
-    document.getElementById('friends-page').classList.add('hidden');
-    document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden'); // إخفاء Leaderboard
-    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
-    document.getElementById('game-overlay').classList.add('hidden');
-    document.getElementById('end-game-screen').classList.add('hidden');
-    setActiveNav('main');
+    navButtons.forEach(btn => btn.classList.remove('active'));
+    document.querySelector('.nav-button[data-target="home-page"]').classList.add('active');
+    pages.forEach(page => page.classList.remove('active'));
+    document.getElementById('home-page').classList.add('active');
   });
 }
 
 function showFriends() {
   showLoader(() => {
-    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
-    document.getElementById('main-content').classList.add('hidden');
-    document.getElementById('friends-page').classList.remove('hidden');
-    document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden'); // إخفاء Leaderboard
-    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
-    document.getElementById('game-overlay').classList.add('hidden');
-    document.getElementById('end-game-screen').classList.add('hidden');
-    setActiveNav('friends');
+    navButtons.forEach(btn => btn.classList.remove('active'));
+    document.querySelector('.nav-button[data-target="friends-page"]').classList.add('active');
+    pages.forEach(page => page.classList.remove('active'));
+    document.getElementById('friends-page').classList.add('active');
   });
 }
 
 function showCollab() {
   showLoader(() => {
-    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
-    document.getElementById('main-content').classList.add('hidden');
-    document.getElementById('friends-page').classList.add('hidden');
-    document.getElementById('collab-page').classList.remove('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden'); // إخفاء Leaderboard
-    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
-    document.getElementById('game-overlay').classList.add('hidden');
-    document.getElementById('end-game-screen').classList.add('hidden');
-    setActiveNav('collab');
+    navButtons.forEach(btn => btn.classList.remove('active'));
+    document.querySelector('.nav-button[data-target="collab-page"]').classList.add('active');
+    pages.forEach(page => page.classList.remove('active'));
+    document.getElementById('collab-page').classList.add('active');
   });
 }
 
 function showLeaderboard() {
   showLoader(() => {
-    // إخفاء جميع الأقسام
-    document.querySelector('header').classList.add('hidden');
-    document.getElementById('main-content').classList.add('hidden');
-    document.getElementById('friends-page').classList.add('hidden');
-    document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('login-daily-page').classList.add('hidden');
-    document.getElementById('game-overlay').classList.add('hidden');
-    document.getElementById('end-game-screen').classList.add('hidden');
-
-    // إظهار صفحة Leaderboard
-    document.getElementById('leaderboard-page').classList.remove('hidden');
-    setActiveNav('leaderboard');
-
-    // جلب بيانات Leaderboard من الخادم
-    fetchLeaderboardData();
+    // Logic for leaderboard page (if implemented)
+    alert('Leaderboard page is not implemented yet!');
+    navButtons.forEach(btn => btn.classList.remove('active'));
+    document.querySelector('.nav-button[data-target="leaderboard-page"]').classList.add('active');
   });
 }
 
 function showLoginDaily() {
   showLoader(() => {
-    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
-    document.getElementById('main-content').classList.add('hidden');
-    document.getElementById('friends-page').classList.add('hidden');
-    document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden'); // إخفاء Leaderboard
-    document.getElementById('login-daily-page').classList.remove('hidden'); /* إظهار Login Daily */
-    document.getElementById('game-overlay').classList.add('hidden');
-    document.getElementById('end-game-screen').classList.add('hidden');
-    setActiveNav('loginDaily');
+    navButtons.forEach(btn => btn.classList.remove('active'));
+    document.querySelector('.nav-button[data-target="login-daily-page"]').classList.add('active');
+    pages.forEach(page => page.classList.remove('active'));
+    document.getElementById('login-daily-page').classList.add('active');
   });
 }
 
+/************************************************************/
+/* التعامل مع وظائف التنقل الأصلية                        */
+/************************************************************/
 function setActiveNav(page) {
-  const navLinks = document.querySelectorAll('.bottom-nav a');
-  navLinks.forEach(link => {
-    if (link.getAttribute('onclick') === `handleNavClick('${page}')`) {
+  navButtons.forEach(link => {
+    if (link.getAttribute('data-target') === page) {
       link.classList.add('active');
     } else {
       link.classList.remove('active');
@@ -137,14 +165,9 @@ const dailyRewards = [
 /* بدء اللعبة                                               */
 /************************************************************/
 function startGame() {
-  document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
+  pages.forEach(page => page.classList.remove('active'));
   document.getElementById('game-overlay').classList.remove('hidden');
-  document.getElementById('main-content').classList.add('hidden');
-  document.getElementById('friends-page').classList.add('hidden');
-  document.getElementById('collab-page').classList.add('hidden');
-  document.getElementById('leaderboard-page').classList.add('hidden'); // إخفاء Leaderboard
-  document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
-  document.getElementById('end-game-screen').classList.add('hidden');
+  document.getElementById('game-overlay').classList.add('active');
 
   falconScore = 0;
   bombScore = 0;
@@ -206,6 +229,7 @@ function endGame() {
   document.querySelectorAll('.falling-emoji').forEach(emoji => emoji.remove());
   document.getElementById('game-overlay').classList.add('hidden');
   document.getElementById('end-game-screen').classList.remove('hidden');
+  document.getElementById('end-game-screen').classList.add('active');
 
   // إضافة تأثير الاهتزاز عند انتهاء الجولة
   const overlay = document.getElementById('game-overlay');
@@ -311,7 +335,7 @@ function bombEffect() {
 }
 
 /************************************************************/
-/* دوال أزرار شاشة النهاية                                  */
+/* أزرار شاشة النهاية                                      */
 /************************************************************/
 document.getElementById('btn-new-round').addEventListener('click', () => {
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
@@ -446,29 +470,20 @@ function handleNavClick(page) {
 
   showLoader(() => {
     // إخفاء جميع الأقسام
-    document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
-    document.getElementById('main-content').classList.add('hidden');
-    document.getElementById('friends-page').classList.add('hidden');
-    document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden'); // إخفاء Leaderboard
-    document.getElementById('login-daily-page').classList.add('hidden'); /* إخفاء Login Daily */
-    document.getElementById('game-overlay').classList.add('hidden');
-    document.getElementById('end-game-screen').classList.add('hidden');
+    pages.forEach(page => page.classList.remove('active'));
 
     // إظهار الصفحة المطلوبة
     if (page === 'main') {
-      document.querySelector('header').classList.remove('hidden'); // إظهار الهيدر
-      document.getElementById('main-content').classList.remove('hidden');
-      setActiveNav('main');
+      document.querySelector('.nav-button[data-target="home-page"]').classList.add('active');
+      document.getElementById('home-page').classList.add('active');
     } else if (page === 'friends') {
-      document.getElementById('friends-page').classList.remove('hidden');
-      setActiveNav('friends');
+      document.querySelector('.nav-button[data-target="friends-page"]').classList.add('active');
+      document.getElementById('friends-page').classList.add('active');
     } else if (page === 'collab') {
-      document.getElementById('collab-page').classList.remove('hidden');
-      setActiveNav('collab');
+      document.querySelector('.nav-button[data-target="collab-page"]').classList.add('active');
+      document.getElementById('collab-page').classList.add('active');
     } else if (page === 'leaderboard') {
       showLeaderboard();
-      setActiveNav('leaderboard');
     }
   });
 }
@@ -652,99 +667,304 @@ function clearConfetti(containerId) {
 }
 
 /************************************************************/
-/* دوال صفحة Leaderboard                                  */
+/* دالة التعامل مع زر Play Falcon وإدارة المكافآت اليومية   */
 /************************************************************/
+document.getElementById('btn-new-round').addEventListener('click', () => {
+  let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
+  if (cardsCount < 1) {
+    showSuccessMessage('No cards available. Please collect your daily reward.');
+    return;
+  }
 
-/* جلب بيانات Leaderboard وعرضها */
-function fetchLeaderboardData() {
-  // استبدل هذا الرابط بواجهة API الخاصة بك لجلب بيانات الـ Leaderboard
-  // لأغراض الاختبار، سأستخدم بيانات ثابتة
-  const mockData = [
-    {
-      username: 'FalconMaster',
-      name: 'محمد علي',
-      points: 1500000,
-      rank: 1
-    },
-    {
-      username: 'UserTelegram',
-      name: 'أحمد محمد',
-      points: 1200000,
-      rank: 2
-    },
-    {
-      username: null,
-      name: 'سارة أحمد',
-      points: 1100000,
-      rank: 3
-    },
-    // أضف المزيد من المستخدمين حسب الحاجة
-  ];
+  // استهلاك كرت واحد لإعادة اللعب
+  cardsCount -= 1;
+  localStorage.setItem('cardsCount', cardsCount);
+  document.getElementById('cardsCount').textContent = cardsCount;
 
-  // بدلاً من استخدام fetch، سأستخدم البيانات الثابتة
-  // إذا كنت تملك واجهة API، قم بإلغاء التعليق عن الكود أدناه واستخدم رابط API الخاص بك
-  /*
-  fetch('https://example.com/api/leaderboard')
-    .then(response => response.json())
-    .then(data => {
-      populateLeaderboard(data);
-    })
-    .catch(error => {
-      console.error('Error fetching leaderboard data:', error);
-      alert('فشل في جلب بيانات الـ Leaderboard.');
-    });
-  */
+  showConfetti('confetti-container'); // عرض الكشكشة عند الضغط على Play Again
+  prepareGame();
+});
+document.getElementById('btn-back-home').addEventListener('click', () => {
+  // إزالة الكشكشة قبل العودة إلى الصفحة الرئيسية
+  clearConfetti('confetti-container');
+  showMain();
+});
+document.getElementById('btn-share-link').addEventListener('click', () => {
+  showConfetti('confetti-container'); // عرض الكشكشة عند الضغط على Share Link Bot
+  alert('Share Link Bot clicked!');
+});
 
-  // استخدام البيانات الثابتة للتجربة
-  populateLeaderboard(mockData);
+/************************************************************/
+/* وظيفة نسخ رابط الدعوة                                      */
+/************************************************************/
+function copyInviteLink() {
+  const botUsername = 'Falcon_tapbot'; // اسم البوت الخاص بك
+  const userId = telegramUserId; // يجب أن يحتوي على user_id الخاص بالمستخدم
+
+  if (!userId) {
+    alert('Unable to retrieve your user ID. Please try again.');
+    return;
+  }
+
+  // إنشاء الرابط المطلوب
+  const inviteLink = `https://t.me/${botUsername}?start=${userId}`;
+
+  // نسخ الرابط إلى الحافظة
+  navigator.clipboard.writeText(inviteLink).then(() => {
+    showSuccessMessage('Invite link copied!');
+  }).catch(err => {
+    console.error('Failed to copy invite link: ', err);
+    alert('Failed to copy the link. Please try again.');
+  });
 }
 
-/* تعبئة بيانات Leaderboard في الـ HTML */
-function populateLeaderboard(data) {
-  const leaderboardContainer = document.querySelector('.leaderboard-box');
-  
-  // تنظيف المحتوى الحالي
-  leaderboardContainer.innerHTML = '';
+/************************************************************/
+/* وظيفة مشاركة رابط الدعوة                                      */
+/************************************************************/
+function shareInviteLink() {
+  const inviteLink = 'https://moataz7399.github.io/Blum-/#'; // استخدم رابط الصفحة الخاصة بك
+  if (navigator.share) {
+    navigator.share({
+      title: 'Join Rats Kingdom',
+      text: 'Join me in Rats Kingdom!',
+      url: inviteLink
+    }).then(() => {
+      console.log('Invite link shared successfully.');
+    }).catch(err => {
+      console.error('Error sharing invite link: ', err);
+    });
+  } else {
+    alert('Share not supported on this browser.');
+  }
+}
 
-  data.forEach(user => {
-    // إنشاء عنصر المستخدم في الـ Leaderboard
-    const entry = document.createElement('div');
-    entry.classList.add('leaderboard-entry');
+/************************************************************/
+/* وظيفة عرض رسالة النجاح                                    */
+/************************************************************/
+function showSuccessMessage(message = 'Success') {
+  // إنشاء الرسالة
+  const successMessage = document.createElement('div');
+  successMessage.textContent = message;
+  successMessage.classList.add('success-message');
 
-    // صورة الصقر
-    const falconImg = document.createElement('img');
-    falconImg.src = 'https://i.ibb.co/h8G6Rrt/11zon-cropped-3.png'; // رابط صورة الصقر
-    falconImg.alt = 'Falcon Icon';
-    falconImg.classList.add('leaderboard-falcon');
+  // إضافة الرسالة إلى الصفحة
+  document.body.appendChild(successMessage);
 
-    // معلومات المستخدم
-    const userInfo = document.createElement('div');
-    userInfo.classList.add('leaderboard-user-info');
+  // إزالة الرسالة بعد ثانية واحدة
+  setTimeout(() => {
+    successMessage.remove();
+  }, 1000);
+}
 
-    const username = document.createElement('span');
-    username.classList.add('username');
-    username.textContent = user.username || user.name;
+/************************************************************/
+/* دالة تنسيق الأرقام مع الفواصل والرموز الخاصة              */
+/************************************************************/
+function formatNumber(num) {
+  // إضافة الفواصل
+  const parts = num.toString().split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-    const points = document.createElement('span');
-    points.classList.add('points');
-    points.innerHTML = `${formatNumber(user.points)} <span class="falcon-text">FALCON</span>`;
+  // تحويل إلى رموز خاصة
+  const styledNumbers = {
+    '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰',
+    '5': '𝟱', '6': '𝟲', '7': '𝟳', '8': '𝟴', '9': '𝟵',
+    ',': ','
+  };
+  parts[0] = parts[0].split('').map(digit => styledNumbers[digit] || digit).join('');
+  if (parts[1]) {
+    parts[1] = parts[1].split('').map(digit => styledNumbers[digit] || digit).join('');
+    return parts.join('.');
+  }
+  return parts[0];
+}
 
-    userInfo.appendChild(username);
-    userInfo.appendChild(points);
+/************************************************************/
+/* دالة تنسيق الوقت                                        */
+/************************************************************/
+function formatTimerDigits(value) {
+  const styledNumbers = {
+    '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰',
+    '5': '𝟱', '6': '𝟲', '7': '𝟳', '8': '𝟴', '9': '𝟵', '.': '.'
+  };
+  return value.toString().split('').map(digit => styledNumbers[digit] || digit).join('');
+}
 
-    // ترتيب المستخدم
-    const rank = document.createElement('div');
-    rank.classList.add('leaderboard-rank');
-    rank.textContent = `#${formatNumber(user.rank)}`;
+/************************************************************/
+/* دالة التعامل مع زر Play Falcon وإدارة المكافآت اليومية   */
+/************************************************************/
+function handlePlayFalcon() {
+  let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
+  let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
 
-    // إضافة العناصر إلى الـ entry
-    entry.appendChild(falconImg);
-    entry.appendChild(userInfo);
-    entry.appendChild(rank);
+  if (cardsCount < 1) {
+    showSuccessMessage('No cards available. Please collect your daily reward.');
+    return;
+  }
 
-    // إضافة الـ entry إلى الـ container
-    leaderboardContainer.appendChild(entry);
+  // استهلاك كرت واحد للعب
+  cardsCount -= 1;
+  localStorage.setItem('cardsCount', cardsCount);
+  document.getElementById('cardsCount').textContent = cardsCount;
+
+  // بدء اللعبة
+  prepareGame();
+}
+
+/************************************************************/
+/* دالة تهيئة خانات الـ 9 أيام                               */
+/************************************************************/
+function initializeDailyLogin() {
+  const dayItems = document.querySelectorAll('.day-item');
+
+  // استرجاع حالة الأيام من localStorage
+  let claimedDays = JSON.parse(localStorage.getItem('claimedDays')) || [];
+  let lastClaimedDate = localStorage.getItem('lastClaimedDate') ? new Date(localStorage.getItem('lastClaimedDate')) : null;
+
+  dayItems.forEach((dayItem, index) => {
+    const dayNumber = index + 1;
+    if (claimedDays.includes(dayNumber)) {
+      // اليوم تم فتحه مسبقًا
+      unlockDay(dayItem, true);
+    } else {
+      if (dayNumber === 1) {
+        // اليوم الأول مفتوح دائمًا
+        unlockDay(dayItem, false);
+      } else {
+        // باقي الأيام تحتاج إلى التحقق من مرور يوم منذ آخر فتح
+        const previousDay = dayNumber - 1;
+        if (claimedDays.includes(previousDay) && lastClaimedDate) {
+          const today = new Date();
+          const nextUnlockTime = new Date(lastClaimedDate);
+          nextUnlockTime.setDate(nextUnlockTime.getDate() + 1);
+
+          // مقارنة التواريخ باستخدام UTC لتجنب مشكلات المناطق الزمنية
+          if (today.toDateString() === nextUnlockTime.toDateString() || today > nextUnlockTime) {
+            unlockDay(dayItem, false);
+          }
+        }
+      }
+    }
   });
+
+  // إضافة مستمعي الأحداث لخانات الأيام
+  dayItems.forEach((dayItem, index) => {
+    dayItem.addEventListener('click', () => {
+      const dayNumber = index + 1;
+      if (isDayUnlocked(dayNumber)) {
+        if (!claimedDays.includes(dayNumber)) {
+          // فتح الخانة
+          unlockDay(dayItem, true); // **تحديث الواجهة فورًا**
+          // عرض الكشكشة
+          showConfetti('confetti-container-login');
+          // اهتزاز الهاتف
+          if (navigator.vibrate) {
+            navigator.vibrate(200); // اهتزاز لمدة 200 مللي ثانية
+          }
+          // تحديث الحالة في localStorage
+          claimedDays.push(dayNumber);
+          localStorage.setItem('claimedDays', JSON.stringify(claimedDays));
+          localStorage.setItem('lastClaimedDate', new Date().toISOString());
+
+          // منح المكافأة اليومية
+          const reward = dailyRewards[dayNumber - 1];
+          if (reward) {
+            ratsScore += reward.points;
+            let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
+            cardsCount += reward.cards; // زيادة الكروت حسب المكافأة اليومية
+            localStorage.setItem('ratsScore', ratsScore.toFixed(2));
+            localStorage.setItem('cardsCount', cardsCount);
+            document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
+            document.getElementById('cardsCount').textContent = cardsCount;
+
+            // تحديث اليوم التالي
+            let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
+            currentDay += 1;
+            if (currentDay > dailyRewards.length) {
+              currentDay = 1; // إعادة تعيين إلى اليوم الأول بعد اليوم التاسع
+            }
+            localStorage.setItem('currentDay', currentDay);
+
+            showSuccessMessage(`Day ${dayNumber} reward claimed: +${reward.points} PAWS and +${reward.cards} cards!`);
+          }
+        }
+      } else {
+        showSuccessMessage('You need to wait for the next day to unlock this day.');
+      }
+    });
+
+    /* 
+      **تم إزالة مستمع الأحداث `touchstart` الذي يمنع التمرير 
+      لأن ذلك كان يسبب مشكلة في شريط التمرير داخل خانة الهدية اليومية
+    */
+  });
+}
+
+/************************************************************/
+/* دالة فتح اليوم                                           */
+/************************************************************/
+function unlockDay(dayItem, isCompleted) {
+  const overlay = dayItem.querySelector('.overlay');
+  if (overlay) {
+    if (isCompleted) {
+      overlay.innerHTML = '<i class="fas fa-check"></i>'; // أيقونة الصح
+      overlay.classList.remove('hidden'); // **إزالة فئة hidden لجعل overlay مرئيًا**
+      overlay.classList.add('completed');
+    } else {
+      overlay.classList.add('hidden'); // إخفاء التظليل وإيقونة القفل
+    }
+  }
+}
+
+/************************************************************/
+/* دالة التحقق مما إذا كان اليوم مفتوحًا                     */
+/************************************************************/
+function isDayUnlocked(dayNumber) {
+  const dayItem = document.querySelector(`.day-item[data-day="${dayNumber}"]`);
+  if (!dayItem) return false;
+  const overlay = dayItem.querySelector('.overlay');
+  return (overlay && overlay.classList.contains('hidden')) || (overlay && overlay.classList.contains('completed'));
+}
+
+/************************************************************/
+/* دالة عرض الكشكشة باستخدام مكتبة canvas-confetti          */
+/************************************************************/
+function showConfetti(containerId) {
+  const confettiContainer = document.getElementById(containerId);
+  if (!confettiContainer) return;
+
+  // إنشاء عنصر canvas داخل حاوية الكشكشة
+  const canvas = document.createElement('canvas');
+  canvas.style.position = 'absolute';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
+  canvas.width = confettiContainer.offsetWidth;
+  canvas.height = confettiContainer.offsetHeight;
+  confettiContainer.appendChild(canvas);
+
+  // إنشاء كشكشة مخصصة باستخدام مكتبة canvas-confetti
+  const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
+  myConfetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 }
+  });
+
+  // إزالة عنصر canvas بعد انتهاء الكشكشة
+  setTimeout(() => {
+    confettiContainer.removeChild(canvas);
+  }, 3000); // مدة عرض الكشكشة 3 ثوانٍ
+}
+
+/************************************************************/
+/* دالة إزالة الكشكشة عند العودة إلى الصفحة الرئيسية       */
+/************************************************************/
+function clearConfetti(containerId) {
+  const confettiContainer = document.getElementById(containerId);
+  if (!confettiContainer) return;
+
+  // إزالة جميع عناصر canvas داخل حاوية الكشكشة
+  const canvases = confettiContainer.querySelectorAll('canvas');
+  canvases.forEach(canvas => canvas.remove());
 }
 
 /************************************************************/
