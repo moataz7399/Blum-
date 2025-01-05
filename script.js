@@ -29,33 +29,18 @@ function setActiveNav(page) {
 function showMain() {
   document.querySelector('header').classList.remove('hidden'); // إظهار الهيدر
   showPage('main-content');
-  document.getElementById('friends-page').classList.remove('active');
-  document.getElementById('collab-page').classList.remove('active');
-  document.getElementById('login-daily-page').classList.remove('active'); /* إخفاء Login Daily */
-  document.getElementById('game-overlay').classList.add('hidden');
-  document.getElementById('end-game-screen').classList.add('hidden');
   setActiveNav('main');
 }
 
 function showFriends() {
   document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
   showPage('friends-page');
-  document.getElementById('main-content').classList.remove('active');
-  document.getElementById('collab-page').classList.remove('active');
-  document.getElementById('login-daily-page').classList.remove('active'); /* إخفاء Login Daily */
-  document.getElementById('game-overlay').classList.add('hidden');
-  document.getElementById('end-game-screen').classList.add('hidden');
   setActiveNav('friends');
 }
 
 function showCollab() {
   document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
   showPage('collab-page');
-  document.getElementById('main-content').classList.remove('active');
-  document.getElementById('friends-page').classList.remove('active');
-  document.getElementById('login-daily-page').classList.remove('active'); /* إخفاء Login Daily */
-  document.getElementById('game-overlay').classList.add('hidden');
-  document.getElementById('end-game-screen').classList.add('hidden');
   setActiveNav('collab');
 }
 
@@ -68,11 +53,6 @@ function showLeaderboard() {
 function showLoginDaily() {
   document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
   showPage('login-daily-page');
-  document.getElementById('main-content').classList.remove('active');
-  document.getElementById('friends-page').classList.remove('active');
-  document.getElementById('collab-page').classList.remove('active'); /* إخفاء Collab */
-  document.getElementById('game-overlay').classList.add('hidden');
-  document.getElementById('end-game-screen').classList.add('hidden');
   setActiveNav('loginDaily');
 }
 
@@ -84,15 +64,6 @@ function handleNavClick(page) {
     showLoginDaily();
     return;
   }
-
-  // إخفاء جميع الأقسام
-  document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
-  document.getElementById('main-content').classList.remove('active');
-  document.getElementById('friends-page').classList.remove('active');
-  document.getElementById('collab-page').classList.remove('active');
-  document.getElementById('login-daily-page').classList.remove('active'); /* إخفاء Login Daily */
-  document.getElementById('game-overlay').classList.add('hidden');
-  document.getElementById('end-game-screen').classList.add('hidden');
 
   // إظهار الصفحة المطلوبة
   if (page === 'main') {
@@ -146,11 +117,12 @@ const dailyRewards = [
 function startGame() {
   document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
   document.getElementById('game-overlay').classList.remove('hidden');
-  showPage('main-content');
-  document.getElementById('friends-page').classList.remove('active');
-  document.getElementById('collab-page').classList.remove('active');
-  document.getElementById('login-daily-page').classList.remove('active'); /* إخفاء Login Daily */
-  document.getElementById('end-game-screen').classList.add('hidden');
+  showPage('game-overlay');
+  showPage('main-content'); // تأكد من أن المحتوى الرئيسي مخفي
+  showPage('friends-page').classList.remove('active');
+  showPage('collab-page').classList.remove('active');
+  showPage('login-daily-page').classList.remove('active'); /* إخفاء Login Daily */
+  showPage('end-game-screen').classList.remove('active');
 
   falconScore = 0;
   bombScore = 0;
@@ -211,7 +183,7 @@ function endGame() {
   clearInterval(countdownInterval);
   document.querySelectorAll('.falling-emoji').forEach(emoji => emoji.remove());
   document.getElementById('game-overlay').classList.add('hidden');
-  document.getElementById('end-game-screen').classList.remove('hidden');
+  showPage('end-game-screen');
 
   // إضافة تأثير الاهتزاز عند انتهاء الجولة
   const overlay = document.getElementById('game-overlay');
@@ -246,7 +218,7 @@ function createFallingEmoji(type) {
 
   // تحديد الأيقونة حسب النوع
   if (type === 'falcon') {
-    emojiEl.innerHTML = '<i class="fas fa-dove"></i>'; // أيقونة النسر (يمكن استخدام أيقونة أخرى مناسبة)
+    emojiEl.innerHTML = '<i class="fas fa-dove"></i>'; // أيقونة النسر
     emojiEl.style.color = '#FFD700'; // لون النسر
   } else if (type === 'bomb') {
     emojiEl.innerHTML = '<i class="fas fa-bomb"></i>'; // أيقونة القنبلة
