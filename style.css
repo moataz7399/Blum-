@@ -6,17 +6,14 @@
   font-family: 'Arial', sans-serif;
 }
 
-/* منع تحديد ونسخ النصوص في جميع أنحاء الصفحة */
-body {
+/* منع تفعيل قائمة السياق والاختيارات على الصور */
+img {
+  -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version */
-  -webkit-touch-callout: none; /* iOS Safari */
-}
-
-/* منع تفعيل قائمة السياق والاختيارات على الصور */
-img {
   -webkit-user-drag: none; /* Disable image drag in Safari */
   pointer-events: auto; /* تأكد من إمكانية التفاعل مع الصور */
 }
@@ -35,6 +32,15 @@ img {
   -webkit-appearance: none; /* إزالة مظهر المتصفح الافتراضي للأزرار */
   border: none; /* إزالة الحدود الافتراضية للأزرار */
   background: none; /* إزالة الخلفية الافتراضية للأزرار */
+}
+
+/* منع التحديد على كامل الصفحة */
+body {
+  user-select: none;
+}
+
+button, input, textarea, select {
+  user-select: auto;
 }
 
 /* شريط التحميل الأخضر في أعلى الصفحة */
@@ -64,8 +70,7 @@ img {
 }
 
 body {
-  background: url('https://i.ibb.co/1m2th6k/Picsart-24-12-26-13-54-43-713.jpg') center/cover no-repeat; /* رابط الخلفية */
-  background-attachment: fixed; /* ثابت أثناء التمرير */
+  background: #000; /* خلفية سوداء ثابتة */
   color: #fff;
   margin: 0;
   padding: 0;
@@ -295,14 +300,17 @@ header .glow-text,
                0 0 6px rgba(255,255,255,0.5);
 }
 
+/* إزالة التوهج من score-panel */
+#game-overlay .score-panel p {
+  text-shadow: none;
+}
+
 .glow-text {
   text-shadow: none;
 }
 
-/* إزالة توهج النصوص "FALCON" و "BOMBS" */
-#game-overlay .score-panel p {
-  text-shadow: none;
-  font-weight: bold;
+.hidden {
+  display: none !important;
 }
 
 /* هيدر */
@@ -363,7 +371,7 @@ header {
 
 /* بطاقات أصغر */
 .button-card {
-  background: #1a1a1a;
+  background: #2c2c2c; /* لون أسود مائل للرمادي */
   width: 200px; /* إعادة الحجم إلى 200px كما كان سابقًا */
   padding: 10px; 
   border-radius: 10px;
@@ -569,8 +577,6 @@ header {
 .score-panel p {
   margin: 5px 0; /* مسافة بين الأسطر */
   color: #fff; /* لون النص أبيض */
-  /* إزالة توهج النص */
-  text-shadow: none;
 }
 
 .score-panel span {
@@ -578,10 +584,15 @@ header {
   color: #fff; /* لون العدد أبيض */
 }
 
+/* إزالة التوهج من score-panel */
+#game-overlay .score-panel p {
+  text-shadow: none;
+}
+
 #falconScore, #bombScore {
   font-size: 1.4rem;
   color: #fff;
-  /* إزالة توهج النص */
+  /* إزالة التوهج */
   text-shadow: none;
 }
 
@@ -635,7 +646,7 @@ header {
   font-size: 1.4rem;
   margin: 10px 0;
   font-weight: bold;
-  text-shadow: none; /* إزالة توهج النص */
+  text-shadow: none; /* إزالة التوهج */
 }
 .line-text {
   margin-right: 5px;
@@ -700,6 +711,8 @@ footer {
   align-items: center;
   transition: color 0.3s;
   flex: 1; /* لتوزيع الأزرار بالتساوي */
+  position: relative; /* للسماح بوضع تأثيرات */
+  overflow: hidden; /* لإخفاء التموجات خارج الزر */
 }
 .bottom-nav a i {
   font-size: 1.5rem; /* حجم الأيقونة */
@@ -714,13 +727,49 @@ footer {
   color: #fff; /* لون النص عند التفعيل */
 }
 
-.end-image {
-  width: 150px; /* حجم الصورة */
-  height: auto;
-  margin-bottom: 20px; /* مسافة أسفل الصورة */
+/* إضافة أنماط جديدة للأزرار الفوتر */
+.ripple-button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.icon {
+.ripple-button:active {
+  transform: scale(0.95); /* انضغاط للداخل */
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2), 
+              inset -2px -2px 4px rgba(255, 255, 255, 0.5); /* تأثير داخلي */
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 4px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* أيقونات الرفع */
+.ripple-button .icon {
   width: 30px; /* حجم الأيقونة */
   height: auto;
   margin-right: 10px; /* مسافة بين الأيقونة والنص */
@@ -738,7 +787,7 @@ footer {
   justify-content: center;
   margin: 10px 0;
   font-weight: bold;
-  text-shadow: none; /* إزالة توهج النص */
+  text-shadow: none; /* إزالة التوهج */
 }
 
 /* تصميم رسالة النجاح */
@@ -906,4 +955,67 @@ footer {
   height: 100%;
   z-index: 1; /* خلف المحتوى */
   pointer-events: none; /* السماح بالتفاعل مع العناصر فوق الكانفاس */
+}
+
+/* إضافة أنماط جديدة للأزرار الفوتر */
+.ripple-button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ripple-button:active {
+  transform: scale(0.95); /* انضغاط للداخل */
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2), 
+              inset -2px -2px 4px rgba(255, 255, 255, 0.5); /* تأثير داخلي */
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 4px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* أيقونات الرفع */
+.ripple-button .icon {
+  width: 30px; /* حجم الأيقونة */
+  height: auto;
+  margin-right: 10px; /* مسافة بين الأيقونة والنص */
+  vertical-align: middle; /* محاذاة وسط الأيقونة مع النص */
+}
+
+.line-text {
+  font-size: 1.4rem;
+  margin-left: 5px; /* مسافة بين النص ورقم النتيجة */
+}
+
+.stats-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  font-weight: bold;
+  text-shadow: none; /* إزالة التوهج */
 }
