@@ -6,8 +6,23 @@
   font-family: 'Arial', sans-serif;
 }
 
+/* منع تحديد ونسخ النصوص في جميع أنحاء الصفحة */
+body {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version */
+  -webkit-touch-callout: none; /* iOS Safari */
+}
+
 /* منع تفعيل قائمة السياق والاختيارات على الصور */
 img {
+  -webkit-user-drag: none; /* Disable image drag in Safari */
+  pointer-events: auto; /* تأكد من إمكانية التفاعل مع الصور */
+}
+
+/* منع التحديد والتظليل على العناصر المتعلقة بالهدية اليومية والأيقونات داخل اللعبة */
+.day-item, .day-box, .falling-emoji, .action-btn, .button-card button {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -15,7 +30,11 @@ img {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version */
   -webkit-user-drag: none; /* Disable image drag in Safari */
-  pointer-events: auto; /* تأكد من إمكانية التفاعل مع الصور */
+  -webkit-tap-highlight-color: transparent; /* إزالة التظليل عند الضغط على العناصر في Safari */
+  outline: none; /* إزالة أي خطوط خارجية */
+  -webkit-appearance: none; /* إزالة مظهر المتصفح الافتراضي للأزرار */
+  border: none; /* إزالة الحدود الافتراضية للأزرار */
+  background: none; /* إزالة الخلفية الافتراضية للأزرار */
 }
 
 /* شريط التحميل الأخضر في أعلى الصفحة */
@@ -44,18 +63,6 @@ img {
   transition: width 5s linear; /* انتقال يستغرق 5 ثوانٍ */
 }
 
-/* صفحات الموقع */
-.page {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-  display: none; /* إخفاء الأقسام بشكل افتراضي */
-}
-
-.page.active {
-  opacity: 1;
-  display: block; /* عرض القسم النشط */
-}
-
 body {
   background: url('https://i.ibb.co/1m2th6k/Picsart-24-12-26-13-54-43-713.jpg') center/cover no-repeat; /* رابط الخلفية */
   background-attachment: fixed; /* ثابت أثناء التمرير */
@@ -65,6 +72,7 @@ body {
   min-height: 100vh; /* لتغطية الشاشة بالكامل */
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 /* شاشة الافتتاح */
@@ -127,7 +135,7 @@ body {
 /* إصلاح شريط التمرير لصفحة Login Daily */
 .login-daily-table {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   grid-gap: 20px;
   width: 100%;
   max-width: 800px;
@@ -216,7 +224,7 @@ body {
 
 /* خطوط ملونة */
 .confetti-container {
-  position: absolute; /* داخل شاشة نهاية اللعبة */
+  position: absolute; /* داخل شاشة نهاية اللعبة أو Login Daily */
   top: 0;
   left: 0;
   width: 100%;
@@ -291,8 +299,10 @@ header .glow-text,
   text-shadow: none;
 }
 
-.hidden {
-  display: none !important;
+/* إزالة توهج النصوص "FALCON" و "BOMBS" */
+#game-overlay .score-panel p {
+  text-shadow: none;
+  font-weight: bold;
 }
 
 /* هيدر */
@@ -316,6 +326,7 @@ header {
   flex: 1; /* يجعل المحتوى يمتد لملء الشاشة */
   text-align: center;
   padding-bottom: 70px;
+  position: relative; /* للسماح بتحديد موضع الكانفاس */
 }
 
 /* صورة ورصيد */
@@ -328,6 +339,11 @@ header {
   object-fit: cover;
   background: #fff;
   border: 2px solid #fff;
+}
+
+.stats {
+  font-size: 1.5em;
+  margin-bottom: 30px;
 }
 
 /* عمودان جنباً لجنب بلا لف */
@@ -353,7 +369,6 @@ header {
   border-radius: 10px;
   margin: 0 auto;
   text-align: center;
-  transition: transform 0.2s; /* إضافة انتقال لتحسين تأثير النقر */
 }
 
 .button-card h3 {
@@ -380,7 +395,8 @@ header {
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold; /* اجعل النص غامقاً */
-  transition: background 0.3s, transform 0.2s; /* إضافة انتقال لتحسين تأثير النقر */
+  transition: background 0.3s;
+  user-select: none; /* منع تحديد النص داخل الأزرار */
 }
 .button-card button:hover {
   background: #555;
@@ -424,7 +440,8 @@ header {
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s; /* إضافة انتقال لتحسين تأثير النقر */
+  transition: background 0.3s;
+  user-select: none; /* منع تحديد النص داخل الأزرار */
 }
 .friends-buttons button:hover {
   background: #e5e5e5;
@@ -452,7 +469,6 @@ header {
 .tasks-section::-webkit-scrollbar-thumb:hover {
   background-color: #555; /* لون شريط التمرير عند التمرير عليه */
 }
-
 .task-card {
   display: flex;
   align-items: center;
@@ -484,8 +500,9 @@ header {
   padding: 10px 30px;
   border: none;
   font-size: 1rem;
-  transition: background 0.3s, color 0.3s, transform 0.2s; /* إضافة انتقال لتحسين تأثير النقر */
+  transition: background 0.3s, color 0.3s;
   cursor: pointer;
+  user-select: none; /* منع تحديد النص داخل الأزرار */
 }
 .claim-btn {
   background: #007bff;
@@ -494,8 +511,9 @@ header {
   padding: 10px 30px;
   border: none;
   font-size: 1rem;
-  transition: background 0.3s, color 0.3s, transform 0.2s; /* إضافة انتقال لتحسين تأثير النقر */
+  transition: background 0.3s, color 0.3s;
   cursor: pointer;
+  user-select: none; /* منع تحديد النص داخل الأزرار */
 }
 .completed-btn {
   background: #28a745;
@@ -506,6 +524,7 @@ header {
   font-size: 1rem;
   cursor: default;
   opacity: 0.7;
+  user-select: none; /* منع تحديد النص داخل الأزرار */
 }
 
 /* واجهة اللعبة */
@@ -524,12 +543,16 @@ header {
 
 .falling-emoji {
   position: absolute;
-  font-size: 2rem;
+  font-size: 3rem; /* زيادة حجم الأيقونة */
   color: #fff;
   cursor: pointer;
   user-select: none;
   pointer-events: auto;
-  transition: transform linear;
+  padding: 10px; /* زيادة مساحة الضغط */
+  /* إزالة خاصية الانتقال للحركة التي تتم عبر JavaScript */
+  /* transition: transform linear; */
+  /* منع تظليل العناصر عند الضغط */
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* عدادات */
@@ -546,6 +569,8 @@ header {
 .score-panel p {
   margin: 5px 0; /* مسافة بين الأسطر */
   color: #fff; /* لون النص أبيض */
+  /* إزالة توهج النص */
+  text-shadow: none;
 }
 
 .score-panel span {
@@ -556,7 +581,8 @@ header {
 #falconScore, #bombScore {
   font-size: 1.4rem;
   color: #fff;
-  text-shadow: 0 0 3px #fff, 0 0 6px #ff0, 0 0 10px #ff0;
+  /* إزالة توهج النص */
+  text-shadow: none;
 }
 
 .timer-panel {
@@ -609,7 +635,7 @@ header {
   font-size: 1.4rem;
   margin: 10px 0;
   font-weight: bold;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+  text-shadow: none; /* إزالة توهج النص */
 }
 .line-text {
   margin-right: 5px;
@@ -637,7 +663,7 @@ header {
   font-weight: bold;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease-in-out, transform 0.2s; /* إضافة انتقال لتحسين تأثير النقر */
+  transition: all 0.3s ease-in-out;
   cursor: pointer;
 }
 
@@ -672,27 +698,9 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: color 0.3s, border-bottom 0.3s; /* إضافة انتقال لتحسين تأثير النقر */
+  transition: color 0.3s;
   flex: 1; /* لتوزيع الأزرار بالتساوي */
-  position: relative; /* لإضافة الخط تحت الزر */
 }
-
-.bottom-nav a::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
-  background-color: #fff;
-  transition: width 0.3s;
-}
-
-.bottom-nav a.active::after {
-  width: 100%;
-}
-
 .bottom-nav a i {
   font-size: 1.5rem; /* حجم الأيقونة */
   margin-bottom: 5px;
@@ -702,20 +710,35 @@ footer {
   color: #fff; /* لون النص عند التمرير */
 }
 
-/* أزرار مشتركة */
-button {
-  transition: transform 0.2s;
+.bottom-nav a.active {
+  color: #fff; /* لون النص عند التفعيل */
 }
 
-/* أزرار ثابتة */
-.button-card button,
-.friends-buttons button,
-#end-game-screen button,
-.start-btn,
-.claim-btn,
-.completed-btn,
-#playFalconBtn {
-  transition: background 0.3s, transform 0.2s;
+.end-image {
+  width: 150px; /* حجم الصورة */
+  height: auto;
+  margin-bottom: 20px; /* مسافة أسفل الصورة */
+}
+
+.icon {
+  width: 30px; /* حجم الأيقونة */
+  height: auto;
+  margin-right: 10px; /* مسافة بين الأيقونة والنص */
+  vertical-align: middle; /* محاذاة وسط الأيقونة مع النص */
+}
+
+.line-text {
+  font-size: 1.4rem;
+  margin-left: 5px; /* مسافة بين النص ورقم النتيجة */
+}
+
+.stats-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  font-weight: bold;
+  text-shadow: none; /* إزالة توهج النص */
 }
 
 /* تصميم رسالة النجاح */
@@ -872,4 +895,15 @@ button {
   .score-panel {
     font-size: 1.2rem;
   }
+}
+
+/* تصميم الكانفاس لتأثير الثلوج */
+#main-content canvas#snow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* خلف المحتوى */
+  pointer-events: none; /* السماح بالتفاعل مع العناصر فوق الكانفاس */
 }
