@@ -790,6 +790,11 @@ document.addEventListener("DOMContentLoaded", () => {
     img.addEventListener('contextmenu', event => event.preventDefault());
   });
 
+  /* منع نسخ النصوص عبر منع التحديد */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+  });
+
   /* تهيئة Telegram Web Apps */
   if (window.Telegram && window.Telegram.WebApp) {
     window.Telegram.WebApp.ready();
@@ -817,4 +822,28 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     console.warn('Telegram Web Apps API غير موجود.');
   }
+
+  /* إضافة تأثير التموج والانضغاط للأزرار الفوتر */
+  const rippleButtons = document.querySelectorAll('.ripple-button');
+
+  rippleButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      // إنشاء عنصر التموج
+      const ripple = document.createElement('span');
+      ripple.classList.add('ripple');
+
+      // حساب موقع التموج
+      const rect = button.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+      ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+
+      // إضافة التموج إلى الزر
+      button.appendChild(ripple);
+
+      // إزالة التموج بعد انتهاء الرسوم المتحركة
+      ripple.addEventListener('animationend', () => ripple.remove());
+    });
+  });
 });
