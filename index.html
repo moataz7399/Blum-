@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <!-- تعديل وسم viewport لمنع تكبير الصفحة -->
+  <!-- منع تكبير الصفحة -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Rats Kingdom</title>
   
@@ -93,7 +93,7 @@
     <!-- زر Play -->
     <div class="play-container">
       <div class="button-card">
-        <h3 class="glow-text">𝐏𝐥𝐚𝐲 𝐅𝐚𝐥𝐜𝐨𝐧</h3>
+        <h3>𝐏𝐥𝐚𝐲 𝐅𝐚𝐥𝐜𝐨𝐧</h3> <!-- إزالة فئة glow-text -->
         <p class="cards-label">» ᴄᴀʀᴅꜱ : <span id="cardsCount">0</span></p>
         <button id="playFalconBtn" onclick="handlePlayFalcon()">Play</button>
       </div>
@@ -327,8 +327,8 @@
   <!-- واجهة اللعبة -->
   <div id="game-overlay" class="hidden">
     <div class="score-panel">
-      <p>FALCON: <span id="falconScore">0</span></p>
-      <p>BOMBS: <span id="bombScore">0</span></p>
+      <p>FALCON : <span id="falconScore">0</span></p> <!-- تعديل النص -->
+      <p>BOMBS : <span id="bombScore">0</span></p> <!-- تعديل النص -->
     </div>
     <div class="timer-panel">
       <p id="timer">30.00</p>
@@ -366,19 +366,19 @@
   <!-- فوتر -->
   <footer>
     <nav class="bottom-nav">
-      <a href="#" class="active glow-text" onclick="handleNavClick('main')">
+      <a href="#" class="glow-text ripple-button active" onclick="handleNavClick('main')">
         <i class="fas fa-home"></i> Home
       </a>
-      <a href="#" class="glow-text" onclick="handleNavClick('collab')">
+      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('collab')">
         <i class="fas fa-handshake"></i> Collab
       </a>
-      <a href="#" class="glow-text" onclick="handleNavClick('loginDaily')">
+      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('loginDaily')">
         <i class="fas fa-calendar-check"></i> Login Daily
       </a>
-      <a href="#" class="glow-text" onclick="handleNavClick('leaderboard')">
+      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('leaderboard')">
         <i class="fas fa-trophy"></i> Leaderboard
       </a>
-      <a href="#" class="glow-text" onclick="handleNavClick('friends')">
+      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('friends')">
         <i class="fas fa-user-friends"></i> Friends
       </a>
     </nav>
