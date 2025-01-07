@@ -169,7 +169,7 @@ let gameTime = 30.00; // مدة اللعبة
 let countdownInterval;
 let totalFalcons;
 let totalBombs;
-const fallSpeed = 400; // زيادة سرعة السقوط بالبكسل لكل ثانية لجعل الحركة أكثر سلاسة
+const fallSpeed = 400; // زيادة سرعة السقوط للبكسل لكل ثانية لجعل الحركة أكثر سلاسة
 
 /************************************************************/
 /* تعريف مكافآت الأيام اليومية */
@@ -292,7 +292,7 @@ function createFallingEmoji(type) {
 
   // تحديد الأيقونة حسب النوع
   if (type === 'falcon') {
-    emojiEl.innerHTML = '<i class="fas fa-dove"></i>'; // أيقونة النسر (يمكن استخدام أيقونة أخرى مناسبة)
+    emojiEl.innerHTML = '<i class="fas fa-dove"></i>'; // أيقونة النسر
     emojiEl.style.color = '#FFD700'; // لون النسر
   } else if (type === 'bomb') {
     emojiEl.innerHTML = '<i class="fas fa-bomb"></i>'; // أيقونة القنبلة
@@ -395,20 +395,19 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
 /************************************************************/
 /* وظيفة نسخ رابط الدعوة */
 /************************************************************/
-function copyInviteLink() {
-  const botUsername = 'Falcon_tapbot'; // اسم البوت الخاص بك
+let telegramUserId = null; // متغير لتخزين معرف المستخدم
 
-  // استرجاع معرف المستخدم من Telegram WebApp مباشرةً داخل الدالة
-  const user = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.user;
-  const userId = user ? user.id : null;
+function copyInviteLink() {
+  const botUsername = 'falcon_tapbot'; // اسم البوت الخاص بك بالحروف الصغيرة
+  const userId = telegramUserId; // يجب أن يحتوي على user_id الخاص بالمستخدم
 
   if (!userId) {
     alert('غير قادر على استرجاع معرف المستخدم. يرجى المحاولة مرة أخرى.');
     return;
   }
 
-  // إنشاء الرابط المطلوب
-  const inviteLink = `https://t.me/${botUsername}?start=${userId}`;
+  // إنشاء الرابط المطلوب بالصيغة الجديدة
+  const inviteLink = `https://t.me/${botUsername}/FALCON?startapp=${userId}`;
 
   // نسخ الرابط إلى الحافظة
   navigator.clipboard.writeText(inviteLink).then(() => {
@@ -801,27 +800,35 @@ document.addEventListener("DOMContentLoaded", () => {
     window.Telegram.WebApp.ready();
 
     // استلام بيانات المستخدم من Telegram
-    // لا نستخدم المتغير العام هنا، سنتعامل مع userId داخل الدوال مباشرة
-    // لكن إذا كنت بحاجة إلى إرسال user_id إلى الخادم عند تحميل الصفحة:
-    const user = window.Telegram.WebApp.user;
-    const userId = user ? user.id : null;
+    const initData = window.Telegram.WebApp.initData;
+    if (initData) {
+      try {
+        // تحليل بيانات initData لاستخراج معرف المستخدم
+        const parsedData = JSON.parse(decodeURIComponent(initData));
+        telegramUserId = parsedData.user.id || null; // استخراج معرف المستخدم
 
-    if (userId) {
-      // إرسال معرف المستخدم إلى الخادم الخلفي
-      fetch('https://alisaad11.pythonanywhere.com', { // استبدل بـ URL الخادم الخاص بك
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ user_id: userId })
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('تم إرسال معرف المستخدم بنجاح:', data);
-      })
-      .catch((error) => {
-        console.error('خطأ في إرسال معرف المستخدم:', error);
-      });
+        if (telegramUserId) {
+          // إرسال معرف المستخدم إلى الخادم الخلفي إذا لزم الأمر
+          fetch('https://alisaad11.pythonanywhere.com', { // استبدل بـ URL الخادم الخاص بك
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ user_id: telegramUserId })
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('تم إرسال معرف المستخدم بنجاح:', data);
+          })
+          .catch((error) => {
+            console.error('خطأ في إرسال معرف المستخدم:', error);
+          });
+        }
+      } catch (error) {
+        console.error('خطأ في تحليل بيانات Telegram initData:', error);
+      }
+    } else {
+      console.warn('لم يتم استلام بيانات initData من Telegram.');
     }
   } else {
     console.warn('Telegram Web Apps API غير موجود.');
