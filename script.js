@@ -399,15 +399,17 @@ let telegramUserId = null; // متغير لتخزين معرف المستخدم
 
 function copyInviteLink() {
   const botUsername = 'Falcon_tapbot'; // اسم البوت الخاص بك
-  const userId = telegramUserId; // يجب أن يحتوي على user_id الخاص بالمستخدم
 
-  if (!userId) {
+  // استرجاع معرف المستخدم من Telegram WebApp
+  telegramUserId = window.Telegram.WebApp && window.Telegram.WebApp.user ? window.Telegram.WebApp.user.id : null;
+
+  if (!telegramUserId) {
     alert('غير قادر على استرجاع معرف المستخدم. يرجى المحاولة مرة أخرى.');
     return;
   }
 
   // إنشاء الرابط المطلوب
-  const inviteLink = `https://t.me/${botUsername}/FALCON?startapp=${userId}`;
+  const inviteLink = `https://t.me/${botUsername}?start=${telegramUserId}`;
 
   // نسخ الرابط إلى الحافظة
   navigator.clipboard.writeText(inviteLink).then(() => {
@@ -805,7 +807,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.Telegram.WebApp.ready();
 
     // استلام بيانات المستخدم من Telegram
-    telegramUserId = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.id : null;
+    telegramUserId = window.Telegram.WebApp.user ? window.Telegram.WebApp.user.id : null;
 
     if (telegramUserId) {
       // إرسال معرف المستخدم إلى الخادم الخلفي
