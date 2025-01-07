@@ -3,6 +3,7 @@
 /************************************************************/
 function initSnowEffect() {
   const canvas = document.getElementById('snow');
+  if (!canvas) return; // تأكد من وجود الكانفاس
   const ctx = canvas.getContext('2d');
   resizeCanvas();
 
@@ -300,9 +301,9 @@ function createFallingEmoji(type) {
   }
 
   // وضع الأيقونة في مكان عشوائي على المحور الأفقي
-  const maxLeft = window.innerWidth - 100; // زيادة المسافة الأفقية لتجنب خروج الأيقونة
+  const maxLeft = window.innerWidth - 50;
   emojiEl.style.left = `${Math.random() * maxLeft}px`;
-  emojiEl.style.top = '-100px'; // بدء الأيقونة من أعلى الشاشة
+  emojiEl.style.top = '-50px';
 
   // عند الضغط على الأيقونة باستخدام pointerdown
   emojiEl.addEventListener('pointerdown', (event) => {
@@ -328,7 +329,7 @@ function createFallingEmoji(type) {
   gameOverlay.appendChild(emojiEl);
 
   // استخدام requestAnimationFrame لتحسين الأداء
-  let currentTop = -100;
+  let currentTop = -50;
   let lastTimestamp = null;
 
   function animate(timestamp) {
@@ -370,7 +371,7 @@ function bombEffect() {
 document.getElementById('btn-new-round').addEventListener('click', () => {
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
   if (cardsCount < 1) {
-    showSuccessMessage('لا توجد كروت متاحة. يرجى جمع مكافأتك اليومية.');
+    showSuccessMessage('No cards available. Please collect your daily reward.');
     return;
   }
 
@@ -389,7 +390,7 @@ document.getElementById('btn-back-home').addEventListener('click', () => {
 });
 document.getElementById('btn-share-link').addEventListener('click', () => {
   showConfetti('confetti-container'); // عرض الكشكشة عند الضغط على Share Link Bot
-  alert('تم الضغط على Share Link Bot!');
+  alert('Share Link Bot clicked!');
 });
 
 /************************************************************/
@@ -402,7 +403,7 @@ function copyInviteLink() {
   const userId = telegramUserId; // يجب أن يحتوي على user_id الخاص بالمستخدم
 
   if (!userId) {
-    alert('غير قادر على استرجاع معرف المستخدم. يرجى المحاولة مرة أخرى.');
+    alert('Unable to retrieve your user ID. Please try again.');
     return;
   }
 
@@ -411,10 +412,10 @@ function copyInviteLink() {
 
   // نسخ الرابط إلى الحافظة
   navigator.clipboard.writeText(inviteLink).then(() => {
-    showSuccessMessage('تم نسخ رابط الدعوة!');
+    showSuccessMessage('Invite link copied!');
   }).catch(err => {
-    console.error('فشل في نسخ رابط الدعوة: ', err);
-    alert('فشل في نسخ الرابط. يرجى المحاولة مرة أخرى.');
+    console.error('Failed to copy invite link: ', err);
+    alert('Failed to copy the link. Please try again.');
   });
 }
 
@@ -425,23 +426,23 @@ function shareInviteLink() {
   const inviteLink = `https://t.me/falcon_tapbot/FALCON?startapp=${telegramUserId}`; // استخدم الرابط بالصيغة المطلوبة
   if (navigator.share && telegramUserId) {
     navigator.share({
-      title: 'انضم إلى Rats Kingdom',
-      text: 'انضم إليّ في Rats Kingdom!',
+      title: 'Join Rats Kingdom',
+      text: 'Join me in Rats Kingdom!',
       url: inviteLink
     }).then(() => {
-      console.log('تم مشاركة رابط الدعوة بنجاح.');
+      console.log('Invite link shared successfully.');
     }).catch(err => {
-      console.error('خطأ في مشاركة رابط الدعوة: ', err);
+      console.error('Error sharing invite link: ', err);
     });
   } else {
-    alert('ميزة المشاركة غير مدعومة في هذا المتصفح أو لم يتم استرجاع معرف المستخدم.');
+    alert('Share not supported on this browser or user ID not available.');
   }
 }
 
 /************************************************************/
 /* وظيفة عرض رسالة النجاح */
 /************************************************************/
-function showSuccessMessage(message = 'نجاح') {
+function showSuccessMessage(message = 'Success') {
   // إنشاء الرسالة
   const successMessage = document.createElement('div');
   successMessage.textContent = message;
@@ -537,7 +538,7 @@ function handlePlayFalcon() {
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
 
   if (cardsCount < 1) {
-    showSuccessMessage('لا توجد كروت متاحة. يرجى جمع مكافأتك اليومية.');
+    showSuccessMessage('No cards available. Please collect your daily reward.');
     return;
   }
 
@@ -624,14 +625,19 @@ function initializeDailyLogin() {
             }
             localStorage.setItem('currentDay', currentDay);
 
-            showSuccessMessage(`تم استلام مكافأة اليوم ${dayNumber}: +${reward.points} PAWS و +${reward.cards} كروت!`);
+            showSuccessMessage(`Day ${dayNumber} reward claimed: +${reward.points} PAWS and +${reward.cards} cards!`);
           }
         }
       } else {
-        showSuccessMessage('تحتاج إلى الانتظار ليوم آخر لفتح هذا اليوم.');
+        showSuccessMessage('You need to wait for the next day to unlock this day.');
       }
     });
   });
+
+  /* 
+    **تم إزالة مستمع الأحداث `touchstart` الذي يمنع التمرير 
+    لأن ذلك كان يسبب مشكلة في شريط التمرير داخل خانة الهدية اليومية
+  */
 }
 
 /************************************************************/
@@ -703,7 +709,7 @@ function clearConfetti(containerId) {
 }
 
 /************************************************************/
-/* سكربت الموقع الرئيسي مع دمج جميع الوظائف السابقة */
+/* شغل شاشة الافتتاح */
 /************************************************************/
 document.addEventListener("DOMContentLoaded", () => {
   const progress = document.querySelector(".progress-bar .progress");
@@ -777,7 +783,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // عرض رسالة النجاح
-        showSuccessMessage('تم استلام النقاط بنجاح!');
+        showSuccessMessage('Points claimed successfully!');
       }
     });
   });
@@ -813,14 +819,14 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .then(response => response.json())
       .then(data => {
-        console.log('تم إرسال معرف المستخدم بنجاح:', data);
+        console.log('User ID sent successfully:', data);
       })
       .catch((error) => {
-        console.error('خطأ في إرسال معرف المستخدم:', error);
+        console.error('Error sending user ID:', error);
       });
     }
   } else {
-    console.warn('Telegram Web Apps API غير موجود.');
+    console.warn('Telegram Web Apps API not found.');
   }
 
   /* إضافة تأثير التموج والانضغاط للأزرار الفوتر */
