@@ -868,23 +868,6 @@ footer {
   cursor: pointer;
 }
 
-.day-box {
-  background: #1a1a1a;
-  border: 2px solid #fff;
-  border-radius: 10px;
-  width: 100%;
-  height: 150px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  position: relative;
-}
-
-.day-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* تظليل وإيقونة القفل */
 .overlay {
   position: absolute;
