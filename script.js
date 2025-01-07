@@ -1,6 +1,5 @@
 /************************************************************/
 /* سكربت تساقط الثلوج */
-/************************************************************/
 function initSnowEffect() {
   const canvas = document.getElementById('snow');
   if (!canvas) return; // تأكد من وجود الكانفاس
@@ -64,10 +63,10 @@ function initSnowEffect() {
     }
   });
 }
+/************************************************************/
 
 /************************************************************/
 /* تنقل بين الصفحات + Loader */
-/************************************************************/
 function showLoader(callback) {
   const loader = document.querySelector('.loader');
   loader.classList.remove('hidden'); // إظهار شاشة التحميل
@@ -153,16 +152,15 @@ function setActiveNav(page) {
 
 /************************************************************/
 /* قبل بدء اللعبة */
-/************************************************************/
 function prepareGame() {
   showLoader(() => {
     startGame();
   });
 }
+/************************************************************/
 
 /************************************************************/
 /* متغيرات اللعبة */
-/************************************************************/
 let falconScore = 0;
 let bombScore = 0;
 let ratsScore = 0.00; // متغير النقاط الرئيسية
@@ -171,10 +169,10 @@ let countdownInterval;
 let totalFalcons;
 let totalBombs;
 const fallSpeed = 400; // زيادة سرعة السقوط للبكسل لكل ثانية لجعل الحركة أكثر سلاسة
+/************************************************************/
 
 /************************************************************/
 /* تعريف مكافآت الأيام اليومية */
-/************************************************************/
 const dailyRewards = [
   { day: 1, points: 100, cards: 2 },
   { day: 2, points: 250, cards: 5 },
@@ -186,10 +184,10 @@ const dailyRewards = [
   { day: 8, points: 1500, cards: 15 },
   { day: 9, points: 2000, cards: 20 },
 ];
+/************************************************************/
 
 /************************************************************/
 /* بدء اللعبة */
-/************************************************************/
 function startGame() {
   document.querySelector('header').classList.add('hidden'); // إخفاء الهيدر
   document.getElementById('game-overlay').classList.remove('hidden');
@@ -226,10 +224,10 @@ function startGame() {
     document.getElementById('timer').textContent = formatTimerDigits(gameTime.toFixed(2));
   }, 100); // كل 100 مللي ثانية
 }
+/************************************************************/
 
 /************************************************************/
 /* توزيع الصقور والقنابل */
-/************************************************************/
 function scheduleEmojis() {
   const falconInterval = gameTime / totalFalcons;
   const bombInterval = gameTime / totalBombs;
@@ -250,10 +248,10 @@ function scheduleEmojis() {
     }, spawnTime * 1000);
   }
 }
+/************************************************************/
 
 /************************************************************/
 /* إنهاء اللعبة */
-/************************************************************/
 function endGame() {
   clearInterval(countdownInterval);
   document.querySelectorAll('.falling-emoji').forEach(emoji => emoji.remove());
@@ -280,10 +278,10 @@ function endGame() {
 
   gameTime = 0; // منع أي عمليات إضافية بعد انتهاء اللعبة
 }
+/************************************************************/
 
 /************************************************************/
 /* إنشاء الأيقونة بالسقوط + الضغط */
-/************************************************************/
 function createFallingEmoji(type) {
   if (gameTime <= 0) return;
 
@@ -348,10 +346,10 @@ function createFallingEmoji(type) {
   }
   requestAnimationFrame(animate);
 }
+/************************************************************/
 
 /************************************************************/
 /* تأثير القنبلة */
-/************************************************************/
 function bombEffect() {
   const overlay = document.getElementById('game-overlay');
   if (navigator.vibrate) {
@@ -364,10 +362,10 @@ function bombEffect() {
     overlay.classList.remove('shake');
   }, 300);
 }
+/************************************************************/
 
 /************************************************************/
 /* أزرار شاشة النهاية */
-/************************************************************/
 document.getElementById('btn-new-round').addEventListener('click', () => {
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
   if (cardsCount < 1) {
@@ -392,10 +390,10 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
   showConfetti('confetti-container'); // عرض الكشكشة عند الضغط على Share Link Bot
   alert('Share Link Bot clicked!');
 });
+/************************************************************/
 
 /************************************************************/
 /* وظيفة نسخ رابط الدعوة */
-/************************************************************/
 let telegramUserId = null; // متغير لتخزين معرف المستخدم
 
 function copyInviteLink() {
@@ -418,10 +416,10 @@ function copyInviteLink() {
     alert('Failed to copy the link. Please try again.');
   });
 }
+/************************************************************/
 
 /************************************************************/
 /* وظيفة مشاركة رابط الدعوة */
-/************************************************************/
 function shareInviteLink() {
   const inviteLink = `https://t.me/falcon_tapbot/FALCON?startapp=${telegramUserId}`; // استخدم الرابط بالصيغة المطلوبة
   if (navigator.share && telegramUserId) {
@@ -438,10 +436,10 @@ function shareInviteLink() {
     alert('Share not supported on this browser or user ID not available.');
   }
 }
+/************************************************************/
 
 /************************************************************/
 /* وظيفة عرض رسالة النجاح */
-/************************************************************/
 function showSuccessMessage(message = 'Success') {
   // إنشاء الرسالة
   const successMessage = document.createElement('div');
@@ -456,10 +454,10 @@ function showSuccessMessage(message = 'Success') {
     successMessage.remove();
   }, 1000);
 }
+/************************************************************/
 
 /************************************************************/
 /* دالة تنسيق الأرقام مع الفواصل والرموز الخاصة */
-/************************************************************/
 function formatNumber(num) {
   // إضافة الفواصل
   const parts = num.toString().split('.');
@@ -478,10 +476,10 @@ function formatNumber(num) {
   }
   return parts[0];
 }
+/************************************************************/
 
 /************************************************************/
 /* دالة تنسيق الوقت */
-/************************************************************/
 function formatTimerDigits(value) {
   const styledNumbers = {
     '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰',
@@ -489,10 +487,10 @@ function formatTimerDigits(value) {
   };
   return value.toString().split('').map(digit => styledNumbers[digit] || digit).join('');
 }
+/************************************************************/
 
 /************************************************************/
 /* دالة التنقل بين الصفحات مع تأثير التحميل */
-/************************************************************/
 function handleNavClick(page) {
   if (page === 'loginDaily') {
     showLoginDaily();
@@ -529,10 +527,10 @@ function handleNavClick(page) {
     }
   });
 }
+/************************************************************/
 
 /************************************************************/
 /* دالة التعامل مع زر Play Falcon وإدارة المكافآت اليومية */
-/************************************************************/
 function handlePlayFalcon() {
   let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
@@ -550,10 +548,10 @@ function handlePlayFalcon() {
   // بدء اللعبة
   prepareGame();
 }
+/************************************************************/
 
 /************************************************************/
 /* دالة تهيئة خانات الـ 9 أيام */
-/************************************************************/
 function initializeDailyLogin() {
   const dayItems = document.querySelectorAll('.day-item');
 
@@ -639,10 +637,10 @@ function initializeDailyLogin() {
     لأن ذلك كان يسبب مشكلة في شريط التمرير داخل خانة الهدية اليومية
   */
 }
+/************************************************************/
 
 /************************************************************/
 /* دالة فتح اليوم */
-/************************************************************/
 function unlockDay(dayItem, isCompleted) {
   const overlay = dayItem.querySelector('.overlay');
   if (overlay) {
@@ -655,20 +653,20 @@ function unlockDay(dayItem, isCompleted) {
     }
   }
 }
+/************************************************************/
 
 /************************************************************/
 /* دالة التحقق مما إذا كان اليوم مفتوحًا */
-/************************************************************/
 function isDayUnlocked(dayNumber) {
   const dayItem = document.querySelector(`.day-item[data-day="${dayNumber}"]`);
   if (!dayItem) return false;
   const overlay = dayItem.querySelector('.overlay');
   return (overlay && overlay.classList.contains('hidden')) || (overlay && overlay.classList.contains('completed'));
 }
+/************************************************************/
 
 /************************************************************/
 /* دالة عرض الكشكشة باستخدام مكتبة canvas-confetti */
-/************************************************************/
 function showConfetti(containerId) {
   const confettiContainer = document.getElementById(containerId);
   if (!confettiContainer) return;
@@ -695,10 +693,10 @@ function showConfetti(containerId) {
     confettiContainer.removeChild(canvas);
   }, 3000); // مدة عرض الكشكشة 3 ثوانٍ
 }
+/************************************************************/
 
 /************************************************************/
 /* دالة إزالة الكشكشة عند العودة إلى الصفحة الرئيسية */
-/************************************************************/
 function clearConfetti(containerId) {
   const confettiContainer = document.getElementById(containerId);
   if (!confettiContainer) return;
@@ -707,10 +705,10 @@ function clearConfetti(containerId) {
   const canvases = confettiContainer.querySelectorAll('canvas');
   canvases.forEach(canvas => canvas.remove());
 }
+/************************************************************/
 
 /************************************************************/
 /* شغل شاشة الافتتاح */
-/************************************************************/
 document.addEventListener("DOMContentLoaded", () => {
   const progress = document.querySelector(".progress-bar .progress");
   const splashScreen = document.getElementById("splash-screen");
@@ -853,3 +851,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+/************************************************************/
