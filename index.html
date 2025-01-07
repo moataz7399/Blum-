@@ -50,6 +50,9 @@
 
   <!-- المحتوى الرئيسي -->
   <main id="main-content" class="hidden">
+    <!-- إضافة عنصر الكانفاس لتأثير الثلوج -->
+    <canvas id="snow"></canvas>
+    
     <div class="profile-section">
       <img
         src="https://i.ibb.co/6DDKSS7/logo.png"
@@ -379,7 +382,7 @@
   <!-- فوتر -->
   <footer>
     <nav class="bottom-nav">
-      <a href="#" class="active glow-text ripple-button active" onclick="handleNavClick('main')">
+      <a href="#" class="active glow-text ripple-button" onclick="handleNavClick('main')">
         <i class="fas fa-home"></i> Home
       </a>
       <a href="#" class="glow-text ripple-button" onclick="handleNavClick('collab')">
@@ -396,10 +399,5 @@
       </a>
     </nav>
   </footer>
-
-  <!-- مكتبة Canvas Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-  
-  <script src="script.js"></script>
 </body>
 </html>
