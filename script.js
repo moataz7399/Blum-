@@ -3,6 +3,7 @@
 /************************************************************/
 function initSnowEffect() {
   const canvas = document.getElementById('snow');
+  if (!canvas) return; // تأكد من وجود عنصر الكانفاس
   const ctx = canvas.getContext('2d');
   resizeCanvas();
 
@@ -406,8 +407,8 @@ function copyInviteLink() {
     return;
   }
 
-  // إنشاء الرابط المطلوب
-  const inviteLink = `https://t.me/${botUsername}?start=${userId}`;
+  // إنشاء الرابط المطلوب بالشكل المطلوب
+  const inviteLink = `https://t.me/${botUsername}/FALCON?startapp=${userId}`;
 
   // نسخ الرابط إلى الحافظة
   navigator.clipboard.writeText(inviteLink).then(() => {
@@ -631,6 +632,11 @@ function initializeDailyLogin() {
         showSuccessMessage('تحتاج إلى الانتظار ليوم آخر لفتح هذا اليوم.');
       }
     });
+
+    /* 
+      **تم إزالة مستمع الأحداث `touchstart` الذي يمنع التمرير 
+      لأن ذلك كان يسبب مشكلة في شريط التمرير داخل خانة الهدية اليومية
+    */
   });
 }
 
@@ -768,9 +774,6 @@ document.addEventListener("DOMContentLoaded", () => {
         button.classList.remove('claim-btn');
         button.disabled = true;
         
-        // إزالة تأثير التحديد والنقر
-        button.blur();
-
         // إضافة تأثير الاهتزاز عند الضغط على Claim
         if (navigator.vibrate) {
           navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
