@@ -70,7 +70,7 @@ button, input, textarea, select {
 }
 
 body {
-  background: #000; /* خلفية سوداء ثابتة */
+  background: #000; /* خلفية سوداء */
   color: #fff;
   margin: 0;
   padding: 0;
@@ -106,7 +106,12 @@ body {
   align-items: center;
   z-index: 9998;
 }
-.spinner {
+.loader.hidden {
+  display: none;
+}
+
+/* إزالة تنسيقات spinner القديمة */
+/* .spinner {
   width: 40px; height: 40px;
   border: 4px solid #ddd;
   border-top: 4px solid #007bff;
@@ -115,7 +120,42 @@ body {
 }
 @keyframes spin {
   100% { transform: rotate(360deg); }
+} */
+
+/* إضافة تنسيقات جديدة لتأثير النقاط الثلاث */
+.loader .dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.loader .dot {
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  background-color: white;
+  border-radius: 50%;
+  animation: dot-bounce 1s infinite;
+}
+
+.loader .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loader .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dot-bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* باقي التنسيقات كما هي */
 
 /* تصميم المربع الجديد */
 .friends-table {
@@ -371,7 +411,7 @@ header {
 
 /* بطاقات أصغر */
 .button-card {
-  background: #2c2c2c; /* لون أسود مائل للرمادي */
+  background: #2a2a2a; /* خلفية رمادية داكنة */
   width: 200px; /* إعادة الحجم إلى 200px كما كان سابقًا */
   padding: 10px; 
   border-radius: 10px;
@@ -868,6 +908,23 @@ footer {
   cursor: pointer;
 }
 
+.day-box {
+  background: #1a1a1a;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  width: 100%;
+  height: 150px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+}
+
+.day-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* تظليل وإيقونة القفل */
 .overlay {
   position: absolute;
@@ -1002,3 +1059,483 @@ footer {
   font-weight: bold;
   text-shadow: none; /* إزالة التوهج */
 }
+
+/* تصميم رسالة النجاح */
+.success-message {
+  position: fixed;
+  bottom: 20px; /* تظهر في أسفل الشاشة */
+  left: 50%; /* تظهر في وسط الصفحة أفقيًا */
+  transform: translateX(-50%);
+  background-color: #28a745; /* لون الخلفية أخضر */
+  color: #fff; /* لون النص أبيض */
+  font-size: 16px; /* حجم الخط */
+  font-weight: bold; /* الخط غامق */
+  padding: 10px 20px; /* مساحة داخلية */
+  border-radius: 10px; /* الحواف مقوسة */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+  z-index: 1000; /* ضمان ظهورها فوق العناصر الأخرى */
+  opacity: 0.9; /* شفافية خفيفة */
+  pointer-events: none; /* لا يمكن التفاعل معها */
+}
+
+/* تصميم Login Daily Page */
+#login-daily-page {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 50px 20px;
+}
+
+.login-daily-header {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.header-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #fff;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+}
+
+.header-subtitle {
+  font-weight: normal;
+  font-size: 1rem;
+  color: #fff;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+}
+
+.login-daily-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-gap: 20px;
+  width: 100%;
+  max-width: 800px;
+  overflow-y: auto; /* تفعيل التمرير العمودي */
+  scrollbar-width: thin; /* جعل شريط التمرير رفيعاً */
+  margin-bottom: 70px; /* إضافة مساحة أسفل لتجنب التغطية */
+}
+
+/* تخصيص شريط التمرير */
+.login-daily-table::-webkit-scrollbar {
+  width: 8px;
+}
+
+.login-daily-table::-webkit-scrollbar-thumb {
+  background-color: #888; /* لون شريط التمرير */
+  border-radius: 4px; /* تقويس الحواف */
+}
+
+.login-daily-table::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* لون شريط التمرير عند التمرير عليه */
+}
+
+.day-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.day-box {
+  background: #1a1a1a;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  width: 100%;
+  height: 150px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+}
+
+.day-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* تظليل وإيقونة القفل */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* تظليل */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: opacity 0.3s ease;
+}
+.overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.overlay i {
+  color: #fff;
+  font-size: 2rem;
+}
+
+/* أيقونة الصح */
+.overlay.completed {
+  background: rgba(0, 0, 0, 0.6); /* تظليل */
+}
+.overlay.completed i {
+  color: #28a745;
+  font-size: 2rem;
+}
+
+.day-label {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+}
+
+/* تحسين التصميم للأجهزة الصغيرة */
+@media (max-width: 600px) {
+  .button-card {
+    width: 80%;
+  }
+  .play-container .button-card {
+    width: 80%;
+  }
+  .login-daily-table {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+  .day-box {
+    height: 120px;
+  }
+  .timer-panel p {
+    font-size: 1.5rem;
+  }
+  .score-panel {
+    font-size: 1.2rem;
+  }
+}
+
+/* تصميم الكانفاس لتأثير الثلوج */
+#main-content canvas#snow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* خلف المحتوى */
+  pointer-events: none; /* السماح بالتفاعل مع العناصر فوق الكانفاس */
+}
+
+/* إضافة أنماط جديدة للأزرار الفوتر */
+.ripple-button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ripple-button:active {
+  transform: scale(0.95); /* انضغاط للداخل */
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2), 
+              inset -2px -2px 4px rgba(255, 255, 255, 0.5); /* تأثير داخلي */
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 4px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* أيقونات الرفع */
+.ripple-button .icon {
+  width: 30px; /* حجم الأيقونة */
+  height: auto;
+  margin-right: 10px; /* مسافة بين الأيقونة والنص */
+  vertical-align: middle; /* محاذاة وسط الأيقونة مع النص */
+}
+
+.line-text {
+  font-size: 1.4rem;
+  margin-left: 5px; /* مسافة بين النص ورقم النتيجة */
+}
+
+.stats-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  font-weight: bold;
+  text-shadow: none; /* إزالة التوهج */
+}
+
+/* تصميم رسالة النجاح */
+.success-message {
+  position: fixed;
+  bottom: 20px; /* تظهر في أسفل الشاشة */
+  left: 50%; /* تظهر في وسط الصفحة أفقيًا */
+  transform: translateX(-50%);
+  background-color: #28a745; /* لون الخلفية أخضر */
+  color: #fff; /* لون النص أبيض */
+  font-size: 16px; /* حجم الخط */
+  font-weight: bold; /* الخط غامق */
+  padding: 10px 20px; /* مساحة داخلية */
+  border-radius: 10px; /* الحواف مقوسة */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+  z-index: 1000; /* ضمان ظهورها فوق العناصر الأخرى */
+  opacity: 0.9; /* شفافية خفيفة */
+  pointer-events: none; /* لا يمكن التفاعل معها */
+}
+
+/* تصميم Login Daily Page */
+#login-daily-page {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 50px 20px;
+}
+
+.login-daily-header {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.header-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #fff;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+}
+
+.header-subtitle {
+  font-weight: normal;
+  font-size: 1rem;
+  color: #fff;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+}
+
+.login-daily-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-gap: 20px;
+  width: 100%;
+  max-width: 800px;
+  overflow-y: auto; /* تفعيل التمرير العمودي */
+  scrollbar-width: thin; /* جعل شريط التمرير رفيعاً */
+  margin-bottom: 70px; /* إضافة مساحة أسفل لتجنب التغطية */
+}
+
+/* تخصيص شريط التمرير */
+.login-daily-table::-webkit-scrollbar {
+  width: 8px;
+}
+
+.login-daily-table::-webkit-scrollbar-thumb {
+  background-color: #888; /* لون شريط التمرير */
+  border-radius: 4px; /* تقويس الحواف */
+}
+
+.login-daily-table::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* لون شريط التمرير عند التمرير عليه */
+}
+
+.day-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.day-box {
+  background: #1a1a1a;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  width: 100%;
+  height: 150px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+}
+
+.day-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* تظليل وإيقونة القفل */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* تظليل */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: opacity 0.3s ease;
+}
+.overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.overlay i {
+  color: #fff;
+  font-size: 2rem;
+}
+
+/* أيقونة الصح */
+.overlay.completed {
+  background: rgba(0, 0, 0, 0.6); /* تظليل */
+}
+.overlay.completed i {
+  color: #28a745;
+  font-size: 2rem;
+}
+
+.day-label {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+}
+
+/* تحسين التصميم للأجهزة الصغيرة */
+@media (max-width: 600px) {
+  .button-card {
+    width: 80%;
+  }
+  .play-container .button-card {
+    width: 80%;
+  }
+  .login-daily-table {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+  .day-box {
+    height: 120px;
+  }
+  .timer-panel p {
+    font-size: 1.5rem;
+  }
+  .score-panel {
+    font-size: 1.2rem;
+  }
+}
+
+/* تصميم الكانفاس لتأثير الثلوج */
+#main-content canvas#snow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* خلف المحتوى */
+  pointer-events: none; /* السماح بالتفاعل مع العناصر فوق الكانفاس */
+}
+
+/* إضافة أنماط جديدة للأزرار الفوتر */
+.ripple-button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ripple-button:active {
+  transform: scale(0.95); /* انضغاط للداخل */
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2), 
+              inset -2px -2px 4px rgba(255, 255, 255, 0.5); /* تأثير داخلي */
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 4px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* أيقونات الرفع */
+.ripple-button .icon {
+  width: 30px; /* حجم الأيقونة */
+  height: auto;
+  margin-right: 10px; /* مسافة بين الأيقونة والنص */
+  vertical-align: middle; /* محاذاة وسط الأيقونة مع النص */
+}
+
+.line-text {
+  font-size: 1.4rem;
+  margin-left: 5px; /* مسافة بين النص ورقم النتيجة */
+}
+
+.stats-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  font-weight: bold;
+  text-shadow: none; /* إزالة التوهج */
+}
+
+/* تصميم رسالة النجاح */
+.success-message {
+  position: fixed;
+  bottom: 20px; /* تظهر في أسفل الشاشة */
+  left: 50%; /* تظهر في وسط الصفحة أفقيًا */
+  transform: translateX(-50%);
+  background-color: #28a745; /* لون الخلفية أخضر */
+  color: #fff; /* لون النص أبيض */
+  font-size: 16px; /* حجم الخط */
+  font-weight: bold; /* الخط غامق */
+  padding: 10px 20px; /* مساحة داخلية */
+  border-radius: 10px; /* الحواف مقوسة */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+  z-index: 1000; /* ضمان ظهورها فوق العناصر الأخرى */
+  opacity: 0.9; /* شفافية خفيفة */
+  pointer-events: none; /* لا يمكن التفاعل معها */
+}
+
+/* باقي التنسيقات كما هي */
