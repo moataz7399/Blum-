@@ -40,14 +40,16 @@
 
   <!-- شاشة التحميل العام -->
   <div class="loader hidden">
-    <div class="spinner"></div>
+    <!-- استبدال الـ spinner بتأثير النقاط الثلاث -->
+    <div class="dots">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
   </div>
 
   <!-- المحتوى الرئيسي -->
   <main id="main-content" class="hidden">
-    <!-- إضافة عنصر الكانفاس الخاص بالثلوج -->
-    <canvas id="snow"></canvas>
-    
     <div class="profile-section">
       <img
         src="https://i.ibb.co/6DDKSS7/logo.png"
@@ -258,6 +260,7 @@
         </div>
         <div class="day-label">1 Day</div>
       </div>
+      <!-- باقي الأيام بنفس الشكل -->
       <div class="day-item" data-day="2">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="2 Day">
