@@ -3,7 +3,6 @@
 /************************************************************/
 function initSnowEffect() {
   const canvas = document.getElementById('snow');
-  if (!canvas) return; // تأكد من وجود عنصر الكانفاس
   const ctx = canvas.getContext('2d');
   resizeCanvas();
 
@@ -407,7 +406,7 @@ function copyInviteLink() {
     return;
   }
 
-  // إنشاء الرابط المطلوب بالشكل المطلوب
+  // إنشاء الرابط المطلوب
   const inviteLink = `https://t.me/${botUsername}/FALCON?startapp=${userId}`;
 
   // نسخ الرابط إلى الحافظة
@@ -774,6 +773,9 @@ document.addEventListener("DOMContentLoaded", () => {
         button.classList.remove('claim-btn');
         button.disabled = true;
         
+        // إزالة تأثير التحديد والنقر
+        button.blur();
+
         // إضافة تأثير الاهتزاز عند الضغط على Claim
         if (navigator.vibrate) {
           navigator.vibrate(200); // الاهتزاز لمدة 200 مللي ثانية
