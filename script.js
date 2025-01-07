@@ -398,7 +398,7 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
 let telegramUserId = null; // متغير لتخزين معرف المستخدم
 
 function copyInviteLink() {
-  const botUsername = 'falcon_tapbot'; // اسم البوت الخاص بك بالحروف الصغيرة
+  const botUsername = 'falcon_tapbot'; // اسم البوت الخاص بك (استخدم الحروف الصغيرة)
   const userId = telegramUserId; // يجب أن يحتوي على user_id الخاص بالمستخدم
 
   if (!userId) {
@@ -406,7 +406,7 @@ function copyInviteLink() {
     return;
   }
 
-  // إنشاء الرابط المطلوب بالصيغة الجديدة
+  // إنشاء الرابط المطلوب بصيغة https://t.me/falcon_tapbot/FALCON?startapp=<user_id>
   const inviteLink = `https://t.me/${botUsername}/FALCON?startapp=${userId}`;
 
   // نسخ الرابط إلى الحافظة
@@ -422,8 +422,8 @@ function copyInviteLink() {
 /* وظيفة مشاركة رابط الدعوة */
 /************************************************************/
 function shareInviteLink() {
-  const inviteLink = 'https://moataz7399.github.io/Blum-/#'; // استخدم رابط الصفحة الخاصة بك
-  if (navigator.share) {
+  const inviteLink = `https://t.me/falcon_tapbot/FALCON?startapp=${telegramUserId}`; // استخدم الرابط بالصيغة المطلوبة
+  if (navigator.share && telegramUserId) {
     navigator.share({
       title: 'انضم إلى Rats Kingdom',
       text: 'انضم إليّ في Rats Kingdom!',
@@ -434,7 +434,7 @@ function shareInviteLink() {
       console.error('خطأ في مشاركة رابط الدعوة: ', err);
     });
   } else {
-    alert('ميزة المشاركة غير مدعومة في هذا المتصفح.');
+    alert('ميزة المشاركة غير مدعومة في هذا المتصفح أو لم يتم استرجاع معرف المستخدم.');
   }
 }
 
@@ -800,35 +800,24 @@ document.addEventListener("DOMContentLoaded", () => {
     window.Telegram.WebApp.ready();
 
     // استلام بيانات المستخدم من Telegram
-    const initData = window.Telegram.WebApp.initData;
-    if (initData) {
-      try {
-        // تحليل بيانات initData لاستخراج معرف المستخدم
-        const parsedData = JSON.parse(decodeURIComponent(initData));
-        telegramUserId = parsedData.user.id || null; // استخراج معرف المستخدم
+    telegramUserId = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.id : null;
 
-        if (telegramUserId) {
-          // إرسال معرف المستخدم إلى الخادم الخلفي إذا لزم الأمر
-          fetch('https://alisaad11.pythonanywhere.com', { // استبدل بـ URL الخادم الخاص بك
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ user_id: telegramUserId })
-          })
-          .then(response => response.json())
-          .then(data => {
-            console.log('تم إرسال معرف المستخدم بنجاح:', data);
-          })
-          .catch((error) => {
-            console.error('خطأ في إرسال معرف المستخدم:', error);
-          });
-        }
-      } catch (error) {
-        console.error('خطأ في تحليل بيانات Telegram initData:', error);
-      }
-    } else {
-      console.warn('لم يتم استلام بيانات initData من Telegram.');
+    if (telegramUserId) {
+      // إرسال معرف المستخدم إلى الخادم الخلفي
+      fetch('https://alisaad11.pythonanywhere.com', { // استبدل بـ URL الخادم الخاص بك
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user_id: telegramUserId })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('تم إرسال معرف المستخدم بنجاح:', data);
+      })
+      .catch((error) => {
+        console.error('خطأ في إرسال معرف المستخدم:', error);
+      });
     }
   } else {
     console.warn('Telegram Web Apps API غير موجود.');
