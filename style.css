@@ -18,8 +18,8 @@ img {
   pointer-events: auto; /* تأكد من إمكانية التفاعل مع الصور */
 }
 
-/* منع التحديد والتظليل على العناصر المتعلقة بالهدية اليومية والأيقونات داخل اللعبة */
-.day-item, .day-box, .falling-emoji, .action-btn, .button-card button {
+/* منع التحديد والتظليل على العناصر المتعلقة بالهدية اليومية */
+.day-item, .day-box {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -27,20 +27,9 @@ img {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version */
   -webkit-user-drag: none; /* Disable image drag in Safari */
+  /* touch-action: none; */ /* إزالة هذه الخاصية للسماح بالتمرير */
   -webkit-tap-highlight-color: transparent; /* إزالة التظليل عند الضغط على العناصر في Safari */
   outline: none; /* إزالة أي خطوط خارجية */
-  -webkit-appearance: none; /* إزالة مظهر المتصفح الافتراضي للأزرار */
-  border: none; /* إزالة الحدود الافتراضية للأزرار */
-  background: none; /* إزالة الخلفية الافتراضية للأزرار */
-}
-
-/* منع التحديد على كامل الصفحة */
-body {
-  user-select: none;
-}
-
-button, input, textarea, select {
-  user-select: auto;
 }
 
 /* شريط التحميل الأخضر في أعلى الصفحة */
@@ -70,14 +59,14 @@ button, input, textarea, select {
 }
 
 body {
-  background: #000; /* خلفية سوداء ثابتة */
+  background: url('https://i.ibb.co/1m2th6k/Picsart-24-12-26-13-54-43-713.jpg') center/cover no-repeat; /* رابط الخلفية */
+  background-attachment: fixed; /* ثابت أثناء التمرير */
   color: #fff;
   margin: 0;
   padding: 0;
   min-height: 100vh; /* لتغطية الشاشة بالكامل */
   display: flex;
   flex-direction: column;
-  position: relative;
 }
 
 /* شاشة الافتتاح */
@@ -140,7 +129,7 @@ body {
 /* إصلاح شريط التمرير لصفحة Login Daily */
 .login-daily-table {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
   width: 100%;
   max-width: 800px;
@@ -300,11 +289,6 @@ header .glow-text,
                0 0 6px rgba(255,255,255,0.5);
 }
 
-/* إزالة التوهج من score-panel */
-#game-overlay .score-panel p {
-  text-shadow: none;
-}
-
 .glow-text {
   text-shadow: none;
 }
@@ -334,7 +318,6 @@ header {
   flex: 1; /* يجعل المحتوى يمتد لملء الشاشة */
   text-align: center;
   padding-bottom: 70px;
-  position: relative; /* للسماح بتحديد موضع الكانفاس */
 }
 
 /* صورة ورصيد */
@@ -347,11 +330,6 @@ header {
   object-fit: cover;
   background: #fff;
   border: 2px solid #fff;
-}
-
-.stats {
-  font-size: 1.5em;
-  margin-bottom: 30px;
 }
 
 /* عمودان جنباً لجنب بلا لف */
@@ -404,7 +382,6 @@ header {
   cursor: pointer;
   font-weight: bold; /* اجعل النص غامقاً */
   transition: background 0.3s;
-  user-select: none; /* منع تحديد النص داخل الأزرار */
 }
 .button-card button:hover {
   background: #555;
@@ -449,7 +426,6 @@ header {
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s;
-  user-select: none; /* منع تحديد النص داخل الأزرار */
 }
 .friends-buttons button:hover {
   background: #e5e5e5;
@@ -510,7 +486,6 @@ header {
   font-size: 1rem;
   transition: background 0.3s, color 0.3s;
   cursor: pointer;
-  user-select: none; /* منع تحديد النص داخل الأزرار */
 }
 .claim-btn {
   background: #007bff;
@@ -521,7 +496,6 @@ header {
   font-size: 1rem;
   transition: background 0.3s, color 0.3s;
   cursor: pointer;
-  user-select: none; /* منع تحديد النص داخل الأزرار */
 }
 .completed-btn {
   background: #28a745;
@@ -532,7 +506,6 @@ header {
   font-size: 1rem;
   cursor: default;
   opacity: 0.7;
-  user-select: none; /* منع تحديد النص داخل الأزرار */
 }
 
 /* واجهة اللعبة */
@@ -551,16 +524,12 @@ header {
 
 .falling-emoji {
   position: absolute;
-  font-size: 3rem; /* زيادة حجم الأيقونة */
+  font-size: 2rem;
   color: #fff;
   cursor: pointer;
   user-select: none;
   pointer-events: auto;
-  padding: 10px; /* زيادة مساحة الضغط */
-  /* إزالة خاصية الانتقال للحركة التي تتم عبر JavaScript */
-  /* transition: transform linear; */
-  /* منع تظليل العناصر عند الضغط */
-  -webkit-tap-highlight-color: transparent;
+  transition: transform linear;
 }
 
 /* عدادات */
@@ -584,16 +553,10 @@ header {
   color: #fff; /* لون العدد أبيض */
 }
 
-/* إزالة التوهج من score-panel */
-#game-overlay .score-panel p {
-  text-shadow: none;
-}
-
 #falconScore, #bombScore {
   font-size: 1.4rem;
   color: #fff;
-  /* إزالة التوهج */
-  text-shadow: none;
+  text-shadow: 0 0 3px #fff, 0 0 6px #ff0, 0 0 10px #ff0;
 }
 
 .timer-panel {
@@ -646,7 +609,7 @@ header {
   font-size: 1.4rem;
   margin: 10px 0;
   font-weight: bold;
-  text-shadow: none; /* إزالة التوهج */
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
 }
 .line-text {
   margin-right: 5px;
@@ -711,8 +674,6 @@ footer {
   align-items: center;
   transition: color 0.3s;
   flex: 1; /* لتوزيع الأزرار بالتساوي */
-  position: relative; /* للسماح بوضع تأثيرات */
-  overflow: hidden; /* لإخفاء التموجات خارج الزر */
 }
 .bottom-nav a i {
   font-size: 1.5rem; /* حجم الأيقونة */
@@ -727,49 +688,13 @@ footer {
   color: #fff; /* لون النص عند التفعيل */
 }
 
-/* إضافة أنماط جديدة للأزرار الفوتر */
-.ripple-button {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.end-image {
+  width: 150px; /* حجم الصورة */
+  height: auto;
+  margin-bottom: 20px; /* مسافة أسفل الصورة */
 }
 
-.ripple-button:active {
-  transform: scale(0.95); /* انضغاط للداخل */
-  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2), 
-              inset -2px -2px 4px rgba(255, 255, 255, 0.5); /* تأثير داخلي */
-}
-
-.ripple {
-  position: absolute;
-  border-radius: 50%;
-  transform: scale(0);
-  animation: ripple-animation 0.6s linear;
-  background-color: rgba(255, 255, 255, 0.6);
-}
-
-@keyframes ripple-animation {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
-
-.active::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 4px;
-  background-color: white;
-  border-radius: 2px;
-}
-
-/* أيقونات الرفع */
-.ripple-button .icon {
+.icon {
   width: 30px; /* حجم الأيقونة */
   height: auto;
   margin-right: 10px; /* مسافة بين الأيقونة والنص */
@@ -787,7 +712,7 @@ footer {
   justify-content: center;
   margin: 10px 0;
   font-weight: bold;
-  text-shadow: none; /* إزالة التوهج */
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
 }
 
 /* تصميم رسالة النجاح */
@@ -944,78 +869,4 @@ footer {
   .score-panel {
     font-size: 1.2rem;
   }
-}
-
-/* تصميم الكانفاس لتأثير الثلوج */
-#main-content canvas#snow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1; /* خلف المحتوى */
-  pointer-events: none; /* السماح بالتفاعل مع العناصر فوق الكانفاس */
-}
-
-/* إضافة أنماط جديدة للأزرار الفوتر */
-.ripple-button {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.ripple-button:active {
-  transform: scale(0.95); /* انضغاط للداخل */
-  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2), 
-              inset -2px -2px 4px rgba(255, 255, 255, 0.5); /* تأثير داخلي */
-}
-
-.ripple {
-  position: absolute;
-  border-radius: 50%;
-  transform: scale(0);
-  animation: ripple-animation 0.6s linear;
-  background-color: rgba(255, 255, 255, 0.6);
-}
-
-@keyframes ripple-animation {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
-
-.active::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 4px;
-  background-color: white;
-  border-radius: 2px;
-}
-
-/* أيقونات الرفع */
-.ripple-button .icon {
-  width: 30px; /* حجم الأيقونة */
-  height: auto;
-  margin-right: 10px; /* مسافة بين الأيقونة والنص */
-  vertical-align: middle; /* محاذاة وسط الأيقونة مع النص */
-}
-
-.line-text {
-  font-size: 1.4rem;
-  margin-left: 5px; /* مسافة بين النص ورقم النتيجة */
-}
-
-.stats-line {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px 0;
-  font-weight: bold;
-  text-shadow: none; /* إزالة التوهج */
 }
