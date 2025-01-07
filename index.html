@@ -2,21 +2,17 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <!-- منع تكبير الصفحة -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rats Kingdom</title>
-  
   <!-- FontAwesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-  <!-- رابط ملف CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css"> <!-- تم تعديل الرابط هنا -->
   
-  <!-- مكتبة Canvas Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
-  
-  <!-- رابط ملف JavaScript -->
-  <script src="script.js" defer></script>
+  <!-- Telegram Web Apps JavaScript API -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
   <!-- شريط التحميل الأخضر في أعلى الصفحة -->
@@ -26,7 +22,7 @@
 
   <!-- شاشة التحميل -->
   <div id="splash-screen">
-    <!-- محتويات شاشة التحميل إذا لزم الأمر -->
+    <!-- يمكن وضع محتويات شاشة التحميل هنا إذا لزم الأمر -->
   </div>
 
   <!-- الهيدر -->
@@ -43,9 +39,6 @@
 
   <!-- المحتوى الرئيسي -->
   <main id="main-content" class="hidden">
-    <!-- عنصر الكانفاس لتأثير الثلوج -->
-    <canvas id="snow"></canvas>
-
     <div class="profile-section">
       <img
         src="https://i.ibb.co/6DDKSS7/logo.png"
@@ -53,6 +46,7 @@
         class="profile-icon"
       />
       <div class="stats">
+        <!-- إضافة معرف للعنصر -->
         <h2 id="ratsScore" class="glow-text">0.00</h2>
         <p class="glow-text">RATS</p>
       </div>
@@ -67,6 +61,7 @@
           </button>
         </div>
 
+        <!-- Follow X -->
         <div class="button-card">
           <h3 class="glow-text">𝐅𝐨𝐥𝐥𝐨𝐰 𝐗</h3>
           <button onclick="window.open('https://www.twitter.com/@Falcon_Communiity', '_blank');">
@@ -75,7 +70,9 @@
         </div>
       </div>
 
+      <!-- صفحتين إضافيتين -->
       <div class="column">
+        <!-- Telegram Channel -->
         <div class="button-card">
           <h3 class="glow-text">𝐓𝐞𝐥𝐞𝐠𝐫𝐚𝐦 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</h3>
           <button onclick="window.open('https://t.me/Falcon_Community_Bot', '_blank');">
@@ -83,6 +80,7 @@
           </button>
         </div>
 
+        <!-- Share Link Bot -->
         <div class="button-card">
           <h3 class="glow-text">𝐒𝐡𝐚𝐫𝐞 𝐋𝐢𝐧𝐤 𝐁𝐨𝐭</h3>
           <button onclick="shareInviteLink()">Share</button>
@@ -93,7 +91,7 @@
     <!-- زر Play -->
     <div class="play-container">
       <div class="button-card">
-        <h3>𝐏𝐥𝐚𝐲 𝐅𝐚𝐥𝐜𝐨𝐧</h3> <!-- إزالة فئة glow-text -->
+        <h3 class="glow-text">𝐏𝐥𝐚𝐲 𝐅𝐚𝐥𝐜𝐨𝐧</h3>
         <p class="cards-label">» ᴄᴀʀᴅꜱ : <span id="cardsCount">0</span></p>
         <button id="playFalconBtn" onclick="handlePlayFalcon()">Play</button>
       </div>
@@ -114,9 +112,10 @@
         <button onclick="shareInviteLink()">𝐒𝐡𝐚𝐫𝐞 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
       </div>
 
-      <!-- منطقة الجدول المخصصة -->
+      <!-- إضافة المربع الجديد -->
       <div class="friends-table">
-        <p style="text-align: center; color: #fff;">هذه هي منطقة الجدول المخصصة الخاصة بك</p>
+        <!-- يمكنك إضافة محتويات الجدول هنا -->
+        <p style="text-align: center; color: #fff;">This is your custom table area</p>
       </div>
     </div>
   </div>
@@ -131,12 +130,12 @@
           alt="Put ... next to your name"
         />
         <div>
-          <h3 class="glow-text">ضع ... بجانب اسمك</h3>
+          <h3 class="glow-text">Put ... next to your name</h3>
           <p class="glow-text">+6,000 PAWS</p>
         </div>
+        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="6000" data-link="https://example.com/task1">Start</button>
       </div>
-      
       <!-- مهمة 2 -->
       <div class="task-card">
         <img 
@@ -144,12 +143,12 @@
           alt="Follow Telegram Channel"
         />
         <div>
-          <h3 class="glow-text">تابع قناة Telegram</h3>
+          <h3 class="glow-text">Follow Telegram Channel</h3>
           <p class="glow-text">+250 PAWS</p>
         </div>
+        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="250" data-link="https://t.me/Falcon_Community_Bot">Start</button>
       </div>
-      
       <!-- مهمة 3 -->
       <div class="task-card">
         <img 
@@ -157,12 +156,12 @@
           alt="Follow us on X"
         />
         <div>
-          <h3 class="glow-text">تابعنا على X</h3>
+          <h3 class="glow-text">Follow us on X</h3>
           <p class="glow-text">+2,000 PAWS</p>
         </div>
+        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="2000" data-link="https://www.twitter.com/@Falcon_Communiity">Start</button>
       </div>
-      
       <!-- مهمة 4 -->
       <div class="task-card">
         <img 
@@ -170,9 +169,10 @@
           alt="Boost Channel"
         />
         <div>
-          <h3 class="glow-text">تعزيز القناة</h3>
+          <h3 class="glow-text">Boost Channel</h3>
           <p class="glow-text">+5,000 PAWS</p>
         </div>
+        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="5000" data-link="https://example.com/task4">Start</button>
       </div>
       
@@ -183,9 +183,10 @@
           alt="YouTube Subscribe"
         />
         <div>
-          <h3 class="glow-text">اشترك في قناة YouTube الخاصة بنا</h3>
+          <h3 class="glow-text">Subscribe to our YouTube channel</h3>
           <p class="glow-text">+3,000 PAWS</p>
         </div>
+        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="3000" data-link="https://www.youtube.com/@Falcon_Communiity">Start</button>
       </div>
 
@@ -196,12 +197,12 @@
           alt="Invite 3 Friends"
         />
         <div>
-          <h3 class="glow-text">ادعِ 3 أصدقاء</h3>
+          <h3 class="glow-text">Invite 3 friends</h3>
           <p class="glow-text">+3,000 PAWS</p>
         </div>
+        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="3000" data-link="https://example.com/invite3">Start</button>
       </div>
-      
       <!-- Invite 5 friends -->
       <div class="task-card">
         <img 
@@ -209,12 +210,12 @@
           alt="Invite 5 Friends"
         />
         <div>
-          <h3 class="glow-text">ادعِ 5 أصدقاء</h3>
+          <h3 class="glow-text">Invite 5 friends</h3>
           <p class="glow-text">+5,000 PAWS</p>
         </div>
+        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="5000" data-link="https://example.com/invite5">Start</button>
       </div>
-      
       <!-- Invite 25 friends -->
       <div class="task-card">
         <img 
@@ -222,9 +223,10 @@
           alt="Invite 25 Friends"
         />
         <div>
-          <h3 class="glow-text">ادعِ 25 صديقًا</h3>
+          <h3 class="glow-text">Invite 25 friends</h3>
           <p class="glow-text">+30,000 PAWS</p>
         </div>
+        <!-- إضافة data-points و data-link -->
         <button class="action-btn start-btn" data-points="30000" data-link="https://example.com/invite25">Start</button>
       </div>
     </div>
@@ -234,7 +236,7 @@
   <div id="login-daily-page" class="hidden">
     <div class="login-daily-header">
       <h2 class="header-title">Daily Entry 🎁</h2>
-      <p class="header-subtitle">قم بتسجيل الدخول يوميًا إلى البوت واحصل على مكافآت غامضة</p>
+      <p class="header-subtitle">Log in daily to the bot and get mysterious rewards</p>
     </div>
     <div class="login-daily-table">
       <!-- الخانات من 1 إلى 9 -->
@@ -319,26 +321,26 @@
         </div>
         <div class="day-label">9 Day</div>
       </div>
+      <!-- تم حذف الخانة العاشرة -->
     </div>
-    <!-- حاوية الكشكشة في صفحة Login Daily -->
+    <!-- إضافة حاوية الكشكشة في صفحة Login Daily -->
     <div id="confetti-container-login" class="confetti-container"></div>
   </div>
 
   <!-- واجهة اللعبة -->
   <div id="game-overlay" class="hidden">
     <div class="score-panel">
-      <p>FALCON : <span id="falconScore">0</span></p> <!-- تعديل النص -->
-      <p>BOMBS : <span id="bombScore">0</span></p> <!-- تعديل النص -->
+      <p>𝗙𝗮𝗹𝗰𝗼𝗻𝘀: <span id="falconScore">0</span></p>
+      <p>𝗕𝗼𝗺𝗯𝘀: <span id="bombScore">0</span></p>
     </div>
     <div class="timer-panel">
       <p id="timer">30.00</p>
     </div>
   </div>
 
-  <!-- شاشة نهاية اللعبة -->
   <div id="end-game-screen" class="hidden end-game-screen">
     <div class="end-content">
-      <!-- حاوية الكشكشة داخل شاشة نهاية اللعبة -->
+      <!-- إضافة حاوية الكشكشة داخل شاشة نهاية اللعبة -->
       <div id="confetti-container" class="confetti-container"></div>
 
       <div class="buttons-container">
@@ -366,22 +368,27 @@
   <!-- فوتر -->
   <footer>
     <nav class="bottom-nav">
-      <a href="#" class="glow-text ripple-button active" onclick="handleNavClick('main')">
+      <a href="#" class="active glow-text" onclick="handleNavClick('main')">
         <i class="fas fa-home"></i> Home
       </a>
-      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('collab')">
+      <a href="#" class="glow-text" onclick="handleNavClick('collab')">
         <i class="fas fa-handshake"></i> Collab
       </a>
-      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('loginDaily')">
+      <a href="#" class="glow-text" onclick="handleNavClick('loginDaily')">
         <i class="fas fa-calendar-check"></i> Login Daily
       </a>
-      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('leaderboard')">
+      <a href="#" class="glow-text" onclick="handleNavClick('leaderboard')">
         <i class="fas fa-trophy"></i> Leaderboard
       </a>
-      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('friends')">
+      <a href="#" class="glow-text" onclick="handleNavClick('friends')">
         <i class="fas fa-user-friends"></i> Friends
       </a>
     </nav>
   </footer>
+
+  <!-- مكتبة Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  
+  <script src="script.js"></script>
 </body>
 </html>
