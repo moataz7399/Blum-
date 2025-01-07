@@ -169,7 +169,7 @@ let gameTime = 30.00; // مدة اللعبة
 let countdownInterval;
 let totalFalcons;
 let totalBombs;
-const fallSpeed = 400; // زيادة سرعة السقوط للبكسل لكل ثانية لجعل الحركة أكثر سلاسة
+const fallSpeed = 400; // زيادة سرعة السقوط بالبكسل لكل ثانية لجعل الحركة أكثر سلاسة
 
 /************************************************************/
 /* تعريف مكافآت الأيام اليومية */
@@ -292,7 +292,7 @@ function createFallingEmoji(type) {
 
   // تحديد الأيقونة حسب النوع
   if (type === 'falcon') {
-    emojiEl.innerHTML = '<i class="fas fa-dove"></i>'; // أيقونة النسر
+    emojiEl.innerHTML = '<i class="fas fa-dove"></i>'; // أيقونة النسر (يمكن استخدام أيقونة أخرى مناسبة)
     emojiEl.style.color = '#FFD700'; // لون النسر
   } else if (type === 'bomb') {
     emojiEl.innerHTML = '<i class="fas fa-bomb"></i>'; // أيقونة القنبلة
@@ -395,21 +395,20 @@ document.getElementById('btn-share-link').addEventListener('click', () => {
 /************************************************************/
 /* وظيفة نسخ رابط الدعوة */
 /************************************************************/
-let telegramUserId = null; // متغير لتخزين معرف المستخدم
-
 function copyInviteLink() {
   const botUsername = 'Falcon_tapbot'; // اسم البوت الخاص بك
 
-  // استرجاع معرف المستخدم من Telegram WebApp
-  telegramUserId = window.Telegram.WebApp && window.Telegram.WebApp.user ? window.Telegram.WebApp.user.id : null;
+  // استرجاع معرف المستخدم من Telegram WebApp مباشرةً داخل الدالة
+  const user = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.user;
+  const userId = user ? user.id : null;
 
-  if (!telegramUserId) {
+  if (!userId) {
     alert('غير قادر على استرجاع معرف المستخدم. يرجى المحاولة مرة أخرى.');
     return;
   }
 
   // إنشاء الرابط المطلوب
-  const inviteLink = `https://t.me/${botUsername}?start=${telegramUserId}`;
+  const inviteLink = `https://t.me/${botUsername}?start=${userId}`;
 
   // نسخ الرابط إلى الحافظة
   navigator.clipboard.writeText(inviteLink).then(() => {
@@ -633,11 +632,6 @@ function initializeDailyLogin() {
         showSuccessMessage('تحتاج إلى الانتظار ليوم آخر لفتح هذا اليوم.');
       }
     });
-
-    /* 
-      **تم إزالة مستمع الأحداث `touchstart` الذي يمنع التمرير 
-      لأن ذلك كان يسبب مشكلة في شريط التمرير داخل خانة الهدية اليومية
-    */
   });
 }
 
@@ -807,16 +801,19 @@ document.addEventListener("DOMContentLoaded", () => {
     window.Telegram.WebApp.ready();
 
     // استلام بيانات المستخدم من Telegram
-    telegramUserId = window.Telegram.WebApp.user ? window.Telegram.WebApp.user.id : null;
+    // لا نستخدم المتغير العام هنا، سنتعامل مع userId داخل الدوال مباشرة
+    // لكن إذا كنت بحاجة إلى إرسال user_id إلى الخادم عند تحميل الصفحة:
+    const user = window.Telegram.WebApp.user;
+    const userId = user ? user.id : null;
 
-    if (telegramUserId) {
+    if (userId) {
       // إرسال معرف المستخدم إلى الخادم الخلفي
       fetch('https://alisaad11.pythonanywhere.com', { // استبدل بـ URL الخادم الخاص بك
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ user_id: telegramUserId })
+        body: JSON.stringify({ user_id: userId })
       })
       .then(response => response.json())
       .then(data => {
