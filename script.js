@@ -852,4 +852,4 @@ document.addEventListener("DOMContentLoaded", () => {
       ripple.addEventListener('animationend', () => ripple.remove());
     });
   });
-});
+}
