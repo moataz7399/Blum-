@@ -58,7 +58,7 @@ function initSnowEffect() {
 /************************************************************/
 
 /************************************************************/
-/* Loader + تنقل بين الصفحات */
+/* تنقل بين الصفحات + Loader */
 function showLoader(callback, duration = 1000) {
   const loader = document.querySelector('.loader');
   loader.classList.remove('hidden'); 
@@ -77,7 +77,6 @@ function showMain() {
     document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden');
     setActiveNav('main');
     initSnowEffect();
   });
@@ -92,7 +91,6 @@ function showFriends() {
     document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden');
     setActiveNav('friends');
   });
 }
@@ -106,46 +104,13 @@ function showCollab() {
     document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden');
     setActiveNav('collab');
   });
 }
 
-/* إصلاح الدالة بحيث تعرض الصفحة بدلاً من التنبيه */
 function showLeaderboard() {
   showLoader(() => {
-    // إخفاء بقية الصفحات
-    document.querySelector('header').classList.add('hidden');
-    document.getElementById('main-content').classList.add('hidden');
-    document.getElementById('friends-page').classList.add('hidden');
-    document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('login-daily-page').classList.add('hidden');
-    document.getElementById('game-overlay').classList.add('hidden');
-    document.getElementById('end-game-screen').classList.add('hidden');
-
-    // إظهار صفحة الـ Leaderboard
-    document.getElementById('leaderboard-page').classList.remove('hidden');
-
-    // اسم المستخدم من تلغرام (افتراضي إذا لم يتوفر)
-    let telegramUsername = null;
-    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe.user) {
-      telegramUsername = window.Telegram.WebApp.initDataUnsafe.user.username 
-                         || window.Telegram.WebApp.initDataUnsafe.user.first_name;
-    }
-    if (!telegramUsername) {
-      telegramUsername = "TTKTR";
-    }
-
-    // نقاط المستخدم (خذها من ratsScore أو أي مكان)
-    let userPoints = parseInt(ratsScore) || 418347; 
-    document.getElementById('leaderboard-username').textContent = telegramUsername;
-    document.getElementById('leaderboard-points').textContent = formatNumber(userPoints.toString());
-
-    // ترتيب المستخدم
-    let userRank = localStorage.getItem('userRank') || 83751; 
-    document.getElementById('leaderboard-rank').textContent = '#' + formatNumber(userRank.toString());
-
-    // تفعيل التبويب النشط
+    alert('Leaderboard page is not implemented yet!');
     setActiveNav('leaderboard');
   });
 }
@@ -159,7 +124,6 @@ function showLoginDaily() {
     document.getElementById('login-daily-page').classList.remove('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden');
     setActiveNav('loginDaily');
   });
 }
@@ -222,7 +186,6 @@ function startGame() {
   document.getElementById('collab-page').classList.add('hidden');
   document.getElementById('login-daily-page').classList.add('hidden');
   document.getElementById('end-game-screen').classList.add('hidden');
-  document.getElementById('leaderboard-page').classList.add('hidden');
 
   falconScore = 0;
   bombScore = 0;
@@ -281,18 +244,19 @@ function endGame() {
   clearInterval(countdownInterval);
   document.querySelectorAll('.falling-emoji').forEach(emoji => emoji.remove());
 
+  // loader لمدة ثانيتين
   showLoader(() => {
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.remove('hidden');
 
-    // نجوم خلفية
+    // إضافة النجوم
     createStars();
     setInterval(moveStars, 50);
 
-    // تحديث عدد الصقور
+    // تحديث رقم الصقور في تأثير القوس قزح
     document.getElementById('endFalconScore').textContent = falconScore;
 
-    // جمع النقاط
+    // إضافة falconScore إلى ratsScore
     ratsScore += falconScore;
     localStorage.setItem('ratsScore', ratsScore.toFixed(2));
     document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
@@ -408,16 +372,47 @@ document.getElementById('btn-back-home').addEventListener('click', () => {
 /************************************************************/
 
 /************************************************************/
-/* وظيفة نسخ رابط الدعوة */
+/* [جديد] التحقق من رابط الدعوة وإضافة 2500 نقطة */
+function checkReferral() {
+  // نأتي بقيمة ?startapp=XXXX من رابط الصفحة
+  const urlParams = new URLSearchParams(window.location.search);
+  const refId = urlParams.get('startapp');
+  if (refId) {
+    // نتحقق هل هذا الزائر قد دخل سابقاً بنفس الرابط أم لا
+    // إن لم يكن قد دخل من قبل -> نضيف 2500 نقطة لصاحب الرابط
+    if (!localStorage.getItem(`visited_ref_${refId}`)) {
+      // وضع علامة أن هذا الزائر قد استهلك الدعوة
+      localStorage.setItem(`visited_ref_${refId}`, 'true');
+
+      // جلب رصيد صاحب الرابط (المخزن تحت مفتاح ratsScore_{refId})
+      // ملاحظة: بالنسبة للمستخدم صاحب الرابط، يتم تخزين رصيده عادةً بـ localStorage.setItem('ratsScore', ...) 
+      // ولكن هنا نخصص مفاتيح مختلفة للمقصد التوضيحي:
+      const keyRefOwner = `ratsScore_${refId}`;
+      let oldScore = parseFloat(localStorage.getItem(keyRefOwner)) || 0;
+      oldScore += 2500;
+      localStorage.setItem(keyRefOwner, oldScore.toFixed(2));
+
+      console.log(`Referral: Added 2500 points to user ${refId}. New Score = ${oldScore}`);
+    }
+  }
+}
+/************************************************************/
+
+/************************************************************/
+/* وظيفة نسخ رابط الدعوة (تعديلها لاستخدام userId من LocalStorage) */
 let telegramUserId = null;
 
 function copyInviteLink() {
   const botUsername = 'falcon_tapbot';
-  const userId = telegramUserId; 
+
+  // نجلب معرف المستخدم (الذي سنحفظه عند التشغيل في DOMContentLoaded)
+  const userId = localStorage.getItem('myUserId');
   if (!userId) {
     alert('Unable to retrieve your user ID. Please try again.');
     return;
   }
+
+  // صيغة الرابط مع ?startapp=userId
   const inviteLink = `https://t.me/${botUsername}/FALCON?startapp=${userId}`;
   navigator.clipboard.writeText(inviteLink).then(() => {
     showSuccessMessage('Invite link copied!');
@@ -431,8 +426,13 @@ function copyInviteLink() {
 /************************************************************/
 /* وظيفة مشاركة رابط الدعوة */
 function shareInviteLink() {
-  const inviteLink = `https://t.me/falcon_tapbot/FALCON?startapp=${telegramUserId}`; 
-  if (navigator.share && telegramUserId) {
+  const userId = localStorage.getItem('myUserId');
+  if (!userId) {
+    alert('No user ID found to share!');
+    return;
+  }
+  const inviteLink = `https://t.me/falcon_tapbot/FALCON?startapp=${userId}`; 
+  if (navigator.share) {
     navigator.share({
       title: 'Join Rats Kingdom',
       text: 'Join me in Rats Kingdom!',
@@ -462,7 +462,7 @@ function showSuccessMessage(message = 'Success') {
 /************************************************************/
 
 /************************************************************/
-/* دالة تنسيق الأرقام مع الفواصل */
+/* دالة تنسيق الأرقام مع الفواصل والرموز الخاصة */
 function formatNumber(num) {
   const parts = num.toString().split('.');
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -478,6 +478,8 @@ function formatNumber(num) {
   }
   return parts[0];
 }
+/************************************************************/
+
 /************************************************************/
 /* دالة تنسيق الوقت */
 function formatTimerDigits(value) {
@@ -504,7 +506,6 @@ function handleNavClick(page) {
     document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden');
 
     if (page === 'main') {
       document.querySelector('header').classList.remove('hidden');
@@ -526,7 +527,7 @@ function handleNavClick(page) {
 /************************************************************/
 
 /************************************************************/
-/* دالة التعامل مع زر Play Falcon */
+/* دالة التعامل مع زر Play Falcon وإدارة المكافآت اليومية */
 function handlePlayFalcon() {
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
   if (cardsCount < 1) {
@@ -541,7 +542,7 @@ function handlePlayFalcon() {
 /************************************************************/
 
 /************************************************************/
-/* تهيئة الأيام اليومية */
+/* تهيئة الـ 9 أيام (Daily Login) */
 function initializeDailyLogin() {
   const dayItems = document.querySelectorAll('.day-item');
   let claimedDays = JSON.parse(localStorage.getItem('claimedDays')) || [];
@@ -652,8 +653,6 @@ function showConfetti(containerId) {
     confettiContainer.removeChild(canvas);
   }, 3000); 
 }
-/************************************************************/
-/* دالة إزالة الكشكشة */
 function clearConfetti(containerId) {
   const confettiContainer = document.getElementById(containerId);
   if (!confettiContainer) return;
@@ -661,13 +660,35 @@ function clearConfetti(containerId) {
   canvases.forEach(canvas => canvas.remove());
 }
 /************************************************************/
-/* شغل شاشة الافتتاح */
+
+/************************************************************/
+/* شغل شاشة الافتتاح + فحص الإحالة */
 document.addEventListener("DOMContentLoaded", () => {
   const progress = document.querySelector(".progress-bar .progress");
   const splashScreen = document.getElementById("splash-screen");
   const ratsScoreElement = document.getElementById("ratsScore");
   const cardsCountElement = document.getElementById("cardsCount");
 
+  // [جديد] استدعاء checkReferral فور تحميل الصفحة
+  checkReferral();
+
+  // [جديد] تخزين userId في LocalStorage (لو كان موجوداً من بوت تيليجرام)
+  // إن لم يكن موجوداً نُنشئ معرّفاً عشوائياً
+  if (!localStorage.getItem('myUserId')) {
+    // إن كان telegramUserId متوفر من بوت تيليجرام، استخدمه
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe.user) {
+      telegramUserId = window.Telegram.WebApp.initDataUnsafe.user.id;
+      localStorage.setItem('myUserId', telegramUserId);
+    } else {
+      // أو ننشئ معرف محلي عشوائي
+      const generatedId = 'UID_' + Date.now();
+      localStorage.setItem('myUserId', generatedId);
+    }
+  }
+
+  // جلب الرصيد (للمستخدم الحالي) من المفتاح الافتراضي 'ratsScore'
+  // ملاحظة: إن كنت تريد لكل مستخدم مفتاح مستقل، يمكنك استعمال
+  // `ratsScore_{myUserId}`
   ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0.00;
   ratsScoreElement.textContent = formatNumber(ratsScore.toFixed(2));
 
@@ -684,6 +705,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector('.progress-bar').classList.add('hidden');
   }, 5000);
 
+  // مهام الأزرار مثلاً
   document.querySelectorAll('.action-btn').forEach(button => {
     button.addEventListener('click', () => {
       if (button.textContent.trim() === 'Start') {
@@ -718,28 +740,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // تهيئة نظام تسجيل الدخول اليومي
   initializeDailyLogin();
 
-  // منع حفظ الصور بالضغط المطول
+  // منع حفظ الصور بالضغط
   document.querySelectorAll('img').forEach(img => {
     img.addEventListener('contextmenu', event => event.preventDefault());
   });
+
   // منع النسخ
   document.addEventListener('copy', function(e) {
     e.preventDefault();
   });
 
-  // Telegram WebApp
+  // Telegram WebApp.ready
   if (window.Telegram && window.Telegram.WebApp) {
     window.Telegram.WebApp.ready();
-    telegramUserId = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.id : null;
-    if (telegramUserId) {
+    // إرسال user_id للسيرفر إن أردت
+    if (window.Telegram.WebApp.initDataUnsafe.user) {
+      const tgUserId = window.Telegram.WebApp.initDataUnsafe.user.id;
       fetch('https://alisaad11.pythonanywhere.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ user_id: telegramUserId })
+        body: JSON.stringify({ user_id: tgUserId })
       })
       .then(response => response.json())
       .then(data => {
@@ -753,7 +778,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn('Telegram Web Apps API not found.');
   }
 
-  // تأثير الموجة عند الضغط (ripple effect)
+  // تأثير Ripple للأزرار
   const rippleButtons = document.querySelectorAll('.ripple-button');
   rippleButtons.forEach(button => {
     button.addEventListener('click', function(e) {
