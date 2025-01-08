@@ -869,115 +869,62 @@ footer {
 /* ---------------------------------------------------------- */
 
 /* ---------------------------------------------------------- */
-/* صفحة الـ Leaderboard */
+/* تنسيق صفحة الـ Leaderboard الجديدة */
 #leaderboard-page {
-  display: none; 
-  background: #000;
-  color: #fff;
-  padding: 20px;
+  display: none; /* مخفية افتراضياً، نظهرها بجافاسكربت */
   text-align: center;
-  min-height: 100vh;
-  position: relative;
-  overflow-y: auto; 
-  scrollbar-width: thin;
-}
-#leaderboard-page .leaderboard-container {
-  max-width: 600px;
-  margin: 0 auto;
+  padding: 50px 20px;
 }
 
-.leaderboard-trophy {
+.leaderboard-container {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trophy-image {
   width: 100px;
   height: auto;
-  margin: 0 auto 10px auto;
-  display: block;
 }
 
 .leaderboard-title {
+  margin-top: 10px;
+  font-size: 1.8rem;
   font-weight: bold;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #fff;
 }
 
-.leaderboard-user-card {
-  background: #fff;
+.leaderboard-card {
+  background-color: #fff;
   color: #000;
+  margin-top: 20px;
   border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 20px;
+  width: 90%;
+  max-width: 400px;
+  padding: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.leaderboard-user-left {
+
+.leaderboard-left {
   display: flex;
   align-items: center;
-  gap: 10px;
 }
-.leaderboard-user-left img {
+
+.paw-icon {
   width: 40px;
   height: 40px;
-}
-.leaderboard-user-name {
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-.leaderboard-user-right {
-  text-align: right;
-  font-size: 0.9rem;
-}
-.leaderboard-user-points {
-  display: block;
-  font-weight: bold;
-}
-.leaderboard-user-rank {
-  display: block;
-  color: #666;
+  margin-right: 10px;
 }
 
-/* لستة التوب */
-.leaderboard-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.leaderboard-item {
-  background: #1a1a1a;
-  border: 2px solid #fff;
-  border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.leader-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.leader-left img {
-  width: 35px;
-  height: 35px;
-}
-.leader-name {
-  font-weight: bold;
-  font-size: 1rem;
-  color: #fff;
-}
-.leader-right {
+.leaderboard-right {
   text-align: right;
-  color: #fff;
-  font-size: 0.9rem;
-}
-.leader-score {
-  display: block;
   font-weight: bold;
-  margin-bottom: 2px;
 }
-.leader-rank {
+
+.leaderboard-right span {
   display: block;
-  color: #ffa500;
+  margin-top: 5px;
 }
 /* ---------------------------------------------------------- */
