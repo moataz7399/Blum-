@@ -58,7 +58,7 @@ function initSnowEffect() {
 /************************************************************/
 
 /************************************************************/
-/* تنقل بين الصفحات + Loader */
+/* Loader + تنقل بين الصفحات */
 function showLoader(callback, duration = 1000) {
   const loader = document.querySelector('.loader');
   loader.classList.remove('hidden'); 
@@ -77,7 +77,7 @@ function showMain() {
     document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    document.getElementById('leaderboard-page')?.classList.add('hidden');
+    document.getElementById('leaderboard-page').classList.add('hidden');
     setActiveNav('main');
     initSnowEffect();
   });
@@ -92,7 +92,7 @@ function showFriends() {
     document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    document.getElementById('leaderboard-page')?.classList.add('hidden');
+    document.getElementById('leaderboard-page').classList.add('hidden');
     setActiveNav('friends');
   });
 }
@@ -106,12 +106,12 @@ function showCollab() {
     document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    document.getElementById('leaderboard-page')?.classList.add('hidden');
+    document.getElementById('leaderboard-page').classList.add('hidden');
     setActiveNav('collab');
   });
 }
 
-/* تم تعديل هذه الدالة لإظهار واجهة الـ Leaderboard الجديدة */
+/* إصلاح الدالة بحيث تعرض الصفحة بدلاً من التنبيه */
 function showLeaderboard() {
   showLoader(() => {
     // إخفاء بقية الصفحات
@@ -122,33 +122,30 @@ function showLeaderboard() {
     document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    
+
     // إظهار صفحة الـ Leaderboard
     document.getElementById('leaderboard-page').classList.remove('hidden');
 
-    // جلب اسم المستخدم من تليجرام (إذا توفر)
+    // اسم المستخدم من تلغرام (افتراضي إذا لم يتوفر)
     let telegramUsername = null;
     if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe.user) {
-      // حاول إحضار اسم المستخدم، أو الاسم الأول إذا لا يوجد يوزرنيم
       telegramUsername = window.Telegram.WebApp.initDataUnsafe.user.username 
-                        || window.Telegram.WebApp.initDataUnsafe.user.first_name;
+                         || window.Telegram.WebApp.initDataUnsafe.user.first_name;
     }
     if (!telegramUsername) {
-      // إن لم يتوفر أي اسم نضع قيمة افتراضية
       telegramUsername = "TTKTR";
     }
 
-    // جلب نقاط المستخدم (مثلاً من ratsScore) وتحويلها لعدد صحيح إن أردت
-    let userPoints = parseInt(ratsScore) || 0;
-    // ضبط اسم المستخدم في واجهة الـ Leaderboard
+    // نقاط المستخدم (خذها من ratsScore أو أي مكان)
+    let userPoints = parseInt(ratsScore) || 418347; 
     document.getElementById('leaderboard-username').textContent = telegramUsername;
-    // ضبط النقاط بشكل منسّق
     document.getElementById('leaderboard-points').textContent = formatNumber(userPoints.toString());
 
-    // مثال: بإمكانك جلب الترتيب من LocalStorage أو من أي مكان
+    // ترتيب المستخدم
     let userRank = localStorage.getItem('userRank') || 83751; 
     document.getElementById('leaderboard-rank').textContent = '#' + formatNumber(userRank.toString());
 
+    // تفعيل التبويب النشط
     setActiveNav('leaderboard');
   });
 }
@@ -162,7 +159,7 @@ function showLoginDaily() {
     document.getElementById('login-daily-page').classList.remove('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    document.getElementById('leaderboard-page')?.classList.add('hidden');
+    document.getElementById('leaderboard-page').classList.add('hidden');
     setActiveNav('loginDaily');
   });
 }
@@ -225,7 +222,7 @@ function startGame() {
   document.getElementById('collab-page').classList.add('hidden');
   document.getElementById('login-daily-page').classList.add('hidden');
   document.getElementById('end-game-screen').classList.add('hidden');
-  document.getElementById('leaderboard-page')?.classList.add('hidden');
+  document.getElementById('leaderboard-page').classList.add('hidden');
 
   falconScore = 0;
   bombScore = 0;
@@ -284,19 +281,18 @@ function endGame() {
   clearInterval(countdownInterval);
   document.querySelectorAll('.falling-emoji').forEach(emoji => emoji.remove());
 
-  // loader لمدة ثانيتين
   showLoader(() => {
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.remove('hidden');
 
-    // إضافة النجوم
+    // نجوم خلفية
     createStars();
     setInterval(moveStars, 50);
 
-    // [جديد] تحديث رقم الصقور في تأثير القوس قزح
+    // تحديث عدد الصقور
     document.getElementById('endFalconScore').textContent = falconScore;
 
-    // إضافة falconScore إلى ratsScore
+    // جمع النقاط
     ratsScore += falconScore;
     localStorage.setItem('ratsScore', ratsScore.toFixed(2));
     document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
@@ -466,7 +462,7 @@ function showSuccessMessage(message = 'Success') {
 /************************************************************/
 
 /************************************************************/
-/* دالة تنسيق الأرقام مع الفواصل والرموز الخاصة */
+/* دالة تنسيق الأرقام مع الفواصل */
 function formatNumber(num) {
   const parts = num.toString().split('.');
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -482,8 +478,6 @@ function formatNumber(num) {
   }
   return parts[0];
 }
-/************************************************************/
-
 /************************************************************/
 /* دالة تنسيق الوقت */
 function formatTimerDigits(value) {
@@ -510,7 +504,7 @@ function handleNavClick(page) {
     document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    document.getElementById('leaderboard-page')?.classList.add('hidden');
+    document.getElementById('leaderboard-page').classList.add('hidden');
 
     if (page === 'main') {
       document.querySelector('header').classList.remove('hidden');
@@ -532,7 +526,7 @@ function handleNavClick(page) {
 /************************************************************/
 
 /************************************************************/
-/* دالة التعامل مع زر Play Falcon وإدارة المكافآت اليومية */
+/* دالة التعامل مع زر Play Falcon */
 function handlePlayFalcon() {
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
   if (cardsCount < 1) {
@@ -547,7 +541,7 @@ function handlePlayFalcon() {
 /************************************************************/
 
 /************************************************************/
-/* تهيئة الـ 9 أيام */
+/* تهيئة الأيام اليومية */
 function initializeDailyLogin() {
   const dayItems = document.querySelectorAll('.day-item');
   let claimedDays = JSON.parse(localStorage.getItem('claimedDays')) || [];
@@ -616,8 +610,6 @@ function initializeDailyLogin() {
     });
   });
 }
-/************************************************************/
-
 function unlockDay(dayItem, isCompleted) {
   const overlay = dayItem.querySelector('.overlay');
   if (overlay) {
@@ -728,14 +720,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initializeDailyLogin();
 
+  // منع حفظ الصور بالضغط المطول
   document.querySelectorAll('img').forEach(img => {
     img.addEventListener('contextmenu', event => event.preventDefault());
   });
-
+  // منع النسخ
   document.addEventListener('copy', function(e) {
     e.preventDefault();
   });
 
+  // Telegram WebApp
   if (window.Telegram && window.Telegram.WebApp) {
     window.Telegram.WebApp.ready();
     telegramUserId = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.id : null;
@@ -759,6 +753,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn('Telegram Web Apps API not found.');
   }
 
+  // تأثير الموجة عند الضغط (ripple effect)
   const rippleButtons = document.querySelectorAll('.ripple-button');
   rippleButtons.forEach(button => {
     button.addEventListener('click', function(e) {
