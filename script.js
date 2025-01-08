@@ -75,9 +75,9 @@ function showMain() {
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
     document.getElementById('login-daily-page').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
+    document.getElementById('leaderboard-page')?.classList.add('hidden');
     setActiveNav('main');
     initSnowEffect();
   });
@@ -90,9 +90,9 @@ function showFriends() {
     document.getElementById('friends-page').classList.remove('hidden');
     document.getElementById('collab-page').classList.add('hidden');
     document.getElementById('login-daily-page').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
+    document.getElementById('leaderboard-page')?.classList.add('hidden');
     setActiveNav('friends');
   });
 }
@@ -104,13 +104,14 @@ function showCollab() {
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.remove('hidden');
     document.getElementById('login-daily-page').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
+    document.getElementById('leaderboard-page')?.classList.add('hidden');
     setActiveNav('collab');
   });
 }
 
+/* تم تعديل هذه الدالة لإظهار واجهة الـ Leaderboard الجديدة */
 function showLeaderboard() {
   showLoader(() => {
     // إخفاء بقية الصفحات
@@ -124,48 +125,31 @@ function showLeaderboard() {
     
     // إظهار صفحة الـ Leaderboard
     document.getElementById('leaderboard-page').classList.remove('hidden');
+
+    // جلب اسم المستخدم من تليجرام (إذا توفر)
+    let telegramUsername = null;
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe.user) {
+      // حاول إحضار اسم المستخدم، أو الاسم الأول إذا لا يوجد يوزرنيم
+      telegramUsername = window.Telegram.WebApp.initDataUnsafe.user.username 
+                        || window.Telegram.WebApp.initDataUnsafe.user.first_name;
+    }
+    if (!telegramUsername) {
+      // إن لم يتوفر أي اسم نضع قيمة افتراضية
+      telegramUsername = "TTKTR";
+    }
+
+    // جلب نقاط المستخدم (مثلاً من ratsScore) وتحويلها لعدد صحيح إن أردت
+    let userPoints = parseInt(ratsScore) || 0;
+    // ضبط اسم المستخدم في واجهة الـ Leaderboard
+    document.getElementById('leaderboard-username').textContent = telegramUsername;
+    // ضبط النقاط بشكل منسّق
+    document.getElementById('leaderboard-points').textContent = formatNumber(userPoints.toString());
+
+    // مثال: بإمكانك جلب الترتيب من LocalStorage أو من أي مكان
+    let userRank = localStorage.getItem('userRank') || 83751; 
+    document.getElementById('leaderboard-rank').textContent = '#' + formatNumber(userRank.toString());
+
     setActiveNav('leaderboard');
-    
-    // مثال لجلب البيانات وتعبئتها في الواجهة
-    // يمكنك التعديل بحيث تجلب اسم التليجرام وعدد النقاط والترتيب من متغيراتك الخاصة
-    const telegramUserName = telegramUserId ? `User${telegramUserId}` : 'TTKTR'; 
-    const userPoints = localStorage.getItem('userPoints') || '418,347';  
-    const userRank = localStorage.getItem('userRank') || '83,751';
-
-    // تعبئة بيانات المستخدم
-    document.getElementById('leaderboardUserName').textContent = telegramUserName;
-    document.getElementById('leaderboardUserPoints').textContent = formatNumber(userPoints) + ' FALCON';
-    document.getElementById('leaderboardUserRank').textContent = '#' + formatNumber(userRank);
-
-    // تعبئة بيانات توب #1
-    const top1Name = localStorage.getItem('top1Name') || 'elkanadi';  
-    const top1Points = localStorage.getItem('top1Points') || '1,103,038,936';
-    document.getElementById('top1Name').textContent = top1Name;
-    document.getElementById('top1Points').textContent = formatNumber(top1Points) + ' FALCON';
-    document.getElementById('top1Rank').textContent = '#1';
-
-    // تعبئة بيانات توب #2
-    const top2Name = localStorage.getItem('top2Name') || 'flasher888';
-    const top2Points = localStorage.getItem('top2Points') || '301,806,332';
-    document.getElementById('top2Name').textContent = top2Name;
-    document.getElementById('top2Points').textContent = formatNumber(top2Points) + ' FALCON';
-    document.getElementById('top2Rank').textContent = '#2';
-
-    // تعبئة بيانات توب #3
-    const top3Name = localStorage.getItem('top3Name') || 'mariefelicita';
-    const top3Points = localStorage.getItem('top3Points') || '288,916,233';
-    document.getElementById('top3Name').textContent = top3Name;
-    document.getElementById('top3Points').textContent = formatNumber(top3Points) + ' FALCON';
-    document.getElementById('top3Rank').textContent = '#3';
-
-    // تعبئة بيانات توب #4
-    const top4Name = localStorage.getItem('top4Name') || 'BB9B9N';
-    const top4Points = localStorage.getItem('top4Points') || '246,770,485';
-    document.getElementById('top4Name').textContent = top4Name;
-    document.getElementById('top4Points').textContent = formatNumber(top4Points) + ' FALCON';
-    document.getElementById('top4Rank').textContent = '#4';
-    
-    // بإمكانك الاستمرار بنفس الطريقة حتى توب #100
   });
 }
 
@@ -175,10 +159,10 @@ function showLoginDaily() {
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden');
+    document.getElementById('login-daily-page').classList.remove('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    document.getElementById('login-daily-page').classList.remove('hidden');
+    document.getElementById('leaderboard-page')?.classList.add('hidden');
     setActiveNav('loginDaily');
   });
 }
@@ -240,8 +224,8 @@ function startGame() {
   document.getElementById('friends-page').classList.add('hidden');
   document.getElementById('collab-page').classList.add('hidden');
   document.getElementById('login-daily-page').classList.add('hidden');
-  document.getElementById('leaderboard-page').classList.add('hidden');
   document.getElementById('end-game-screen').classList.add('hidden');
+  document.getElementById('leaderboard-page')?.classList.add('hidden');
 
   falconScore = 0;
   bombScore = 0;
@@ -524,9 +508,9 @@ function handleNavClick(page) {
     document.getElementById('friends-page').classList.add('hidden');
     document.getElementById('collab-page').classList.add('hidden');
     document.getElementById('login-daily-page').classList.add('hidden');
-    document.getElementById('leaderboard-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
+    document.getElementById('leaderboard-page')?.classList.add('hidden');
 
     if (page === 'main') {
       document.querySelector('header').classList.remove('hidden');
@@ -632,6 +616,8 @@ function initializeDailyLogin() {
     });
   });
 }
+/************************************************************/
+
 function unlockDay(dayItem, isCompleted) {
   const overlay = dayItem.querySelector('.overlay');
   if (overlay) {
