@@ -9,7 +9,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="style.css"> <!-- تم تعديل الرابط هنا -->
+  <link rel="stylesheet" href="style.css">
   
   <!-- Telegram Web Apps JavaScript API -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -38,9 +38,8 @@
     </div>
   </header>
 
-  <!-- شاشة التحميل العام -->
+  <!-- شاشة التحميل العام (النقاط الثلاث) -->
   <div class="loader hidden">
-    <!-- استبدال الـ spinner بتأثير النقاط الثلاث -->
     <div class="dots">
       <span class="dot"></span>
       <span class="dot"></span>
@@ -50,7 +49,6 @@
 
   <!-- المحتوى الرئيسي -->
   <main id="main-content" class="hidden">
-    <!-- إضافة عنصر الكانفاس لتأثير الثلوج -->
     <canvas id="snow"></canvas>
     
     <div class="profile-section">
@@ -60,7 +58,6 @@
         class="profile-icon"
       />
       <div class="stats">
-        <!-- إضافة معرف للعنصر -->
         <h2 id="ratsScore" class="glow-text">0.00</h2>
         <p class="glow-text">RATS</p>
       </div>
@@ -70,44 +67,39 @@
       <div class="column">
         <div class="button-card">
           <h3 class="glow-text">𝐘𝐨𝐮𝐭𝐮𝐛𝐞 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</h3>
-          <button onclick="window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');">
+          <button class="ripple-button" onclick="window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');">
             Subscribe
           </button>
         </div>
 
-        <!-- Follow X -->
         <div class="button-card">
           <h3 class="glow-text">𝐅𝐨𝐥𝐥𝐨𝐰 𝐗</h3>
-          <button onclick="window.open('https://www.twitter.com/@Falcon_Communiity', '_blank');">
+          <button class="ripple-button" onclick="window.open('https://www.twitter.com/@Falcon_Communiity', '_blank');">
             Follow
           </button>
         </div>
       </div>
 
-      <!-- صفحتين إضافيتين -->
       <div class="column">
-        <!-- Telegram Channel -->
         <div class="button-card">
           <h3 class="glow-text">𝐓𝐞𝐥𝐞𝐠𝐫𝐚𝐦 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</h3>
-          <button onclick="window.open('https://t.me/Falcon_Community_Bot', '_blank');">
+          <button class="ripple-button" onclick="window.open('https://t.me/Falcon_Community_Bot', '_blank');">
             Join
           </button>
         </div>
 
-        <!-- Share Link Bot -->
         <div class="button-card">
           <h3 class="glow-text">𝐒𝐡𝐚𝐫𝐞 𝐋𝐢𝐧𝐤 𝐁𝐨𝐭</h3>
-          <button onclick="shareInviteLink()">Share</button>
+          <button class="ripple-button" onclick="shareInviteLink()">Share</button>
         </div>
       </div>
     </div>
 
-    <!-- زر Play -->
     <div class="play-container">
       <div class="button-card">
         <h3 class="glow-text">𝐏𝐥𝐚𝐲 𝐅𝐚𝐥𝐜𝐨𝐧</h3>
         <p class="cards-label">» ᴄᴀʀᴅꜱ : <span id="cardsCount">0</span></p>
-        <button id="playFalconBtn" onclick="handlePlayFalcon()">Play</button>
+        <button id="playFalconBtn" class="ripple-button" onclick="handlePlayFalcon()">Play</button>
       </div>
     </div>
   </main>
@@ -122,13 +114,11 @@
       />
       <h2 class="glow-text">𝗜𝗻𝘃𝗶𝘁𝗲 𝗳𝗿𝗶𝗲𝗻𝗱𝘀 𝗮𝗻𝗱 𝗴𝗲𝘁 𝗺𝗼𝗿𝗲 𝗥𝗔𝗧𝗦</h2>
       <div class="friends-buttons">
-        <button onclick="copyInviteLink()">𝐂𝐨𝐩𝐲 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
-        <button onclick="shareInviteLink()">𝐒𝐡𝐚𝐫𝐞 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
+        <button class="ripple-button" onclick="copyInviteLink()">𝐂𝐨𝐩𝐲 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
+        <button class="ripple-button" onclick="shareInviteLink()">𝐒𝐡𝐚𝐫𝐞 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
       </div>
 
-      <!-- إضافة المربع الجديد -->
       <div class="friends-table">
-        <!-- يمكنك إضافة محتويات الجدول هنا -->
         <p style="text-align: center; color: #fff;">This is your custom table area</p>
       </div>
     </div>
@@ -137,7 +127,6 @@
   <!-- Collab -->
   <div id="collab-page" class="hidden">
     <div class="tasks-section">
-      <!-- مهمة 1 -->
       <div class="task-card">
         <img 
           src="https://i.ibb.co/xJH1Qpz/Picsart-24-12-26-03-59-05-253.png" 
@@ -147,10 +136,9 @@
           <h3 class="glow-text">Put ... next to your name</h3>
           <p class="glow-text">+6,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="6000" data-link="https://example.com/task1">Start</button>
+        <button class="action-btn start-btn ripple-button" data-points="6000" data-link="https://example.com/task1">Start</button>
       </div>
-      <!-- مهمة 2 -->
+
       <div class="task-card">
         <img 
           src="https://i.ibb.co/V9FPRbL/Picsart-24-12-26-03-07-35-183.png" 
@@ -160,10 +148,9 @@
           <h3 class="glow-text">Follow Telegram Channel</h3>
           <p class="glow-text">+250 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="250" data-link="https://t.me/Falcon_Community_Bot">Start</button>
+        <button class="action-btn start-btn ripple-button" data-points="250" data-link="https://t.me/Falcon_Community_Bot">Start</button>
       </div>
-      <!-- مهمة 3 -->
+
       <div class="task-card">
         <img 
           src="https://i.ibb.co/BV0tDyw/Picsart-24-12-26-03-13-44-267.png"
@@ -173,10 +160,9 @@
           <h3 class="glow-text">Follow us on X</h3>
           <p class="glow-text">+2,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="2000" data-link="https://www.twitter.com/@Falcon_Communiity">Start</button>
+        <button class="action-btn start-btn ripple-button" data-points="2000" data-link="https://www.twitter.com/@Falcon_Communiity">Start</button>
       </div>
-      <!-- مهمة 4 -->
+
       <div class="task-card">
         <img 
           src="https://i.ibb.co/N28QCRM/Picsart-24-12-26-03-23-37-573.png"
@@ -186,11 +172,9 @@
           <h3 class="glow-text">Boost Channel</h3>
           <p class="glow-text">+5,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="5000" data-link="https://example.com/task4">Start</button>
+        <button class="action-btn start-btn ripple-button" data-points="5000" data-link="https://example.com/task4">Start</button>
       </div>
       
-      <!-- مهمة 5: Subscribe to YouTube -->
       <div class="task-card">
         <img 
           src="https://i.ibb.co/wNqSmVn/Picsart-24-12-26-10-58-21-444.png" 
@@ -200,11 +184,9 @@
           <h3 class="glow-text">Subscribe to our YouTube channel</h3>
           <p class="glow-text">+3,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="3000" data-link="https://www.youtube.com/@Falcon_Communiity">Start</button>
+        <button class="action-btn start-btn ripple-button" data-points="3000" data-link="https://www.youtube.com/@Falcon_Communiity">Start</button>
       </div>
 
-      <!-- Invite 3 friends -->
       <div class="task-card">
         <img 
           src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
@@ -214,10 +196,9 @@
           <h3 class="glow-text">Invite 3 friends</h3>
           <p class="glow-text">+3,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="3000" data-link="https://example.com/invite3">Start</button>
+        <button class="action-btn start-btn ripple-button" data-points="3000" data-link="https://example.com/invite3">Start</button>
       </div>
-      <!-- Invite 5 friends -->
+
       <div class="task-card">
         <img 
           src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
@@ -227,10 +208,9 @@
           <h3 class="glow-text">Invite 5 friends</h3>
           <p class="glow-text">+5,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="5000" data-link="https://example.com/invite5">Start</button>
+        <button class="action-btn start-btn ripple-button" data-points="5000" data-link="https://example.com/invite5">Start</button>
       </div>
-      <!-- Invite 25 friends -->
+
       <div class="task-card">
         <img 
           src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
@@ -240,8 +220,7 @@
           <h3 class="glow-text">Invite 25 friends</h3>
           <p class="glow-text">+30,000 PAWS</p>
         </div>
-        <!-- إضافة data-points و data-link -->
-        <button class="action-btn start-btn" data-points="30000" data-link="https://example.com/invite25">Start</button>
+        <button class="action-btn start-btn ripple-button" data-points="30000" data-link="https://example.com/invite25">Start</button>
       </div>
     </div>
   </div>
@@ -253,7 +232,6 @@
       <p class="header-subtitle">Log in daily to the bot and get mysterious rewards</p>
     </div>
     <div class="login-daily-table">
-      <!-- الخانات من 1 إلى 9 -->
       <div class="day-item" data-day="1">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="1 Day">
@@ -263,7 +241,6 @@
         </div>
         <div class="day-label">1 Day</div>
       </div>
-      <!-- باقي الأيام بنفس الشكل -->
       <div class="day-item" data-day="2">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="2 Day">
@@ -337,7 +314,6 @@
         <div class="day-label">9 Day</div>
       </div>
     </div>
-    <!-- إضافة حاوية الكشكشة في صفحة Login Daily -->
     <div id="confetti-container-login" class="confetti-container"></div>
   </div>
 
@@ -352,30 +328,131 @@
     </div>
   </div>
 
+  <!-- شاشة نهاية اللعبة -->
   <div id="end-game-screen" class="hidden end-game-screen">
+    <!-- حاوية النجوم -->
+    <div id="stars-container"></div>
+
     <div class="end-content">
-      <!-- إضافة حاوية الكشكشة داخل شاشة نهاية اللعبة -->
+      <!-- تأثير قوس قزح أعلى صفحة النهاية -->
+      <div class="rainbow-effect" style="margin-top: 30px;">
+        <div class="number-container" id="endFalconScore">100</div>
+        <div class="text-falcon">FALCON</div>
+      </div>
+
+      <!-- حاوية الكشكشة (موجودة في حالة تم استدعاؤها) -->
       <div id="confetti-container" class="confetti-container"></div>
 
       <div class="buttons-container">
         <!-- زر Play Again -->
-        <button id="btn-new-round">
+        <button id="btn-new-round" class="ripple-button">
           <span class="btn-icon"><i class="fas fa-play"></i></span> 
           <span class="btn-text">𝐏𝐥𝐚𝐲 𝐚𝐠𝐚𝐢𝐧</span>
         </button>
 
         <!-- زر Return Home -->
-        <button id="btn-back-home">
+        <button id="btn-back-home" class="ripple-button">
           <span class="btn-icon"><i class="fas fa-arrow-left"></i></span> 
           <span class="btn-text">𝐁𝐚𝐜𝐤</span>
         </button>
-
-        <!-- زر Share Link Bot -->
-        <button id="btn-share-link">
-          <span class="btn-icon"><i class="fas fa-share"></i></span> 
-          <span class="btn-text">𝐒𝐡𝐚𝐫𝐞 𝐋𝐢𝐧𝐤 𝐁𝐨𝐭</span>
-        </button>
       </div>
+    </div>
+  </div>
+
+  <!-- صفحة الـLeaderboard الجديدة -->
+  <div id="leaderboard-page" class="hidden">
+    <div class="leaderboard-container">
+      <!-- صورة الكأس الجديدة -->
+      <img 
+        src="https://i.ibb.co/7Nv0q3b/Picsart-25-01-08-13-36-21-821.png" 
+        alt="Trophy"
+        class="leaderboard-trophy"
+      />
+
+      <!-- كلمة Leaderboard بخط غامق -->
+      <h2 class="leaderboard-title" style="font-weight: bold;">Leaderboard</h2>
+
+      <!-- المربع الأبيض الذي يحتوي بيانات المستخدم الحالي -->
+      <div class="leaderboard-user-card">
+        <div class="leaderboard-user-left">
+          <!-- صورة المخالب الجديدة بدل الصورة السوداء -->
+          <img 
+            src="https://i.ibb.co/KzP80Jj/11zon-cropped-3.png" 
+            alt="paw" 
+          />
+          <span class="leaderboard-user-name" id="leaderboardUserName">TTKTR</span>
+        </div>
+        <div class="leaderboard-user-right">
+          <span class="leaderboard-user-points" id="leaderboardUserPoints">418,347 FALCON</span>
+          <span class="leaderboard-user-rank" id="leaderboardUserRank">#83,751</span>
+        </div>
+      </div>
+
+      <!-- لستة التوب #1 إلى #100 (مثال) -->
+      <ul class="leaderboard-list">
+        <!-- توب #1 -->
+        <li class="leaderboard-item">
+          <div class="leader-left">
+            <img 
+              src="https://i.ibb.co/KzP80Jj/11zon-cropped-3.png" 
+              alt="paw"
+            />
+            <span class="leader-name" id="top1Name">elkanadi</span>
+          </div>
+          <div class="leader-right">
+            <span class="leader-score" id="top1Points">1,103,038,936 FALCON</span>
+            <!-- بدل 🥇 إلى #1 -->
+            <span class="leader-rank" id="top1Rank">#1</span>
+          </div>
+        </li>
+
+        <!-- توب #2 -->
+        <li class="leaderboard-item">
+          <div class="leader-left">
+            <img 
+              src="https://i.ibb.co/KzP80Jj/11zon-cropped-3.png"
+              alt="paw"
+            />
+            <span class="leader-name" id="top2Name">flasher888</span>
+          </div>
+          <div class="leader-right">
+            <span class="leader-score" id="top2Points">301,806,332 FALCON</span>
+            <span class="leader-rank" id="top2Rank">#2</span>
+          </div>
+        </li>
+
+        <!-- توب #3 -->
+        <li class="leaderboard-item">
+          <div class="leader-left">
+            <img 
+              src="https://i.ibb.co/KzP80Jj/11zon-cropped-3.png"
+              alt="paw"
+            />
+            <span class="leader-name" id="top3Name">mariefelicita</span>
+          </div>
+          <div class="leader-right">
+            <span class="leader-score" id="top3Points">288,916,233 FALCON</span>
+            <span class="leader-rank" id="top3Rank">#3</span>
+          </div>
+        </li>
+
+        <!-- توب #4 -->
+        <li class="leaderboard-item">
+          <div class="leader-left">
+            <img 
+              src="https://i.ibb.co/KzP80Jj/11zon-cropped-3.png"
+              alt="paw"
+            />
+            <span class="leader-name" id="top4Name">BB9B9N</span>
+          </div>
+          <div class="leader-right">
+            <span class="leader-score" id="top4Points">246,770,485 FALCON</span>
+            <span class="leader-rank" id="top4Rank">#4</span>
+          </div>
+        </li>
+
+        <!-- وهكذا إلى توب #100 حسب رغبتك -->
+      </ul>
     </div>
   </div>
 
