@@ -9,6 +9,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     rel="stylesheet"
   />
+  <!-- ملف CSS (ستجده بالأسفل) -->
   <link rel="stylesheet" href="style.css">
   
   <!-- Telegram Web Apps JavaScript API -->
@@ -17,7 +18,7 @@
   <!-- مكتبة Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
   
-  <!-- رابط ملف JavaScript -->
+  <!-- ملف JavaScript -->
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -26,9 +27,9 @@
     <div class="progress"></div>
   </div>
 
-  <!-- شاشة التحميل -->
+  <!-- شاشة التحميل الأولى -->
   <div id="splash-screen">
-    <!-- محتويات شاشة التحميل (صورة أو نص) إذا لزم الأمر -->
+    <!-- أي محتوى يخص شاشة التحميل -->
   </div>
 
   <!-- الهيدر -->
@@ -58,6 +59,7 @@
         class="profile-icon"
       />
       <div class="stats">
+        <!-- لاحظ أننا سنعرض الرصيد من LocalStorage -->
         <h2 id="ratsScore" class="glow-text">0.00</h2>
         <p class="glow-text">RATS</p>
       </div>
@@ -114,6 +116,7 @@
       />
       <h2 class="glow-text">𝗜𝗻𝘃𝗶𝘁𝗲 𝗳𝗿𝗶𝗲𝗻𝗱𝘀 𝗮𝗻𝗱 𝗴𝗲𝘁 𝗺𝗼𝗿𝗲 𝗥𝗔𝗧𝗦</h2>
       <div class="friends-buttons">
+        <!-- زر نسخ رابط الدعوة -->
         <button class="ripple-button" onclick="copyInviteLink()">𝐂𝐨𝐩𝐲 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
         <button class="ripple-button" onclick="shareInviteLink()">𝐒𝐡𝐚𝐫𝐞 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
       </div>
@@ -225,14 +228,13 @@
     </div>
   </div>
 
-  <!-- Login Daily Page -->
+  <!-- صفحة تسجيل الدخول اليومي -->
   <div id="login-daily-page" class="hidden">
     <div class="login-daily-header">
       <h2 class="header-title">Daily Entry 🎁</h2>
       <p class="header-subtitle">Log in daily to the bot and get mysterious rewards</p>
     </div>
     <div class="login-daily-table">
-      <!-- الأيام التسعة -->
       <div class="day-item" data-day="1">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="1 Day">
@@ -335,7 +337,7 @@
     <div id="stars-container"></div>
 
     <div class="end-content">
-      <!-- تأثير قوس قزح أعلى صفحة النهاية -->
+      <!-- تأثير قوس قزح -->
       <div class="rainbow-effect" style="margin-top: 30px;">
         <div class="number-container" id="endFalconScore">100</div>
         <div class="text-falcon">FALCON</div>
@@ -360,42 +362,6 @@
     </div>
   </div>
 
-  <!-- صفحة الـ Leaderboard (الخاصة) -->
-  <div id="leaderboard-page" class="hidden">
-    <div class="leaderboard-container">
-      <!-- صورة الكأس الجديدة -->
-      <img 
-        class="trophy-image" 
-        src="https://i.ibb.co/7Nv0q3b/Picsart-25-01-08-13-36-21-821.png" 
-        alt="Trophy"
-      />
-      <!-- العنوان بخط عريض -->
-      <h2 class="leaderboard-title" style="font-weight: bold;">Leaderboard</h2>
-      <!-- المربع الأبيض -->
-      <div class="leaderboard-card">
-        <div class="leaderboard-left">
-          <!-- صورة المخلب باللون الأسود -->
-          <img 
-            class="paw-icon" 
-            src="https://i.ibb.co/KzP80Jj/11zon-cropped-3.png" 
-            alt="Paw"
-          />
-          <!-- اسم المستخدم -->
-          <span id="leaderboard-username">TTKTR</span>
-        </div>
-        <div class="leaderboard-right">
-          <!-- النقاط -->
-          <span id="leaderboard-points">418,347</span>
-          <!-- كلمة FALCON بدل PAWS -->
-          <span>FALCON</span>
-          <!-- الترتيب -->
-          <span id="leaderboard-rank">#83,751</span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- نهاية صفحة الـ Leaderboard -->
-
   <!-- فوتر -->
   <footer>
     <nav class="bottom-nav">
@@ -408,7 +374,6 @@
       <a href="#" class="glow-text ripple-button" onclick="handleNavClick('loginDaily')">
         <i class="fas fa-calendar-check"></i> Login Daily
       </a>
-      <!-- الأيقونة المهمة لـ Leaderboard -->
       <a href="#" class="glow-text ripple-button" onclick="handleNavClick('leaderboard')">
         <i class="fas fa-trophy"></i> Leaderboard
       </a>
