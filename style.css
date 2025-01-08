@@ -36,6 +36,14 @@ img {
 
 body {
   user-select: none;
+  background: #000;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 button, input, textarea, select {
@@ -64,17 +72,6 @@ button, input, textarea, select {
   width: 0;
   background: #00ff00;
   transition: width 5s linear;
-}
-
-body {
-  background: #000;
-  color: #fff;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
 }
 
 /* شاشة الافتتاح */
@@ -152,7 +149,7 @@ body {
   text-align: center;
 }
 
-/* اصلاح شريط التمرير */
+/* صفحة الـ Login Daily */
 .login-daily-table {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -287,7 +284,7 @@ body {
   }
 }
 
-/* توهج */
+/* نص متوهج */
 header .glow-text,
 #game-overlay .score-panel p,
 #end-game-screen .stats-line {
@@ -377,6 +374,7 @@ header {
 .button-card h3 {
   font-size: 0.9rem;
   margin-bottom: 5px;
+  white-space: nowrap;
 }
 .button-card button {
   display: block;
@@ -534,7 +532,7 @@ header {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* عدادات */
+/* عدادات اللعبة */
 .score-panel {
   position: absolute;
   top: 10px;
@@ -584,7 +582,7 @@ header {
   100% { transform: translate(0,0); }
 }
 
-/* نهاية اللعبة */
+/* شاشة نهاية اللعبة */
 .end-game-screen {
   position: fixed;
   top: 0; left: 0;
@@ -729,7 +727,7 @@ footer {
   pointer-events: none;
 }
 
-/* صفحة تسجيل الدخول اليومي */
+/* شاشة تسجيل الدخول اليومي */
 #login-daily-page {
   display: flex;
   flex-direction: column;
@@ -751,28 +749,6 @@ footer {
   font-size: 1rem;
   color: #fff;
   text-shadow: 0 0 3px #fff, 0 0 6px #fff;
-}
-
-/* للأجهزة الصغيرة */
-@media (max-width: 600px) {
-  .button-card {
-    width: 80%;
-  }
-  .play-container .button-card {
-    width: 80%;
-  }
-  .login-daily-table {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  }
-  .day-box {
-    height: 120px;
-  }
-  .timer-panel p {
-    font-size: 1.5rem;
-  }
-  .score-panel {
-    font-size: 1.2rem;
-  }
 }
 
 /* ---------------------------------------------------------- */
@@ -869,31 +845,29 @@ footer {
 /* ---------------------------------------------------------- */
 
 /* ---------------------------------------------------------- */
-/* تنسيق صفحة الـ Leaderboard الجديدة */
+/* تنسيق صفحة الـ Leaderboard */
 #leaderboard-page {
-  display: none; /* مخفية افتراضياً، نظهرها بجافاسكربت */
-  text-align: center;
-  padding: 50px 20px;
+  display: none;
+  background: #000; /* خلفية سوداء كاملة */
+  min-height: 100vh;
+  padding-top: 50px;
 }
-
 .leaderboard-container {
-  margin-top: 30px;
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 .trophy-image {
   width: 100px;
   height: auto;
 }
-
 .leaderboard-title {
   margin-top: 10px;
   font-size: 1.8rem;
   font-weight: bold;
+  color: #fff;
 }
-
 .leaderboard-card {
   background-color: #fff;
   color: #000;
@@ -906,23 +880,19 @@ footer {
   align-items: center;
   justify-content: space-between;
 }
-
 .leaderboard-left {
   display: flex;
   align-items: center;
 }
-
 .paw-icon {
   width: 40px;
   height: 40px;
   margin-right: 10px;
 }
-
 .leaderboard-right {
   text-align: right;
   font-weight: bold;
 }
-
 .leaderboard-right span {
   display: block;
   margin-top: 5px;
