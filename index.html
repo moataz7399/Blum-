@@ -359,101 +359,41 @@
     </div>
   </div>
 
-  <!-- صفحة الـLeaderboard الجديدة -->
+  <!-- صفحة الـ Leaderboard الجديدة -->
   <div id="leaderboard-page" class="hidden">
     <div class="leaderboard-container">
-      <!-- صورة الكأس الجديدة -->
+      <!-- الكأس الجديد -->
       <img 
+        class="trophy-image" 
         src="https://i.ibb.co/7Nv0q3b/Picsart-25-01-08-13-36-21-821.png" 
         alt="Trophy"
-        class="leaderboard-trophy"
       />
-
-      <!-- كلمة Leaderboard بخط غامق -->
+      <!-- العنوان بخط عريض -->
       <h2 class="leaderboard-title" style="font-weight: bold;">Leaderboard</h2>
-
-      <!-- المربع الأبيض الذي يشبه النموذج -->
-      <div class="leaderboard-user-card">
-        <div class="leaderboard-user-left">
-          <!-- صورة المخالب الجديدة -->
+      <!-- المربع الأبيض -->
+      <div class="leaderboard-card">
+        <div class="leaderboard-left">
+          <!-- صورة المخلب الجديدة باللون الأسود -->
           <img 
+            class="paw-icon" 
             src="https://i.ibb.co/KzP80Jj/11zon-cropped-3.png" 
-            alt="paw"
+            alt="Paw"
           />
-          <span class="leaderboard-user-name" id="leaderboardUserName">TTKTR</span>
+          <!-- هنا يظهر اسم المستخدم بدل TTKTR -->
+          <span id="leaderboard-username">TTKTR</span>
         </div>
-        <div class="leaderboard-user-right">
-          <span class="leaderboard-user-points" id="leaderboardUserPoints">418,347 FALCON</span>
-          <span class="leaderboard-user-rank" id="leaderboardUserRank">#83,751</span>
+        <div class="leaderboard-right">
+          <!-- النقاط (418,347 سابقاً) -->
+          <span id="leaderboard-points">418,347</span>
+          <!-- كلمة FALCON بدل PAWS -->
+          <span>FALCON</span>
+          <!-- الترتيب #83,751 -->
+          <span id="leaderboard-rank">#83,751</span>
         </div>
       </div>
-
-      <!-- لستة التوب -->
-      <ul class="leaderboard-list">
-        <!-- توب #1 -->
-        <li class="leaderboard-item">
-          <div class="leader-left">
-            <img 
-              src="https://i.ibb.co/KzP80Jj/11zon-cropped-3.png" 
-              alt="paw"
-            />
-            <span class="leader-name" id="top1Name">elkanadi</span>
-          </div>
-          <div class="leader-right">
-            <span class="leader-score" id="top1Points">1,103,038,936 FALCON</span>
-            <span class="leader-rank" id="top1Rank">#1</span>
-          </div>
-        </li>
-
-        <!-- توب #2 -->
-        <li class="leaderboard-item">
-          <div class="leader-left">
-            <img 
-              src="https://i.ibb.co/KzP80Jj/11zon-cropped-3.png"
-              alt="paw"
-            />
-            <span class="leader-name" id="top2Name">flasher888</span>
-          </div>
-          <div class="leader-right">
-            <span class="leader-score" id="top2Points">301,806,332 FALCON</span>
-            <span class="leader-rank" id="top2Rank">#2</span>
-          </div>
-        </li>
-
-        <!-- توب #3 -->
-        <li class="leaderboard-item">
-          <div class="leader-left">
-            <img 
-              src="https://i.ibb.co/KzP80Jj/11zon-cropped-3.png"
-              alt="paw"
-            />
-            <span class="leader-name" id="top3Name">mariefelicita</span>
-          </div>
-          <div class="leader-right">
-            <span class="leader-score" id="top3Points">288,916,233 FALCON</span>
-            <span class="leader-rank" id="top3Rank">#3</span>
-          </div>
-        </li>
-
-        <!-- توب #4 -->
-        <li class="leaderboard-item">
-          <div class="leader-left">
-            <img 
-              src="https://i.ibb.co/KzP80Jj/11zon-cropped-3.png"
-              alt="paw"
-            />
-            <span class="leader-name" id="top4Name">BB9B9N</span>
-          </div>
-          <div class="leader-right">
-            <span class="leader-score" id="top4Points">246,770,485 FALCON</span>
-            <span class="leader-rank" id="top4Rank">#4</span>
-          </div>
-        </li>
-
-        <!-- يمكنك إضافة توب #5 ... إلى #100 بنفس الشكل -->
-      </ul>
     </div>
   </div>
+  <!-- نهاية صفحة الـ Leaderboard -->
 
   <!-- فوتر -->
   <footer>
