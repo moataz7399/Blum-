@@ -113,7 +113,7 @@ function showCollab() {
 
 function showLeaderboard() {
   showLoader(() => {
-    // إخفاء جميع الصفحات
+    // إخفاء بقية الصفحات
     document.querySelector('header').classList.add('hidden');
     document.getElementById('main-content').classList.add('hidden');
     document.getElementById('friends-page').classList.add('hidden');
@@ -122,49 +122,50 @@ function showLeaderboard() {
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
     
-    // إظهار صفحة الـLeaderboard الجديدة
+    // إظهار صفحة الـ Leaderboard
     document.getElementById('leaderboard-page').classList.remove('hidden');
     setActiveNav('leaderboard');
     
-    // (نموذجياً هنا قد تجلب اسم المستخدم والترتيب وعدد النقاط من قاعدة بيانات أو من متغيراتك)
-    // سنفترض أنك خزّنت اسم التليجرام وعدد النقاط والترتيب في متغيرات جاهزة
-    // على سبيل المثال:
-    const telegramUserName = telegramUserId ? `User${telegramUserId}` : 'TTKTR'; // مثال، عدّل حسب حاجتك
-    const userPoints = localStorage.getItem('userPoints') || '418,347';  // أو اجلبها من مكان آخر
-    const userRank = localStorage.getItem('userRank') || '83,751';       // أو اجلبه من مكان آخر
+    // مثال لجلب البيانات وتعبئتها في الواجهة
+    // يمكنك التعديل بحيث تجلب اسم التليجرام وعدد النقاط والترتيب من متغيراتك الخاصة
+    const telegramUserName = telegramUserId ? `User${telegramUserId}` : 'TTKTR'; 
+    const userPoints = localStorage.getItem('userPoints') || '418,347';  
+    const userRank = localStorage.getItem('userRank') || '83,751';
 
-    // تعبئة واجهة المستخدم الحالي
+    // تعبئة بيانات المستخدم
     document.getElementById('leaderboardUserName').textContent = telegramUserName;
     document.getElementById('leaderboardUserPoints').textContent = formatNumber(userPoints) + ' FALCON';
     document.getElementById('leaderboardUserRank').textContent = '#' + formatNumber(userRank);
 
-    // مثال تعبئة توب 1
-    // بإمكانك طبعاً عمل حلقة لجلب أعلى 100 شخص
+    // تعبئة بيانات توب #1
     const top1Name = localStorage.getItem('top1Name') || 'elkanadi';  
     const top1Points = localStorage.getItem('top1Points') || '1,103,038,936';
     document.getElementById('top1Name').textContent = top1Name;
     document.getElementById('top1Points').textContent = formatNumber(top1Points) + ' FALCON';
     document.getElementById('top1Rank').textContent = '#1';
 
-    // وهكذا تكرر لمن هم توب 2 وتوب 3 ... إلخ
-    // مجرد أمثلة:
+    // تعبئة بيانات توب #2
     const top2Name = localStorage.getItem('top2Name') || 'flasher888';
     const top2Points = localStorage.getItem('top2Points') || '301,806,332';
     document.getElementById('top2Name').textContent = top2Name;
     document.getElementById('top2Points').textContent = formatNumber(top2Points) + ' FALCON';
     document.getElementById('top2Rank').textContent = '#2';
 
+    // تعبئة بيانات توب #3
     const top3Name = localStorage.getItem('top3Name') || 'mariefelicita';
     const top3Points = localStorage.getItem('top3Points') || '288,916,233';
     document.getElementById('top3Name').textContent = top3Name;
     document.getElementById('top3Points').textContent = formatNumber(top3Points) + ' FALCON';
     document.getElementById('top3Rank').textContent = '#3';
 
+    // تعبئة بيانات توب #4
     const top4Name = localStorage.getItem('top4Name') || 'BB9B9N';
     const top4Points = localStorage.getItem('top4Points') || '246,770,485';
     document.getElementById('top4Name').textContent = top4Name;
     document.getElementById('top4Points').textContent = formatNumber(top4Points) + ' FALCON';
     document.getElementById('top4Rank').textContent = '#4';
+    
+    // بإمكانك الاستمرار بنفس الطريقة حتى توب #100
   });
 }
 
