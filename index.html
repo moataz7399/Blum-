@@ -28,7 +28,7 @@
 
   <!-- شاشة التحميل -->
   <div id="splash-screen">
-    <!-- محتويات شاشة التحميل إذا لزم الأمر -->
+    <!-- محتويات شاشة التحميل (صورة أو نص) إذا لزم الأمر -->
   </div>
 
   <!-- الهيدر -->
@@ -232,6 +232,7 @@
       <p class="header-subtitle">Log in daily to the bot and get mysterious rewards</p>
     </div>
     <div class="login-daily-table">
+      <!-- الأيام التسعة -->
       <div class="day-item" data-day="1">
         <div class="day-box">
           <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="1 Day">
@@ -359,10 +360,10 @@
     </div>
   </div>
 
-  <!-- صفحة الـ Leaderboard الجديدة -->
+  <!-- صفحة الـ Leaderboard (الخاصة) -->
   <div id="leaderboard-page" class="hidden">
     <div class="leaderboard-container">
-      <!-- الكأس الجديد -->
+      <!-- صورة الكأس الجديدة -->
       <img 
         class="trophy-image" 
         src="https://i.ibb.co/7Nv0q3b/Picsart-25-01-08-13-36-21-821.png" 
@@ -373,21 +374,21 @@
       <!-- المربع الأبيض -->
       <div class="leaderboard-card">
         <div class="leaderboard-left">
-          <!-- صورة المخلب الجديدة باللون الأسود -->
+          <!-- صورة المخلب باللون الأسود -->
           <img 
             class="paw-icon" 
             src="https://i.ibb.co/KzP80Jj/11zon-cropped-3.png" 
             alt="Paw"
           />
-          <!-- هنا يظهر اسم المستخدم بدل TTKTR -->
+          <!-- اسم المستخدم -->
           <span id="leaderboard-username">TTKTR</span>
         </div>
         <div class="leaderboard-right">
-          <!-- النقاط (418,347 سابقاً) -->
+          <!-- النقاط -->
           <span id="leaderboard-points">418,347</span>
           <!-- كلمة FALCON بدل PAWS -->
           <span>FALCON</span>
-          <!-- الترتيب #83,751 -->
+          <!-- الترتيب -->
           <span id="leaderboard-rank">#83,751</span>
         </div>
       </div>
@@ -407,6 +408,7 @@
       <a href="#" class="glow-text ripple-button" onclick="handleNavClick('loginDaily')">
         <i class="fas fa-calendar-check"></i> Login Daily
       </a>
+      <!-- الأيقونة المهمة لـ Leaderboard -->
       <a href="#" class="glow-text ripple-button" onclick="handleNavClick('leaderboard')">
         <i class="fas fa-trophy"></i> Leaderboard
       </a>
