@@ -869,32 +869,37 @@ footer {
 /* ---------------------------------------------------------- */
 
 /* ---------------------------------------------------------- */
-/* صفحة الـLeaderboard الجديدة */
+/* صفحة الـ Leaderboard */
 #leaderboard-page {
   display: none; 
+  background: #000;
+  color: #fff;
   padding: 20px;
   text-align: center;
-  position: relative;
   min-height: 100vh;
-  overflow-y: auto;
+  position: relative;
+  overflow-y: auto; 
   scrollbar-width: thin;
 }
 #leaderboard-page .leaderboard-container {
   max-width: 600px;
   margin: 0 auto;
 }
+
 .leaderboard-trophy {
   width: 100px;
   height: auto;
   margin: 0 auto 10px auto;
   display: block;
 }
+
 .leaderboard-title {
   font-weight: bold;
   font-size: 2rem;
   margin-bottom: 20px;
   color: #fff;
 }
+
 .leaderboard-user-card {
   background: #fff;
   color: #000;
