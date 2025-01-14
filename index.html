@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Bot Integration</title>
+    <title>Telegram User Info</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="container">
-        <div class="task">Task: Join the Telegram Channel</div>
-        <button class="btn" id="startButton">Start</button>
-        <div class="message" id="message"></div>
+        <h1>Welcome to Telegram Web App</h1>
+        <div class="user-info">
+            <img id="user-photo" alt="User Photo" />
+            <p><strong>ID:</strong> <span id="user-id"></span></p>
+            <p><strong>First Name:</strong> <span id="user-first-name"></span></p>
+            <p><strong>Last Name:</strong> <span id="user-last-name"></span></p>
+            <p><strong>Username:</strong> <span id="user-username"></span></p>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
