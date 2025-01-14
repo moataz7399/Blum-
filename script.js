@@ -1,30 +1,30 @@
 // Ensure the Telegram WebApp API is loaded
 window.onload = function () {
+    let points = 0;
+
+    // Get the "startapp" parameter from the URL
     if (window.Telegram.WebApp) {
         const initData = Telegram.WebApp.initDataUnsafe;
-
-        // Get the "startapp" parameter from the URL
         const startAppID = initData.start_param;
 
-        // Display the passed "startapp" ID in the page
+        // Check if the startapp parameter exists and add 1000 points
         if (startAppID) {
-            document.getElementById("startapp-id").textContent = startAppID;
-        } else {
-            document.getElementById("startapp-id").textContent = "No ID provided in URL.";
-        }
-
-        // Display current user information
-        const user = initData.user;
-
-        if (user) {
-            document.getElementById("user-id").textContent = user.id || "Not available";
-            document.getElementById("user-first-name").textContent = user.first_name || "Not available";
-            document.getElementById("user-last-name").textContent = user.last_name || "Not available";
-            document.getElementById("user-username").textContent = user.username || "Not available";
-        } else {
-            alert("User information is not available!");
+            points += 1000;
+            updatePoints();
         }
     } else {
         alert("Telegram WebApp API is not available!");
+    }
+
+    // Add event listener to the button
+    const addPointsBtn = document.getElementById("add-points-btn");
+    addPointsBtn.addEventListener("click", () => {
+        points += 10;
+        updatePoints();
+    });
+
+    // Function to update points on the page
+    function updatePoints() {
+        document.getElementById("points").textContent = points;
     }
 };
