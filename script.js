@@ -1,32 +1,25 @@
-const startButton = document.getElementById('startButton');
-const messageDiv = document.getElementById('message');
+// Ensure the Telegram WebApp API is loaded
+window.onload = function () {
+    if (window.Telegram.WebApp) {
+        const user = Telegram.WebApp.initDataUnsafe.user;
 
-startButton.addEventListener('click', async () => {
-    const botToken = "7766585791:AAHgUpf6uonqz_KXU4gdFCZb_CjN1GKw_m8";
-    const chatId = "@Falcon_community_bot";
-    const telegramApiUrl = `https://api.telegram.org/bot${botToken}/getChatMember`;
+        // Populate user information if available
+        if (user) {
+            document.getElementById("user-id").textContent = user.id || "Not available";
+            document.getElementById("user-first-name").textContent = user.first_name || "Not available";
+            document.getElementById("user-last-name").textContent = user.last_name || "Not available";
+            document.getElementById("user-username").textContent = user.username || "Not available";
 
-    const userId = window.Telegram.WebApp.initDataUnsafe?.user?.id;
-
-    if (!userId) {
-        messageDiv.textContent = "Unable to get user ID.";
-        return;
-    }
-
-    try {
-        const response = await fetch(`${telegramApiUrl}?chat_id=${chatId}&user_id=${userId}`);
-        const data = await response.json();
-
-        if (data.ok && (data.result.status === "member" || data.result.status === "administrator" || data.result.status === "creator")) {
-            messageDiv.textContent = "Success";
-            messageDiv.style.color = "green";
+            // Set user photo if available
+            if (user.photo_url) {
+                document.getElementById("user-photo").src = user.photo_url;
+            } else {
+                document.getElementById("user-photo").alt = "No photo available";
+            }
         } else {
-            messageDiv.textContent = "Dead";
-            messageDiv.style.color = "red";
+            alert("User information is not available!");
         }
-    } catch (error) {
-        console.error("Error checking membership:", error);
-        messageDiv.textContent = "Error occurred. Try again later.";
-        messageDiv.style.color = "red";
+    } else {
+        alert("Telegram WebApp API is not available!");
     }
-});
+};
