@@ -3,20 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram User Info</title>
+    <title>Points System</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to Telegram Web App</h1>
-        <p><strong>User ID from URL:</strong> <span id="startapp-id"></span></p>
-        <div class="user-info">
-            <p><strong>Your Telegram ID:</strong> <span id="user-id"></span></p>
-            <p><strong>First Name:</strong> <span id="user-first-name"></span></p>
-            <p><strong>Last Name:</strong> <span id="user-last-name"></span></p>
-            <p><strong>Username:</strong> <span id="user-username"></span></p>
-        </div>
+        <h1>Points System</h1>
+        <p><strong>Your Points:</strong> <span id="points">0</span></p>
+        <button id="add-points-btn">Add 10 Points</button>
     </div>
     <script src="script.js"></script>
 </body>
