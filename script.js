@@ -1,53 +1,37 @@
 // النقاط لجميع المستخدمين
 const userPoints = JSON.parse(localStorage.getItem("userPoints")) || {};
 
-// النقاط الحالية للمستخدم الذي يفتح الصفحة
-let currentUserPoints = parseInt(localStorage.getItem("currentUserPoints")) || 0;
-
 // عند تحميل الصفحة
 window.onload = function () {
     if (window.Telegram.WebApp) {
         const initData = Telegram.WebApp.initDataUnsafe;
         const referralID = initData.start_param; // ID المرسل بالرابط
 
-        // إذا كان هناك referralID في الرابط
+        // إذا كان المستخدم لديه ID محدد
         if (referralID) {
-            // إذا كان ID المرسل موجودًا، أضف 10000 نقطة له
+            // إذا لم يكن لدى المستخدم نقاط محفوظة، قم بتهيئتها
             if (!userPoints[referralID]) {
-                userPoints[referralID] = 0; // تأكد أن النقاط تبدأ من 0
+                userPoints[referralID] = 0;
             }
+
+            // أضف 10000 نقطة لصاحب الـ ID
             userPoints[referralID] += 10000;
 
-            // حفظ النقاط الجديدة في LocalStorage
+            // حفظ النقاط المحدثة
             localStorage.setItem("userPoints", JSON.stringify(userPoints));
 
-            // عرض ID المرسل
-            document.getElementById("referral-id").textContent = referralID;
+            // عرض النقاط لصاحب الـ ID الحالي
+            if (initData.user && initData.user.id == referralID) {
+                document.getElementById("your-points").textContent =
+                    userPoints[referralID];
+            }
 
-            // عرض النقاط المحدثة لصاحب الـ ID
-            console.log(
-                `Referral ID ${referralID} now has ${userPoints[referralID]} points.`
-            );
+            // عرض ID الإحالة
+            document.getElementById("referral-id").textContent = referralID;
         } else {
             document.getElementById("referral-id").textContent = "None";
         }
     } else {
         alert("Telegram WebApp API is not available!");
     }
-
-    // عرض النقاط المحفوظة للمستخدم الحالي
-    updatePoints();
-
-    // إعداد زر إضافة النقاط
-    const addPointsBtn = document.getElementById("add-points-btn");
-    addPointsBtn.addEventListener("click", () => {
-        currentUserPoints += 10;
-        updatePoints();
-        localStorage.setItem("currentUserPoints", currentUserPoints); // حفظ النقاط الجديدة للمستخدم
-    });
 };
-
-// تحديث عرض النقاط للمستخدم الحالي
-function updatePoints() {
-    document.getElementById("points").textContent = currentUserPoints;
-}
