@@ -1,37 +1,35 @@
-// النقاط لجميع المستخدمين
-const userPoints = JSON.parse(localStorage.getItem("userPoints")) || {};
+// استرجاع النقاط من localStorage أو تعيين القيمة الافتراضية
+let points = localStorage.getItem('points') ? parseInt(localStorage.getItem('points')) : 0;
 
-// عند تحميل الصفحة
-window.onload = function () {
-    if (window.Telegram.WebApp) {
-        const initData = Telegram.WebApp.initDataUnsafe;
-        const referralID = initData.start_param; // ID المرسل بالرابط
+// تحديث عرض النقاط
+function updatePointsDisplay() {
+    document.getElementById('pointsDisplay').innerText = `النقاط: ${points}`;
+}
 
-        // إذا كان المستخدم لديه ID محدد
-        if (referralID) {
-            // إذا لم يكن لدى المستخدم نقاط محفوظة، قم بتهيئتها
-            if (!userPoints[referralID]) {
-                userPoints[referralID] = 0;
-            }
+// عند الضغط على الزر لجمع النقاط
+document.getElementById('collectButton').addEventListener('click', () => {
+    points += 100;
+    localStorage.setItem('points', points); // حفظ النقاط
+    updatePointsDisplay();
+});
 
-            // أضف 10000 نقطة لصاحب الـ ID
-            userPoints[referralID] += 10000;
+// تحديث النقاط عند تحميل الصفحة
+updatePointsDisplay();
 
-            // حفظ النقاط المحدثة
-            localStorage.setItem("userPoints", JSON.stringify(userPoints));
+// استخراج معرّف الإحالة من الرابط
+const urlParams = new URLSearchParams(window.location.search);
+const referrerId = urlParams.get('startapp');
 
-            // عرض النقاط لصاحب الـ ID الحالي
-            if (initData.user && initData.user.id == referralID) {
-                document.getElementById("your-points").textContent =
-                    userPoints[referralID];
-            }
+// التحقق إذا كان المستخدم جديدًا
+if (!localStorage.getItem('isNewUser')) {
+    if (referrerId) {
+        // إضافة 10,000 نقطة للمُحال
+        let referrerPointsKey = `referrer_${referrerId}`;
+        let referrerPoints = localStorage.getItem(referrerPointsKey) ? parseInt(localStorage.getItem(referrerPointsKey)) : 0;
+        referrerPoints += 10000;
+        localStorage.setItem(referrerPointsKey, referrerPoints);
 
-            // عرض ID الإحالة
-            document.getElementById("referral-id").textContent = referralID;
-        } else {
-            document.getElementById("referral-id").textContent = "None";
-        }
-    } else {
-        alert("Telegram WebApp API is not available!");
+        alert(`تمت إضافة 10,000 نقطة للمستخدم صاحب المعرّف: ${referrerId}`);
     }
-};
+    localStorage.setItem('isNewUser', 'false'); // وضع علامة المستخدم الحالي كـ "غير جديد"
+}
