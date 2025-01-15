@@ -1,8 +1,8 @@
-// تخزين النقاط في LocalStorage
-let points = parseInt(localStorage.getItem("myPoints")) || 0;
+// النقاط لجميع المستخدمين
+const userPoints = JSON.parse(localStorage.getItem("userPoints")) || {};
 
-// النقاط المحفوظة لكل مستخدم تمت مشاركتها معه
-const referralPoints = JSON.parse(localStorage.getItem("referralPoints")) || {};
+// النقاط الحالية للمستخدم الذي يفتح الصفحة
+let currentUserPoints = parseInt(localStorage.getItem("currentUserPoints")) || 0;
 
 // عند تحميل الصفحة
 window.onload = function () {
@@ -13,20 +13,20 @@ window.onload = function () {
         // إذا كان هناك referralID في الرابط
         if (referralID) {
             // إذا كان ID المرسل موجودًا، أضف 10000 نقطة له
-            if (!referralPoints[referralID]) {
-                referralPoints[referralID] = 0; // ابدأ النقاط من الصفر إذا غير موجود
+            if (!userPoints[referralID]) {
+                userPoints[referralID] = 0; // تأكد أن النقاط تبدأ من 0
             }
-            referralPoints[referralID] += 10000;
+            userPoints[referralID] += 10000;
 
             // حفظ النقاط الجديدة في LocalStorage
-            localStorage.setItem("referralPoints", JSON.stringify(referralPoints));
+            localStorage.setItem("userPoints", JSON.stringify(userPoints));
 
             // عرض ID المرسل
             document.getElementById("referral-id").textContent = referralID;
 
-            // عرض النقاط المحدثة لصاحب الـ ID في وحدة التحكم
+            // عرض النقاط المحدثة لصاحب الـ ID
             console.log(
-                `Referral ID ${referralID} now has ${referralPoints[referralID]} points.`
+                `Referral ID ${referralID} now has ${userPoints[referralID]} points.`
             );
         } else {
             document.getElementById("referral-id").textContent = "None";
@@ -41,13 +41,13 @@ window.onload = function () {
     // إعداد زر إضافة النقاط
     const addPointsBtn = document.getElementById("add-points-btn");
     addPointsBtn.addEventListener("click", () => {
-        points += 10;
+        currentUserPoints += 10;
         updatePoints();
-        localStorage.setItem("myPoints", points); // حفظ النقاط الجديدة للمستخدم
+        localStorage.setItem("currentUserPoints", currentUserPoints); // حفظ النقاط الجديدة للمستخدم
     });
 };
 
 // تحديث عرض النقاط للمستخدم الحالي
 function updatePoints() {
-    document.getElementById("points").textContent = points;
+    document.getElementById("points").textContent = currentUserPoints;
 }
