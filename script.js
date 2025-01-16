@@ -1,43 +1,56 @@
-// استرجاع النقاط للمستخدم الحالي من localStorage أو تعيين القيمة الافتراضية
-let points = localStorage.getItem('points') ? parseInt(localStorage.getItem('points')) : 0;
+// دالة لاسترجاع النقاط من localStorage
+function getPoints(userId) {
+    const points = localStorage.getItem(`points_${userId}`);
+    return points ? parseInt(points) : 0;
+}
 
-// تحديث عرض النقاط
-function updatePointsDisplay() {
+// دالة لحفظ النقاط في localStorage
+function setPoints(userId, points) {
+    localStorage.setItem(`points_${userId}`, points);
+}
+
+// دالة لتحديث عرض النقاط في الواجهة
+function updatePointsDisplay(points) {
     document.getElementById('pointsDisplay').innerText = `النقاط: ${points}`;
 }
 
-// عند الضغط على الزر لجمع النقاط
-document.getElementById('collectButton').addEventListener('click', () => {
-    points += 100;
-    localStorage.setItem('points', points); // حفظ النقاط للمستخدم الحالي
-    updatePointsDisplay();
-});
-
-// تحديث النقاط عند تحميل الصفحة
-updatePointsDisplay();
-
-// استخراج معرف الإحالة من الرابط
-const urlParams = new URLSearchParams(window.location.search);
-const referrerId = urlParams.get('startapp');
-
-// إذا تم الدخول عبر رابط إحالة
-if (referrerId) {
-    let referrerPointsKey = `referrer_${referrerId}`;
-
-    // إذا كان المستخدم جديدًا
-    if (!localStorage.getItem('isNewUser')) {
-        let referrerPoints = localStorage.getItem(referrerPointsKey) ? parseInt(localStorage.getItem(referrerPointsKey)) : 0;
-        referrerPoints += 10000; // إضافة 10,000 نقطة لصاحب الإحالة
-        localStorage.setItem(referrerPointsKey, referrerPoints);
-
-        alert(`تمت إضافة 10,000 نقطة للمستخدم صاحب المعرّف: ${referrerId}`);
-        localStorage.setItem('isNewUser', 'false'); // وضع علامة أن المستخدم الحالي لم يعد جديدًا
-    }
+// دالة لإضافة النقاط عند الضغط على الزر
+function addPoints(userId, amount) {
+    const currentPoints = getPoints(userId);
+    const newPoints = currentPoints + amount;
+    setPoints(userId, newPoints);
+    updatePointsDisplay(newPoints);
 }
 
-// عرض نقاط الإحالة عند الدخول كصاحب الإحالة
-if (referrerId) {
-    let referrerPointsKey = `referrer_${referrerId}`;
-    let referrerPoints = localStorage.getItem(referrerPointsKey) ? parseInt(localStorage.getItem(referrerPointsKey)) : 0;
-    console.log(`النقاط الإجمالية للمستخدم صاحب الإحالة ${referrerId}: ${referrerPoints}`);
+// استخراج معرف المستخدم الحالي من الرابط
+const urlParams = new URLSearchParams(window.location.search);
+const currentUserId = urlParams.get('startapp'); // معرف المستخدم الحالي من الرابط
+
+if (!currentUserId) {
+    alert('معرف المستخدم غير موجود في الرابط. تأكد من إضافة ?startapp=USER_ID');
+} else {
+    // عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', () => {
+        // تحديث عرض النقاط للمستخدم الحالي
+        const userPoints = getPoints(currentUserId);
+        updatePointsDisplay(userPoints);
+
+        // التحقق إذا كان المستخدم جديدًا ولم يتم تسجيل إحالة له
+        if (!localStorage.getItem(`referral_registered_${currentUserId}`) && urlParams.has('referrer')) {
+            const referrerId = urlParams.get('referrer'); // استخراج معرف المُحيل
+            if (referrerId !== currentUserId) {
+                // إضافة 10,000 نقطة للمُحيل
+                const referrerPoints = getPoints(referrerId) + 10000;
+                setPoints(referrerId, referrerPoints);
+                alert(`تمت إضافة 10,000 نقطة للمستخدم صاحب المعرّف: ${referrerId}`);
+            }
+            // تسجيل أن الإحالة تمت لهذا المستخدم
+            localStorage.setItem(`referral_registered_${currentUserId}`, 'true');
+        }
+    });
+
+    // إضافة حدث للزر لجمع النقاط
+    document.getElementById('collectButton').addEventListener('click', () => {
+        addPoints(currentUserId, 100);
+    });
 }
