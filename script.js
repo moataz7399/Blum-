@@ -4,7 +4,12 @@ const currentUserId = urlParams.get('startapp');
 
 // التحقق من وجود معرف المستخدم الحالي
 if (!currentUserId) {
-    alert('معرف المستخدم غير موجود في الرابط. تأكد من إضافة ?startapp=USER_ID');
+    document.body.innerHTML = `
+        <div style="color: red; text-align: center; margin-top: 50px;">
+            <h1>معرف المستخدم غير موجود</h1>
+            <p>تأكد من إضافة ?startapp=USER_ID في نهاية الرابط.</p>
+        </div>
+    `;
 } else {
     // استرجاع النقاط من localStorage
     function getPoints(userId) {
@@ -44,7 +49,8 @@ if (!currentUserId) {
                 addPoints(referrerId, 100000);
                 // تسجيل الإحالة
                 localStorage.setItem(referralRegisteredKey, 'true');
-                alert(`تمت إضافة 100,000 نقطة للمستخدم صاحب المعرّف: ${referrerId}`);
+                document.getElementById('referralMessage').innerText =
+                    `تمت إضافة 100,000 نقطة للمستخدم صاحب المعرّف: ${referrerId}`;
             }
         }
     });
