@@ -1,23 +1,28 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: white;
     text-align: center;
-    margin-top: 50px;
-    background-color: #f4f4f4;
-    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    margin-top: 20px;
+.container {
+    margin-top: 50px;
 }
 
 #pointsDisplay {
-    font-size: 24px;
+    font-size: 48px;
+    font-weight: bold;
     margin: 20px 0;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
