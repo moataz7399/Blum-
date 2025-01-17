@@ -1,55 +1,47 @@
-// Telegram WebApp Integration
-if (window.Telegram.WebApp) {
-    const tg = window.Telegram.WebApp;
-    const user = tg.initDataUnsafe.user;
-    const userId = user ? user.id : null;
+// النقاط المخزنة ديناميكيًا أثناء الجلسة
+let points = 0;
+let referrals = {}; // تخزين النقاط المؤقتة للمُحيلين
 
-    // DOM Elements
-    const pointsElement = document.getElementById('points');
-    const referralLinkElement = document.getElementById('referralLink');
-    const addPointsButton = document.getElementById('addPoints');
-    const generateLinkButton = document.getElementById('generateLink');
+// استهداف عناصر الصفحة
+const pointsElement = document.getElementById('points');
+const addPointsButton = document.getElementById('addPoints');
+const generateLinkButton = document.getElementById('generateLink');
+const referralLinkElement = document.getElementById('referralLink');
 
-    // Retrieve points for the current user
-    let points = localStorage.getItem(`points_${userId}`) || 0;
-    points = parseInt(points);
-    pointsElement.textContent = points;
+// الحصول على معرف المُحيل من الرابط
+const urlParams = new URLSearchParams(window.location.search);
+const referrerId = urlParams.get('startapp');
 
-    // Add points for current user
-    addPointsButton.addEventListener('click', () => {
-        points += 100;
-        localStorage.setItem(`points_${userId}`, points);
-        pointsElement.textContent = points;
-    });
-
-    // Check for referrer ID in URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const referrerId = urlParams.get('startapp');
-
-    if (referrerId && referrerId !== userId) {
-        // Add 10000 points to the referrer
-        let referrerPoints = localStorage.getItem(`points_${referrerId}`) || 0;
-        referrerPoints = parseInt(referrerPoints) + 10000;
-        localStorage.setItem(`points_${referrerId}`, referrerPoints);
+// إضافة النقاط للمُحيل
+if (referrerId) {
+    if (!referrals[referrerId]) {
+        referrals[referrerId] = 10000; // إضافة 10,000 نقطة للمُحيل عند أول زيارة
+    } else {
+        referrals[referrerId] += 10000; // تحديث النقاط إذا كانت موجودة
     }
-
-    // Generate referral link
-    generateLinkButton.addEventListener('click', () => {
-        if (userId) {
-            const referralLink = `https://t.me/falcon_tapbot/FALCON?startapp=${userId}`;
-            referralLinkElement.textContent = referralLink;
-            navigator.clipboard.writeText(referralLink).then(() => {
-                alert('تم نسخ الرابط بنجاح!');
-            });
-        } else {
-            alert('تعذر الحصول على معرف المستخدم.');
-        }
-    });
-
-    // Automatically update points when returning to the app
-    setInterval(() => {
-        pointsElement.textContent = localStorage.getItem(`points_${userId}`) || 0;
-    }, 1000);
-} else {
-    alert('Telegram WebApp غير مدعوم في هذا المتصفح.');
+    alert(`تم إضافة 10,000 نقطة للمُحيل ID: ${referrerId}`);
 }
+
+// تحديث النقاط على الصفحة
+function updatePoints() {
+    pointsElement.textContent = points;
+}
+
+// إضافة النقاط عند الضغط على زر +100
+addPointsButton.addEventListener('click', () => {
+    points += 100;
+    updatePoints();
+});
+
+// توليد رابط الإحالة
+generateLinkButton.addEventListener('click', () => {
+    const userId = Math.floor(Math.random() * 1000000); // توليد معرف مستخدم عشوائي
+    const referralLink = `https://yourgithubpage.github.io/index.html?startapp=${userId}`;
+    referralLinkElement.textContent = referralLink;
+    navigator.clipboard.writeText(referralLink).then(() => {
+        alert('تم نسخ رابط الإحالة!');
+    });
+});
+
+// تحديث النقاط عند تحميل الصفحة
+updatePoints();
