@@ -1,6 +1,5 @@
-// التحقق من توفر كائن Telegram WebApp
+// الحصول على بيانات Telegram WebApp
 if (window.Telegram.WebApp) {
-    // الحصول على بيانات المستخدم
     const tg = window.Telegram.WebApp;
     const user = tg.initDataUnsafe.user;
     const userId = user ? user.id : null;
@@ -11,28 +10,27 @@ if (window.Telegram.WebApp) {
     const addPointsButton = document.getElementById('addPoints');
     const generateLinkButton = document.getElementById('generateLink');
 
-    // استرجاع النقاط المخزنة
-    let points = localStorage.getItem('points') || 0;
+    // استرجاع النقاط المخزنة للحساب الحالي
+    let points = localStorage.getItem(`points_${userId}`) || 0;
     points = parseInt(points);
     pointsElement.textContent = points;
 
     // إضافة النقاط عند الضغط على الزر
     addPointsButton.addEventListener('click', () => {
         points += 100;
-        localStorage.setItem('points', points);
+        localStorage.setItem(`points_${userId}`, points);
         pointsElement.textContent = points;
     });
 
-    // الحصول على معرف المُحيل من رابط الصفحة
+    // التحقق من وجود معرف المُحيل في رابط الصفحة
     const urlParams = new URLSearchParams(window.location.search);
     const referrerId = urlParams.get('startapp');
 
     if (referrerId && referrerId !== userId) {
         // إضافة 10000 نقطة لصاحب الرابط
-        const referrerPointsKey = `points_${referrerId}`;
-        let referrerPoints = localStorage.getItem(referrerPointsKey) || 0;
+        let referrerPoints = localStorage.getItem(`points_${referrerId}`) || 0;
         referrerPoints = parseInt(referrerPoints) + 10000;
-        localStorage.setItem(referrerPointsKey, referrerPoints);
+        localStorage.setItem(`points_${referrerId}`, referrerPoints);
     }
 
     // توليد رابط الإحالة
