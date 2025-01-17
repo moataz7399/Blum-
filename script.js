@@ -1,39 +1,39 @@
-// الحصول على بيانات Telegram WebApp
+// Telegram WebApp Integration
 if (window.Telegram.WebApp) {
     const tg = window.Telegram.WebApp;
     const user = tg.initDataUnsafe.user;
     const userId = user ? user.id : null;
 
-    // عناصر DOM
+    // DOM Elements
     const pointsElement = document.getElementById('points');
     const referralLinkElement = document.getElementById('referralLink');
     const addPointsButton = document.getElementById('addPoints');
     const generateLinkButton = document.getElementById('generateLink');
 
-    // استرجاع النقاط المخزنة للحساب الحالي
+    // Retrieve points for the current user
     let points = localStorage.getItem(`points_${userId}`) || 0;
     points = parseInt(points);
     pointsElement.textContent = points;
 
-    // إضافة النقاط عند الضغط على الزر
+    // Add points for current user
     addPointsButton.addEventListener('click', () => {
         points += 100;
         localStorage.setItem(`points_${userId}`, points);
         pointsElement.textContent = points;
     });
 
-    // التحقق من وجود معرف المُحيل في رابط الصفحة
+    // Check for referrer ID in URL
     const urlParams = new URLSearchParams(window.location.search);
     const referrerId = urlParams.get('startapp');
 
     if (referrerId && referrerId !== userId) {
-        // إضافة 10000 نقطة لصاحب الرابط
+        // Add 10000 points to the referrer
         let referrerPoints = localStorage.getItem(`points_${referrerId}`) || 0;
         referrerPoints = parseInt(referrerPoints) + 10000;
         localStorage.setItem(`points_${referrerId}`, referrerPoints);
     }
 
-    // توليد رابط الإحالة
+    // Generate referral link
     generateLinkButton.addEventListener('click', () => {
         if (userId) {
             const referralLink = `https://t.me/falcon_tapbot/FALCON?startapp=${userId}`;
@@ -45,6 +45,9 @@ if (window.Telegram.WebApp) {
             alert('تعذر الحصول على معرف المستخدم.');
         }
     });
+
+    // Automatically update points when returning to the app
+    pointsElement.textContent = localStorage.getItem(`points_${userId}`) || 0;
 } else {
     alert('Telegram WebApp غير مدعوم في هذا المتصفح.');
 }
