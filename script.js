@@ -47,7 +47,9 @@ if (window.Telegram.WebApp) {
     });
 
     // Automatically update points when returning to the app
-    pointsElement.textContent = localStorage.getItem(`points_${userId}`) || 0;
+    setInterval(() => {
+        pointsElement.textContent = localStorage.getItem(`points_${userId}`) || 0;
+    }, 1000);
 } else {
     alert('Telegram WebApp غير مدعوم في هذا المتصفح.');
 }
