@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Falcon Tap Bot</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Falcon Bot</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Falcon Tap Bot</h1>
-    <div class="points" id="points">0</div>
-    <button class="btn" id="addPoints">+100 نقطة</button>
-    <div>
-        <button class="btn" id="generateLink">انسخ رابط الدعوة</button>
+    <h1>Falcon Bot</h1>
+    <div class="points">
+        نقاطك: <span id="points">0</span>
     </div>
-    <div class="link-box" id="referralLink"></div>
-
+    <button class="button" onclick="addPoints()">أضف 100 نقطة</button>
+    <div class="link-box">
+        <p>شارك هذا الرابط لكسب المزيد من النقاط:</p>
+        <input type="text" id="referralLink" readonly>
+        <button class="button" onclick="copyLink()">نسخ الرابط</button>
+    </div>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
