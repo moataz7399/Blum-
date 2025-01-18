@@ -7,29 +7,33 @@ body {
 }
 
 .points {
-    font-size: 2em;
+    font-size: 2rem;
     margin: 20px 0;
 }
 
-.btn {
-    display: inline-block;
-    background-color: #1e90ff;
+.button {
+    background-color: #007bff;
     color: white;
+    border: none;
     padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
+    font-size: 1rem;
     cursor: pointer;
-    margin-top: 10px;
+    border-radius: 5px;
 }
 
-.btn:hover {
-    background-color: #0d6efd;
+.button:active {
+    background-color: #0056b3;
 }
 
 .link-box {
     margin-top: 20px;
-    background: #333;
     padding: 10px;
+    background: #1f1f1f;
     border-radius: 5px;
-    word-break: break-word;
+}
+
+.link {
+    color: #00bfff;
+    text-decoration: none;
+    word-wrap: break-word;
 }
