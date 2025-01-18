@@ -1,47 +1,43 @@
-// النقاط المخزنة ديناميكيًا أثناء الجلسة
-let points = 0;
-let referrals = {}; // تخزين النقاط المؤقتة للمُحيلين
+// تهيئة WebApp تيليجرام
+const tg = window.Telegram.WebApp;
+tg.expand();
 
-// استهداف عناصر الصفحة
-const pointsElement = document.getElementById('points');
-const addPointsButton = document.getElementById('addPoints');
-const generateLinkButton = document.getElementById('generateLink');
-const referralLinkElement = document.getElementById('referralLink');
+// الحصول على معرف المستخدم
+const userId = tg.initDataUnsafe.user.id;
 
-// الحصول على معرف المُحيل من الرابط
-const urlParams = new URLSearchParams(window.location.search);
-const referrerId = urlParams.get('startapp');
+// عناصر DOM
+const pointsElement = document.getElementById("points");
+const referralLinkInput = document.getElementById("referralLink");
+const botUsername = "falcon_tapbot"; // اسم المستخدم الخاص بالبوت
+const appName = "FALCON"; // اسم التطبيق
 
-// إضافة النقاط للمُحيل
-if (referrerId) {
-    if (!referrals[referrerId]) {
-        referrals[referrerId] = 10000; // إضافة 10,000 نقطة للمُحيل عند أول زيارة
-    } else {
-        referrals[referrerId] += 10000; // تحديث النقاط إذا كانت موجودة
-    }
-    alert(`تم إضافة 10,000 نقطة للمُحيل ID: ${referrerId}`);
-}
+// تحميل النقاط من LocalStorage
+let points = parseInt(localStorage.getItem(`points_${userId}`) || "0");
+pointsElement.textContent = points;
 
-// تحديث النقاط على الصفحة
-function updatePoints() {
+// إنشاء رابط الإحالة
+const referralLink = `https://t.me/${botUsername}/${appName}?startapp=${userId}`;
+referralLinkInput.value = referralLink;
+
+// إضافة 100 نقطة
+function addPoints() {
+    points += 100;
+    localStorage.setItem(`points_${userId}`, points);
     pointsElement.textContent = points;
 }
 
-// إضافة النقاط عند الضغط على زر +100
-addPointsButton.addEventListener('click', () => {
-    points += 100;
-    updatePoints();
-});
+// نسخ رابط الإحالة
+function copyLink() {
+    referralLinkInput.select();
+    document.execCommand("copy");
+    alert("تم نسخ رابط الإحالة!");
+}
 
-// توليد رابط الإحالة
-generateLinkButton.addEventListener('click', () => {
-    const userId = Math.floor(Math.random() * 1000000); // توليد معرف مستخدم عشوائي
-    const referralLink = `https://yourgithubpage.github.io/index.html?startapp=${userId}`;
-    referralLinkElement.textContent = referralLink;
-    navigator.clipboard.writeText(referralLink).then(() => {
-        alert('تم نسخ رابط الإحالة!');
-    });
-});
-
-// تحديث النقاط عند تحميل الصفحة
-updatePoints();
+// إضافة نقاط الإحالة
+const urlParams = new URLSearchParams(window.location.search);
+const referrerId = urlParams.get("startapp");
+if (referrerId && referrerId !== userId.toString()) {
+    let referrerPoints = parseInt(localStorage.getItem(`points_${referrerId}`) || "0");
+    referrerPoints += 100000; // إضافة 100,000 نقطة للمُحيل
+    localStorage.setItem(`points_${referrerId}`, referrerPoints);
+}
