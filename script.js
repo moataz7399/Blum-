@@ -1,58 +1,47 @@
 // توكن البوت
 const BOT_TOKEN = "7766585791:AAHgUpf6uonqz_KXU4gdFCZb_CjN1GKw_m8";
 
-// تأكد من أن الصفحة تعمل داخل بيئة تيليجرام
+// التأكد من أن الصفحة تعمل داخل تيليجرام
 if (window.Telegram.WebApp) {
-    const initData = window.Telegram.WebApp.initData;
-    
-    // تحقق من صحة بيانات المستخدم
-    const validateInitData = async (initData, token) => {
-        const apiUrl = `https://api.telegram.org/bot${token}/getChat`;
-        const params = new URLSearchParams({
-            hash: initData,
-        });
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const ownerId = urlParams.get('startapp'); // معرف صاحب الرابط
 
+    // وظيفة لإرسال بيانات الشخص الجديد إلى صاحب الرابط
+    const sendNewReferral = async (ownerId, newUser) => {
         try {
-            const response = await fetch(apiUrl, {
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
-                body: params,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: ownerId,
+                    text: `شخص جديد دخل من رابطك: ${newUser.username || 'غير معروف'} (${newUser.first_name || 'اسم غير متوفر'})`
+                }),
             });
-            const data = await response.json();
-            return data.result;
         } catch (error) {
-            console.error("Error validating initData:", error);
-            return null;
+            console.error("خطأ أثناء إرسال بيانات الإحالة:", error);
         }
     };
 
-    // تحقق من البيانات وأظهر المعلومات
-    validateInitData(initData, BOT_TOKEN).then(userData => {
-        if (userData) {
-            const userId = userData.id;
-            const username = userData.username;
-            const firstName = userData.first_name;
+    // وظيفة لجلب بيانات الشخص الجديد (الذي يفتح الرابط)
+    const getCurrentUserData = () => {
+        const currentUser = window.Telegram.WebApp.initDataUnsafe.user;
+        return {
+            id: currentUser.id,
+            username: currentUser.username,
+            first_name: currentUser.first_name,
+        };
+    };
 
-            const baseUrl = 'https://t.me/Falcon_tapbot/FALCON?startapp=';
-            const fullLink = `${baseUrl}${userId}`;
+    // إذا كان معرف صاحب الرابط موجودًا
+    if (ownerId) {
+        const newUser = getCurrentUserData();
 
-            const copyButton = document.getElementById('copyButton');
-            const statusMessage = document.getElementById('statusMessage');
-            const userDetails = document.createElement('p');
-            userDetails.textContent = `اسم المستخدم: ${username} | الاسم: ${firstName}`;
-            document.body.appendChild(userDetails);
-
-            copyButton.addEventListener('click', () => {
-                // نسخ الرابط إلى الحافظة
-                navigator.clipboard.writeText(fullLink).then(() => {
-                    statusMessage.textContent = 'تم نسخ الرابط بنجاح!';
-                }).catch(err => {
-                    statusMessage.textContent = 'حدث خطأ أثناء نسخ الرابط.';
-                });
-            });
-        } else {
-            document.body.innerHTML = '<p>لا يمكن التحقق من بيانات المستخدم.</p>';
-        }
-    });
+        // إرسال بيانات الشخص الجديد إلى صاحب الرابط
+        sendNewReferral(ownerId, newUser);
+    } else {
+        document.body.innerHTML = '<p id="error">لا يمكن تحديد صاحب الرابط.</p>';
+    }
 } else {
     document.body.innerHTML = '<p>هذه الصفحة يجب أن تُفتح من خلال بوت تيليجرام.</p>';
 }
