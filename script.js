@@ -1,22 +1,20 @@
-window.Telegram.WebApp.ready();
+// تأكد من أن Telegram Web App جاهز
+Telegram.WebApp.ready();
 
+// الحصول على معلومات المستخدم
+const initDataUnsafe = Telegram.WebApp.initDataUnsafe;
 const statusDiv = document.getElementById("status");
 
-// التأكد من أن Telegram Web App جاهز
-Telegram.WebApp.onEvent("web_app_ready", () => {
-    const initData = Telegram.WebApp.initDataUnsafe;
-
-    if (initData.user) {
-        // إذا كان الحساب يحتوي على Premium
-        if (initData.user.is_premium) {
-            statusDiv.textContent = "✅";
-            statusDiv.style.color = "green";
-        } else {
-            statusDiv.textContent = "❌";
-            statusDiv.style.color = "red";
-        }
+if (initDataUnsafe.user) {
+    // التحقق من حالة الاشتراك في Telegram Premium
+    if (initDataUnsafe.user.is_premium) {
+        statusDiv.textContent = "✅";
+        statusDiv.style.color = "green";
     } else {
-        statusDiv.textContent = "❓";
-        statusDiv.style.color = "gray";
+        statusDiv.textContent = "❌";
+        statusDiv.style.color = "red";
     }
-});
+} else {
+    statusDiv.textContent = "❓";
+    statusDiv.style.color = "gray";
+}
