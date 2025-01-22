@@ -17,24 +17,15 @@ document.getElementById("setEmojiButton").addEventListener("click", () => {
     return;
   }
 
-  // Request permission to set emoji status
-  tg.requestEmojiStatusAccess()
+  // Directly set the emoji status (will prompt confirmation dialog)
+  tg.setEmojiStatus(emojiId)
     .then(() => {
-      // Set the emoji status
-      tg.setEmojiStatus(emojiId)
-        .then(() => {
-          messageElement.textContent = "🔥 تم تعيين الإيموجي بنجاح!";
-          messageElement.className = "success";
-        })
-        .catch((error) => {
-          messageElement.textContent = "حدث خطأ أثناء تعيين الإيموجي.";
-          messageElement.className = "error";
-          console.error("Error setting emoji status:", error);
-        });
+      messageElement.textContent = "🔥 تم تعيين الإيموجي بنجاح!";
+      messageElement.className = "success";
     })
     .catch((error) => {
-      messageElement.textContent = "تم رفض الإذن لتعيين الإيموجي.";
+      messageElement.textContent = "حدث خطأ أثناء تعيين الإيموجي.";
       messageElement.className = "error";
-      console.error("Permission denied:", error);
+      console.error("Error setting emoji status:", error);
     });
 });
