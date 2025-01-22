@@ -1,20 +1,26 @@
-// تأكد من أن Telegram Web App جاهز
-Telegram.WebApp.ready();
+// Telegram WebApp Initialization
+const tg = window.Telegram.WebApp;
 
-// الحصول على معلومات المستخدم
-const initDataUnsafe = Telegram.WebApp.initDataUnsafe;
-const statusDiv = document.getElementById("status");
+// Emoji ID for 🔥
+const emojiId = "5805306706145582692";
 
-if (initDataUnsafe.user) {
-    // التحقق من حالة الاشتراك في Telegram Premium
-    if (initDataUnsafe.user.is_premium) {
-        statusDiv.textContent = "✅";
-        statusDiv.style.color = "green";
-    } else {
-        statusDiv.textContent = "❌";
-        statusDiv.style.color = "red";
-    }
-} else {
-    statusDiv.textContent = "❓";
-    statusDiv.style.color = "gray";
-}
+// Handle button click
+document.getElementById("setEmojiButton").addEventListener("click", () => {
+  // Request permission to set emoji status
+  tg.requestEmojiStatusAccess()
+    .then(() => {
+      // Set the emoji status
+      tg.setEmojiStatus(emojiId)
+        .then(() => {
+          document.getElementById("message").textContent = "🔥 Emoji status set successfully!";
+        })
+        .catch((error) => {
+          document.getElementById("message").textContent = "Failed to set emoji status.";
+          console.error("Error setting emoji status:", error);
+        });
+    })
+    .catch((error) => {
+      document.getElementById("message").textContent = "Permission denied to set emoji status.";
+      console.error("Permission denied:", error);
+    });
+});
