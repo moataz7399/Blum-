@@ -1,5 +1,6 @@
 // Telegram WebApp Initialization
 const tg = window.Telegram.WebApp;
+tg.ready();
 
 // Emoji ID for 🔥
 const emojiId = "5805306706145582692";
@@ -11,7 +12,7 @@ document.getElementById("setEmojiButton").addEventListener("click", () => {
   // Check if the user is premium
   const user = tg.initDataUnsafe.user;
   if (!user || !user.is_premium) {
-    messageElement.textContent = "هذه الميزة متاحة فقط لمشتركي تيليجرام بريميوم.";
+    messageElement.textContent = "هذه الميزة متاحة فقط لمشتركي Telegram Premium.";
     messageElement.className = "error";
     return;
   }
