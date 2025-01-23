@@ -1,16 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Set Emoji Status</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Account Checking</title>
+
+  <!-- مكتبة Telegram WebApp -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- مكتبة Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Set Emoji Status: 🔥</h1>
-  <button class="button" id="setEmojiButton">Set 🔥 as Status</button>
-  <p id="message"></p>
+  <!-- الفيديو أعلى النص، في وسط الشاشة -->
+  <div class="video-container">
+    <video autoplay muted loop>
+      <source src="https://files.catbox.moe/hx6hfb.mp4" type="video/mp4">
+      <!-- في حال لم يدعم المتصفّح الفيديو -->
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <h1>Checking your account</h1>
+
+  <div class="progress-container">
+    <!-- الشريط الأول -->
+    <div class="progress-item">
+      <div class="progress-title">
+        <strong>Random Reward</strong> {  1000  }
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- الشريط الثاني (Telegram Premium) -->
+    <div class="progress-item">
+      <div class="progress-title">
+        <strong>Telegram Premium</strong>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- الشريط الثالث (UserName Telegram) -->
+    <div class="progress-item">
+      <div class="progress-title">
+        <strong>UserName Telegram</strong>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- زر Continue (مخفي في البداية) -->
+  <button id="continueButton" style="display: none;">Continue</button>
 
   <script src="script.js"></script>
 </body>
