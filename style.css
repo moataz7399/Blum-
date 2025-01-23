@@ -1,33 +1,32 @@
-/* ---------------------------------- */
-/* تنسيقات صفحة الفحص الجديدة          */
-/* ---------------------------------- */
-/* الصفحة (Account Check) ستكون مخفية افتراضيًا في HTML  */
-#account-check-page {
+/**********************************/
+/*          الصفحة الجديدة        */
+/*       Account Checking Page    */
+/**********************************/
+
+/* نجعل الـ div الخاص بالصفحة الجديدة يغطي الشاشة بالكامل */
+#account-checking-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-color: black;
   color: white;
-  width: 100%;
-  height: 100vh;
-  position: fixed;
-  top: 0; 
-  left: 0;
-  z-index: 99999;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  margin: 0;
-  padding-top: 20px;
-  box-sizing: border-box;
+  z-index: 99999; /* حتى تظهر فوق كل شيء */
 }
 
-/* حاوية الفيديو */
-.video-container {
+#account-checking-page .video-container {
   width: 100%;
-  max-width: 150px; /* يمكنك تعديل الحجم كما تشاء */
+  max-width: 150px;
   margin: 20px auto 0;
   position: relative;
 }
-.video-container video {
+
+#account-checking-page .video-container video {
   width: 100%;
   height: auto;
   object-fit: cover;
@@ -36,29 +35,32 @@
   border-radius: 8px;
 }
 
-/* عنوان صفحة الفحص */
-#account-check-page h1 {
+#account-checking-page h1 {
   font-size: 2rem;
   margin: 20px 0;
   text-align: center;
 }
 
-/* حاوية الشرائط */
-.progress-container {
+/* الشرائط */
+#account-checking-page .progress-container {
   width: 90%;
   max-width: 400px;
   margin-bottom: 20px;
 }
-.progress-item {
+
+#account-checking-page .progress-item {
   margin-bottom: 20px;
 }
-.progress-title {
+
+#account-checking-page .progress-title {
   font-size: 1.2rem;
   margin-bottom: 5px;
   display: flex;
   align-items: center;
 }
-.icon-circle {
+
+/* الدائرة للأيقونات */
+#account-checking-page .icon-circle {
   width: 40px;
   height: 40px;
   border: 2px solid #fff;
@@ -70,18 +72,22 @@
   margin-right: 15px;
   box-sizing: border-box;
 }
-.icon-circle i {
+
+#account-checking-page .icon-circle i {
   font-size: 1.2em;
 }
-.progress-bar {
+
+/* شريط التقدم */
+#account-checking-page .progress-bar {
   width: 100%;
   height: 15px;
   background-color: #333;
   border-radius: 7.5px;
   overflow: hidden;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.5);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
 }
-.progress-fill {
+
+#account-checking-page .progress-fill {
   height: 100%;
   background: linear-gradient(45deg, #6a5acd, #483d8b);
   width: 0;
@@ -90,8 +96,7 @@
 }
 
 /* زر Continue */
-#continueButton {
-  display: none;
+#account-checking-page button {
   margin-top: 30px;
   background: linear-gradient(45deg, #6a5acd, #483d8b);
   border: none;
@@ -104,15 +109,17 @@
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
-#continueButton:hover {
+
+#account-checking-page button:hover {
   transform: translateY(-3px);
-  box-shadow: 0px 6px 12px rgba(72,61,139,0.7);
+  box-shadow: 0px 6px 12px rgba(72, 61, 139, 0.7);
 }
-#continueButton:active {
+
+#account-checking-page button:active {
   transform: translateY(1px);
 }
 
-/* تأثير الظهور من الأسفل للأعلى (Baseline) للزر */
+/* تأثير الظهور من الأسفل للأعلى للزر */
 @keyframes slideUp {
   0% {
     transform: translateY(50px);
@@ -127,20 +134,20 @@
   animation: slideUp 1s ease forwards;
 }
 
-/* تأثير الاهتزاز لزر Continue */
-@keyframes shake-account {
+/* تأثير اهتزاز للشكل */
+@keyframes shake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
   50% { transform: translateX(5px); }
   75% { transform: translateX(-5px); }
 }
-#continueButton.shake {
-  animation: shake-account 0.5s;
+.shake {
+  animation: shake 0.5s;
 }
 
-/* ---------------------------------- */
-/*    بقية التنسيقات الأساسية التي أرسلتها سابقًا    */
-/* ---------------------------------- */
+/****************************************************************************/
+/*        أدناه جميع الأكواد القديمة (CSS) كما أرسلتها في سؤالك بالضبط    */
+/****************************************************************************/
 
 /* RESET */
 * {
@@ -179,18 +186,14 @@ img {
 }
 
 body {
-  background: #000;
-  color: #fff;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  user-select: none; /* سابقًا */
+  user-select: none;
 }
 
-/* شريط التحميل الأخضر في أعلى الصفحة */
+button, input, textarea, select {
+  user-select: auto;
+}
+
+/* شريط التحميل الأخضر أعلى الصفحة */
 .progress-bar {
   position: fixed;
   top: 0;
@@ -212,6 +215,17 @@ body {
   width: 0;
   background: #00ff00;
   transition: width 5s linear;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 /* شاشة الافتتاح */
@@ -709,9 +723,6 @@ header {
 }
 
 /* اهتزاز */
-.shake {
-  animation: shake 0.3s;
-}
 @keyframes shake {
   0%   { transform: translate(0,0); }
   20%  { transform: translate(-10px,0); }
@@ -719,6 +730,9 @@ header {
   60%  { transform: translate(-10px,0); }
   80%  { transform: translate(10px,0); }
   100% { transform: translate(0,0); }
+}
+.shake {
+  animation: shake 0.3s;
 }
 
 /* نهاية اللعبة */
@@ -912,6 +926,7 @@ footer {
   }
 }
 
+/* ---------------------------------------------------------- */
 /* تأثير النجوم في شاشة النهاية */
 #stars-container {
   position: absolute;
@@ -938,14 +953,17 @@ footer {
     opacity: 0.4;
   }
 }
+/* ---------------------------------------------------------- */
 
-/* تأثير قوس قزح */
+/* ---------------------------------------------------------- */
+/* تأثير قوس قزح لعدد الصقور ونص FALCON */
 .rainbow-effect {
   margin-top: 20px; 
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .number-container {
   font-size: 100px;
   font-weight: bold;
@@ -956,6 +974,7 @@ footer {
   border-radius: 20px;
   animation: rainbow-border 5s infinite ease-in-out; 
 }
+
 .text-falcon {
   font-size: 50px;
   font-weight: bold;
@@ -963,6 +982,7 @@ footer {
   margin-top: 10px;
   color: white; 
 }
+
 @keyframes rainbow-border {
   0% {
       border-color: red;
@@ -997,3 +1017,4 @@ footer {
       transform: scale(1);
   }
 }
+/* ---------------------------------------------------------- */
