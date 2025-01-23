@@ -1,39 +1,109 @@
+/* 1) تنسيق الصفحة العامة */
 body {
   font-family: Arial, sans-serif;
-  text-align: center;
-  padding: 20px;
-}
-
-h1 {
-  color: #4caf50;
-}
-
-.button {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 18px;
+  background-color: black;
   color: white;
-  background-color: #4caf50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  margin: 0;
+}
+
+/* 2) تنسيق حاوية الفيديو بحيث يكون أصغر */
+.video-container {
+  width: 100%;
+  max-width: 150px; /* يمكنك تعديل الحجم كما تشاء */
+  margin: 20px auto 0; 
+  position: relative;
+}
+
+.video-container video {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  pointer-events: none; /* يمنع أي تفاعل مع الفيديو */
+  user-select: none;    /* يمنع التحديد */
+  border-radius: 8px;
+}
+
+/* 3) عنوان الصفحة */
+h1 {
+  font-size: 2rem;
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* 4) تنسيق حاوية الشرائط */
+.progress-container {
+  width: 90%;
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.progress-item {
+  margin-bottom: 20px;
+}
+
+.progress-title {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 15px;
+  background-color: #333;
+  border-radius: 7.5px;
+  overflow: hidden;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(45deg, #6a5acd, #483d8b);
+  width: 0;
+  border-radius: 7.5px;
+  transition: width 5s linear;
+}
+
+/* 5) تنسيق زر "Continue" */
+button {
+  margin-top: 30px;
+  background: linear-gradient(45deg, #6a5acd, #483d8b);
   border: none;
-  border-radius: 5px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 25px;
+  box-shadow: 0px 4px 8px rgba(72, 61, 139, 0.5);
   cursor: pointer;
-  text-decoration: none;
+  transition: all 0.3s ease-in-out;
 }
 
-.button:hover {
-  background-color: #45a049;
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 6px 12px rgba(72, 61, 139, 0.7);
 }
 
-#message {
-  margin-top: 20px;
-  font-size: 16px;
+button:active {
+  transform: translateY(1px);
 }
 
-.success {
-  color: green;
+/* تأثير الظهور من الأسفل للأعلى (Baseline) للزر */
+@keyframes slideUp {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-.error {
-  color: red;
+.slide-up {
+  animation: slideUp 1s ease forwards;
 }
