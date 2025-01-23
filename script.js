@@ -1,43 +1,34 @@
 /************************************************************/
-/*            الصفحة الجديدة: Account Checking             */
+/* (A) أكواد خاصة بصفحة الفحص (3 شرائط + زر Continue)      */
 /************************************************************/
 
 // التأكد من جاهزية Telegram WebApp
 if (window.Telegram && window.Telegram.WebApp) {
   Telegram.WebApp.ready();
 }
-
-const initDataUnsafe = window.Telegram && window.Telegram.WebApp 
-                       ? Telegram.WebApp.initDataUnsafe 
+const initDataUnsafe = (window.Telegram && window.Telegram.WebApp)
+                       ? Telegram.WebApp.initDataUnsafe
                        : { user: null };
 
-// استهداف عناصر الصفحة الجديدة
 const progressBars = document.querySelectorAll('#account-checking-page .progress-fill');
 const progressTitles = document.querySelectorAll('#account-checking-page .progress-title');
 const continueButton = document.getElementById('continueButton');
 
 let indexCheck = 0;
 
-// دالة لملء الشرائط بالتتابع
+// تعبئة الشرائط بالتتابع
 function fillNextBar() {
   if (indexCheck < progressBars.length) {
-    // ملء الشريط بالكامل
-    progressBars[indexCheck].style.width = '100%';
-
+    progressBars[indexCheck].style.width = '100%'; // ملء الشريط
     const currentIndex = indexCheck;
-
+    
     // بعد 5 ثوانٍ من بدء التعبئة
     setTimeout(() => {
-      // اهتزاز بسيط
-      if (navigator.vibrate) {
-        navigator.vibrate(50);
-      }
+      if (navigator.vibrate) navigator.vibrate(50);
 
       // الشريط الأول (Random Reward)
       if (currentIndex === 0) {
-        // يتحول للون الأخضر
         progressBars[currentIndex].style.background = 'green';
-        // تشغيل الكشكشة
         showConfetti();
         // عداد من 1000 إلى رقم عشوائي
         const randomNumber = Math.floor(Math.random() * 9001) + 1000;
@@ -60,29 +51,22 @@ function fillNextBar() {
         } else {
           progressBars[currentIndex].style.background = 'red';
         }
-        // إظهار زر Continue مع تأثير الانزلاق
+        // ظهور زر Continue
         continueButton.style.display = 'inline-block';
         continueButton.classList.add('slide-up');
       }
-
     }, 5000);
 
-    // الانتقال للشريط التالي بعد 5 ثوانٍ
     indexCheck++;
     setTimeout(fillNextBar, 5000);
   }
 }
 
-// تشغيل تعبئة الشرائط عند تحميل الصفحة (DOM جاهز)
-document.addEventListener('DOMContentLoaded', () => {
-  fillNextBar();
-});
-
-// دالة تشغيل مؤقت لعدّاد
+// دالة العداد من 1000 إلى رقم محدد
 function animateCountUp(targetNumber) {
   let startTime = null;
-  const duration = 1000; // 1 ثانية
-  const startVal = 1000; // يبدأ من 1000
+  const duration = 1000; 
+  const startVal = 1000; 
 
   function step(timestamp) {
     if (!startTime) startTime = timestamp;
@@ -93,19 +77,17 @@ function animateCountUp(targetNumber) {
     let currentValue = Math.round(startVal + (targetNumber - startVal) * fraction);
     const formattedValue = currentValue.toLocaleString('en-US');
 
-    // تحديث نص الشريط الأول:
+    // تعديل نص الشريط الأول
     progressTitles[0].innerHTML = `
       <div class="icon-circle">
         <i class="fas fa-gift"></i>
       </div>
       <strong>Random Reward</strong> {  ${formattedValue}  }
     `;
-
     if (fraction < 1) {
       requestAnimationFrame(step);
     }
   }
-
   requestAnimationFrame(step);
 }
 
@@ -118,34 +100,63 @@ function showConfetti() {
   });
 }
 
-// زر Continue
+// عند التحميل نبدأ التعبئة
+document.addEventListener('DOMContentLoaded', () => {
+  fillNextBar();
+});
+
 continueButton.addEventListener('click', () => {
-  // هزّة للزر
   continueButton.classList.add('shake');
-  if (navigator.vibrate) {
-    navigator.vibrate(50);
-  }
+  if (navigator.vibrate) navigator.vibrate(50);
   setTimeout(() => {
     continueButton.classList.remove('shake');
   }, 500);
 
-  // إخفاء صفحة الفحص (Account Checking)
+  // إخفاء صفحة الفحص
   document.getElementById('account-checking-page').style.display = 'none';
 
-  // يمكنك أن تترك الـSplash Screen كما هو (سيختفي بعد 5 ثوانٍ من كودك القديم).
-  // أو إذا أردت إجبار ظهوره الآن، يمكنك إزالة التعليق أدناه:
-  // document.getElementById('splash-screen').style.display = 'block';
-
-  // بقية الصفحات والكود القديم سيظهر ببساطة في الخلفية.
+  // الآن نُظهر شاشة الافتتاح القديمة + الشريط الأخضر لمدة 5 ثوانٍ
+  showSplashAndThenMain();
 });
 
+/************************************************************/
+/* (B) بقية الأكواد القديمة من سؤالك كما هي                */
+/************************************************************/
 
-/************************************************************/
-/*          الأكواد القديمة (Javascript) كما هي             */
-/************************************************************/
+/**
+ * دالة جديدة لإظهار شاشة التحميل الأخضر 5 ثوانٍ
+ * ثم إخفاؤها وإظهار الـHome
+ */
+function showSplashAndThenMain() {
+  // نظهر الشريط الأخضر القديم
+  const legacyBar = document.querySelector('.progress-bar-legacy');
+  const legacyProgress = document.querySelector('.progress-bar-legacy .progress-legacy');
+  const splashScreen = document.getElementById('splash-screen');
+  
+  legacyBar.style.display = 'block';
+  splashScreen.style.display = 'block';
+  // إعادة الشريط إلى الصفر
+  legacyProgress.style.width = '0';
 
-/************************************************************/
-/* سكربت تساقط الثلوج */
+  // بعد لحظة بسيطة نجعله يتحرك من 0% إلى 100% خلال 5 ثوانٍ
+  setTimeout(() => {
+    legacyProgress.style.width = '100%';
+  }, 50);
+
+  // بعد 5 ثوانٍ
+  setTimeout(() => {
+    // نخفي الشاشة + الشريط
+    splashScreen.style.display = 'none';
+    legacyBar.style.display = 'none';
+    // نظهر الصفحة الرئيسية
+    showMain();
+  }, 5000);
+}
+
+
+// ========== بقية الأكواد القديمة ==========
+// تساقط الثلوج - Loader - تنقل بين الصفحات - إلخ ...
+
 function initSnowEffect() {
   const canvas = document.getElementById('snow');
   if (!canvas) return; 
@@ -201,9 +212,8 @@ function initSnowEffect() {
     }
   });
 }
-/************************************************************/
 
-/************************************************************/
+
 /* تنقل بين الصفحات + Loader */
 function showLoader(callback, duration = 1000) {
   const loader = document.querySelector('.loader');
@@ -284,18 +294,14 @@ function setActiveNav(page) {
     }
   });
 }
-/************************************************************/
 
-/************************************************************/
 /* قبل بدء اللعبة */
 function prepareGame() {
   showLoader(() => {
     startGame();
   });
 }
-/************************************************************/
 
-/************************************************************/
 /* متغيرات اللعبة */
 let falconScore = 0;
 let bombScore = 0;
@@ -305,9 +311,7 @@ let countdownInterval;
 let totalFalcons;
 let totalBombs;
 const fallSpeed = 400; 
-/************************************************************/
 
-/************************************************************/
 /* تعريف مكافآت الأيام اليومية */
 const dailyRewards = [
   { day: 1, points: 100, cards: 2 },
@@ -320,9 +324,7 @@ const dailyRewards = [
   { day: 8, points: 1500, cards: 15 },
   { day: 9, points: 2000, cards: 20 },
 ];
-/************************************************************/
 
-/************************************************************/
 /* بدء اللعبة */
 function startGame() {
   document.querySelector('header').classList.add('hidden');
@@ -358,9 +360,7 @@ function startGame() {
     document.getElementById('timer').textContent = formatTimerDigits(gameTime.toFixed(2));
   }, 100);
 }
-/************************************************************/
 
-/************************************************************/
 /* توزيع الصقور والقنابل */
 function scheduleEmojis() {
   const falconInterval = gameTime / totalFalcons;
@@ -382,9 +382,7 @@ function scheduleEmojis() {
     }, spawnTime * 1000);
   }
 }
-/************************************************************/
 
-/************************************************************/
 /* إنهاء اللعبة */
 function endGame() {
   clearInterval(countdownInterval);
@@ -399,7 +397,7 @@ function endGame() {
     createStars();
     setInterval(moveStars, 50);
 
-    // تحديث رقم الصقور في تأثير القوس قزح
+    // تحديث رقم الصقور
     document.getElementById('endFalconScore').textContent = falconScore;
 
     // إضافة falconScore إلى ratsScore
@@ -412,17 +410,13 @@ function endGame() {
 
   // اهتزاز قصير
   const overlay = document.getElementById('game-overlay');
-  if (navigator.vibrate) {
-    navigator.vibrate(200);
-  }
+  if (navigator.vibrate) navigator.vibrate(200);
   overlay.classList.add('shake');
   setTimeout(() => {
     overlay.classList.remove('shake');
   }, 300);
 }
-/************************************************************/
 
-/************************************************************/
 /* إنشاء الأيقونة بالسقوط + الضغط */
 function createFallingEmoji(type) {
   if (gameTime <= 0) return;
@@ -478,9 +472,7 @@ function createFallingEmoji(type) {
   }
   requestAnimationFrame(animate);
 }
-/************************************************************/
 
-/************************************************************/
 /* تأثير القنبلة */
 function bombEffect() {
   const overlay = document.getElementById('game-overlay');
@@ -494,9 +486,7 @@ function bombEffect() {
     overlay.classList.remove('shake');
   }, 300);
 }
-/************************************************************/
 
-/************************************************************/
 /* أزرار شاشة النهاية */
 document.getElementById('btn-new-round').addEventListener('click', () => {
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
@@ -507,7 +497,7 @@ document.getElementById('btn-new-round').addEventListener('click', () => {
   cardsCount -= 1;
   localStorage.setItem('cardsCount', cardsCount);
   document.getElementById('cardsCount').textContent = cardsCount;
-  showConfetti('confetti-container'); 
+  showConfettiCustom('confetti-container'); 
   prepareGame();
 });
 
@@ -515,12 +505,9 @@ document.getElementById('btn-back-home').addEventListener('click', () => {
   clearConfetti('confetti-container');
   showMain();
 });
-/************************************************************/
 
-/************************************************************/
 /* وظيفة نسخ رابط الدعوة */
 let telegramUserId = null;
-
 function copyInviteLink() {
   const botUsername = 'falcon_tapbot';
   const userId = telegramUserId; 
@@ -536,9 +523,7 @@ function copyInviteLink() {
     alert('Failed to copy the link. Please try again.');
   });
 }
-/************************************************************/
 
-/************************************************************/
 /* وظيفة مشاركة رابط الدعوة */
 function shareInviteLink() {
   const inviteLink = `https://t.me/falcon_tapbot/FALCON?startapp=${telegramUserId}`; 
@@ -556,9 +541,7 @@ function shareInviteLink() {
     alert('Share not supported on this browser or user ID not available.');
   }
 }
-/************************************************************/
 
-/************************************************************/
 /* وظيفة عرض رسالة النجاح */
 function showSuccessMessage(message = 'Success') {
   const successMessage = document.createElement('div');
@@ -569,10 +552,8 @@ function showSuccessMessage(message = 'Success') {
     successMessage.remove();
   }, 1000);
 }
-/************************************************************/
 
-/************************************************************/
-/* دالة تنسيق الأرقام مع الفواصل والرموز الخاصة */
+/* تنسيق الأرقام مع الفواصل */
 function formatNumber(num) {
   const parts = num.toString().split('.');
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -588,10 +569,8 @@ function formatNumber(num) {
   }
   return parts[0];
 }
-/************************************************************/
 
-/************************************************************/
-/* دالة تنسيق الوقت */
+/* تنسيق الوقت */
 function formatTimerDigits(value) {
   const styledNumbers = {
     '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰',
@@ -599,9 +578,7 @@ function formatTimerDigits(value) {
   };
   return value.toString().split('').map(digit => styledNumbers[digit] || digit).join('');
 }
-/************************************************************/
 
-/************************************************************/
 /* دالة التنقل بين الصفحات مع تأثير التحميل */
 function handleNavClick(page) {
   if (page === 'loginDaily') {
@@ -634,10 +611,8 @@ function handleNavClick(page) {
     }
   });
 }
-/************************************************************/
 
-/************************************************************/
-/* دالة التعامل مع زر Play Falcon وإدارة المكافآت اليومية */
+/* زر Play Falcon */
 function handlePlayFalcon() {
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
   if (cardsCount < 1) {
@@ -649,10 +624,8 @@ function handlePlayFalcon() {
   document.getElementById('cardsCount').textContent = cardsCount;
   prepareGame();
 }
-/************************************************************/
 
-/************************************************************/
-/* تهيئة الـ 9 أيام (Daily Login) */
+/* تهيئة الـ 9 أيام */
 function initializeDailyLogin() {
   const dayItems = document.querySelectorAll('.day-item');
   let claimedDays = JSON.parse(localStorage.getItem('claimedDays')) || [];
@@ -685,10 +658,9 @@ function initializeDailyLogin() {
       if (isDayUnlocked(dayNumber)) {
         if (!claimedDays.includes(dayNumber)) {
           unlockDay(dayItem, true);
-          showConfetti('confetti-container-login');
-          if (navigator.vibrate) {
-            navigator.vibrate(200);
-          }
+          showConfettiCustom('confetti-container-login');
+          if (navigator.vibrate) navigator.vibrate(200);
+
           claimedDays.push(dayNumber);
           localStorage.setItem('claimedDays', JSON.stringify(claimedDays));
           localStorage.setItem('lastClaimedDate', new Date().toISOString());
@@ -721,7 +693,6 @@ function initializeDailyLogin() {
     });
   });
 }
-
 function unlockDay(dayItem, isCompleted) {
   const overlay = dayItem.querySelector('.overlay');
   if (overlay) {
@@ -740,9 +711,9 @@ function isDayUnlocked(dayNumber) {
   const overlay = dayItem.querySelector('.overlay');
   return (overlay && overlay.classList.contains('hidden')) || (overlay && overlay.classList.contains('completed'));
 }
-/************************************************************/
+
 /* دالة عرض الكشكشة */
-function showConfetti(containerId) {
+function showConfettiCustom(containerId) {
   const confettiContainer = document.getElementById(containerId);
   if (!confettiContainer) return;
   const canvas = document.createElement('canvas');
@@ -764,7 +735,7 @@ function showConfetti(containerId) {
     confettiContainer.removeChild(canvas);
   }, 3000); 
 }
-/************************************************************/
+
 /* دالة إزالة الكشكشة */
 function clearConfetti(containerId) {
   const confettiContainer = document.getElementById(containerId);
@@ -772,11 +743,11 @@ function clearConfetti(containerId) {
   const canvases = confettiContainer.querySelectorAll('canvas');
   canvases.forEach(canvas => canvas.remove());
 }
-/************************************************************/
+
 /* شغل شاشة الافتتاح */
 document.addEventListener("DOMContentLoaded", () => {
-  const progress = document.querySelector(".progress-bar .progress");
-  const splashScreen = document.getElementById("splash-screen");
+  // لا نُظهر splash-screen هنا؛ نظهره فقط بعد الضغط على Continue من صفحة الفحص
+  // لكن سنجهّز باقي الأمور
   const ratsScoreElement = document.getElementById("ratsScore");
   const cardsCountElement = document.getElementById("cardsCount");
 
@@ -786,16 +757,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
   cardsCountElement.textContent = cardsCount;
 
-  setTimeout(() => {
-    progress.style.width = "100%";
-  }, 10);
-
-  setTimeout(() => {
-    splashScreen.style.display = "none";
-    showMain();
-    document.querySelector('.progress-bar').classList.add('hidden');
-  }, 5000);
-
+  // تهيئة المهام (Collab)
   document.querySelectorAll('.action-btn').forEach(button => {
     button.addEventListener('click', () => {
       if (button.textContent.trim() === 'Start') {
@@ -830,19 +792,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // تهيئة تسجيل الدخول اليومي
   initializeDailyLogin();
 
+  // تعطيل الضغط المطوّل على الصور
   document.querySelectorAll('img').forEach(img => {
     img.addEventListener('contextmenu', event => event.preventDefault());
   });
 
+  // منع النسخ
   document.addEventListener('copy', function(e) {
     e.preventDefault();
   });
 
+  // تهيئة Telegram WebApp (استخراج userId)
   if (window.Telegram && window.Telegram.WebApp) {
     window.Telegram.WebApp.ready();
-    telegramUserId = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.id : null;
+    telegramUserId = window.Telegram.WebApp.initDataUnsafe.user
+                     ? window.Telegram.WebApp.initDataUnsafe.user.id
+                     : null;
     if (telegramUserId) {
       fetch('https://alisaad11.pythonanywhere.com', {
         method: 'POST',
@@ -863,6 +831,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn('Telegram Web Apps API not found.');
   }
 
+  // تأثير Ripple للأزرار
   const rippleButtons = document.querySelectorAll('.ripple-button');
   rippleButtons.forEach(button => {
     button.addEventListener('click', function(e) {
@@ -878,9 +847,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-/************************************************************/
 
-/************************************************************/
 /* نجوم شاشة النهاية */
 function createStars() {
   const starsContainer = document.getElementById('stars-container');
@@ -909,4 +876,3 @@ function moveStars() {
     star.style.top = `${newTop}vh`;
   });
 }
-/************************************************************/
