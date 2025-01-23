@@ -1,138 +1,105 @@
+/************************************
+ * Telegram WebApp إعدادات 
+ ************************************/
+if (window.Telegram && window.Telegram.WebApp) {
+  Telegram.WebApp.ready();
+}
+const initDataUnsafe = (window.Telegram && window.Telegram.WebApp)
+  ? Telegram.WebApp.initDataUnsafe
+  : { user: {} };
+
 /************************************************************/
-/*              الصفحة الجديدة: فحص الحساب (يظهر أولًا)     */
+/*                 منطق عرض/إخفاء صفحة الفحص                */
 /************************************************************/
-/**
- * تظهر هذه الصفحة لأول مرّة فقط للمستخدمين الجدد
- * وتحتوي على ثلاثة شرائط:
- *   1) جائزة عشوائية (من 1000 إلى 10000)
- *   2) فحص Telegram Premium (إذا موجود → +5000)
- *   3) فحص وجود اسم مستخدم (Username) في تيليجرام (إذا موجود → +2500)
- *
- * بعدها زر Continue ينقلك للصفحة الأصلية ويضيف المكافآت لرصيد RATS
- */
-
-// سنستخدم localStorage للتحقق إن كان المستخدم قد أتمّ هذه الصفحة من قبل
-// لو قيمته "true" → لن تظهر الصفحة من جديد
-// لو غير موجود → تظهر الصفحة
-
-// إضافة عناصر HTML خاصة بصفحة الفحص
-// (ستجدها في الملف HTML في قسم خاص باسم #account-check-page)
-
-// متغيرات وتحضيرات
-let accountCheckDone = localStorage.getItem('accountCheckDone'); 
 const accountCheckPage = document.getElementById('account-check-page');
 const mainAppContainer = document.getElementById('main-app-container');
-const progressBarsCheck = document.querySelectorAll('#account-check-page .progress-fill');
-const progressTitlesCheck = document.querySelectorAll('#account-check-page .progress-title');
-const continueButtonCheck = document.getElementById('continueButton');
+const continueButton = document.getElementById('continueButton');
 
-let indexCheck = 0;
-let randomRewardValue = 1000; 
-let premiumReward = 0;
-let usernameReward = 0;
-
-// إن لم يكن أنهى الفحص من قبل:
+let accountCheckDone = localStorage.getItem('accountCheckDone'); 
 if (!accountCheckDone) {
-  // أظهر صفحة الفحص، أخفِ الصفحة الرئيسية
+  // المستخدم لم يشاهد صفحة الفحص من قبل
   accountCheckPage.style.display = 'block';
   mainAppContainer.style.display = 'none';
 } else {
-  // استخدم الصفحة الرئيسية مباشرة
+  // المستخدم سبق وأنهى الفحص
   accountCheckPage.style.display = 'none';
   mainAppContainer.style.display = 'block';
 }
 
 /************************************************************/
-/* وظيفة بدء تعبئة الشرائط في صفحة الفحص */
-function fillNextBarCheck() {
-  if (indexCheck < progressBarsCheck.length) {
-    // املأ الشريط بالكامل
-    progressBarsCheck[indexCheck].style.width = '100%';
+/* الأكواد الخاصة بشرائط الفحص */
+const progressBars = document.querySelectorAll('#account-check-page .progress-fill');
+const progressTitles = document.querySelectorAll('#account-check-page .progress-title');
 
-    const currentIndex = indexCheck;
+let index = 0;         // لترتيب الشرائط
+let randomReward = 1000; 
+let premiumReward = 0;
+let usernameReward = 0;
 
-    // بعد 5 ثواني من ملء الشريط
+function fillNextBar() {
+  if (index < progressBars.length) {
+    // ملء الشريط بالكامل
+    progressBars[index].style.width = '100%';
+
+    const currentIndex = index;
+
+    // بعد 5 ثوانٍ من بدء التعبئة
     setTimeout(() => {
       // اهتزاز بسيط
       if (navigator.vibrate) {
         navigator.vibrate(50);
       }
 
-      // الشريط الأول (Random Reward)
+      /******** الشريط الأول (Random Reward) ********/
       if (currentIndex === 0) {
-        // يتحول للون الأخضر
-        progressBarsCheck[currentIndex].style.background = 'green';
-        // تشغيل الكشكشة
-        showConfettiCheck();
-        // عشوائي بين 1000 إلى 10000
-        randomRewardValue = Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000;
-        animateCountUpCheck(randomRewardValue);
+        progressBars[currentIndex].style.background = 'green';
+        showConfetti();
+        // رقم عشوائي بين 1000 و 10000
+        randomReward = Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000;
+        animateCountUp(randomReward);
       }
-      // الشريط الثاني (Telegram Premium)
+
+      /******** الشريط الثاني (Telegram Premium) ********/
       else if (currentIndex === 1) {
-        if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe.user && Telegram.WebApp.initDataUnsafe.user.is_premium) {
-          progressBarsCheck[currentIndex].style.background = 'green';
-          showConfettiCheck();
+        if (initDataUnsafe.user && initDataUnsafe.user.is_premium) {
+          progressBars[currentIndex].style.background = 'green';
+          showConfetti();
           premiumReward = 5000;
         } else {
-          progressBarsCheck[currentIndex].style.background = 'red';
+          progressBars[currentIndex].style.background = 'red';
           premiumReward = 0;
         }
       }
-      // الشريط الثالث (Username)
+
+      /******** الشريط الثالث (UserName Telegram) ********/
       if (currentIndex === 2) {
-        if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe.user && Telegram.WebApp.initDataUnsafe.user.username) {
-          progressBarsCheck[currentIndex].style.background = 'green';
-          showConfettiCheck();
+        if (initDataUnsafe.user && initDataUnsafe.user.username) {
+          progressBars[currentIndex].style.background = 'green';
+          showConfetti();
           usernameReward = 2500;
         } else {
-          progressBarsCheck[currentIndex].style.background = 'red';
+          progressBars[currentIndex].style.background = 'red';
           usernameReward = 0;
         }
 
         // إظهار زر Continue
-        continueButtonCheck.style.display = 'block';
-        continueButtonCheck.classList.add('slide-up');
+        continueButton.style.display = 'inline-block';
+        continueButton.classList.add('slide-up');
       }
-
     }, 5000);
 
-    indexCheck++;
-    setTimeout(fillNextBarCheck, 5000);
+    // الانتقال للشريط التالي بعد 5 ثوانٍ
+    index++;
+    setTimeout(fillNextBar, 5000);
   }
 }
 
-// عند النقر على زر Continue
-continueButtonCheck.addEventListener('click', () => {
-  continueButtonCheck.classList.add('shake');
-  if (navigator.vibrate) {
-    navigator.vibrate(50);
-  }
-  setTimeout(() => {
-    continueButtonCheck.classList.remove('shake');
-  }, 500);
-
-  // أنهى الفحص
-  localStorage.setItem('accountCheckDone', 'true');
-
-  // إجمالي النقاط
-  const totalPoints = randomRewardValue + premiumReward + usernameReward;
-  if (totalPoints > 0) {
-    // نخزنها مؤقتًا لإضافتها على رصيد RATS عند تحميل الصفحة الرئيسية
-    localStorage.setItem('firstTimeBonus', String(totalPoints));
-  }
-
-  // أخفِ صفحة الفحص وأظهر الصفحة الرئيسية
-  accountCheckPage.style.display = 'none';
-  mainAppContainer.style.display = 'block';
-});
-
 /************************************************************/
-/* دوال مساعدة لصفحة الفحص */
-function animateCountUpCheck(targetNumber) {
+/* عداد من 1000 إلى رقم محدد */
+function animateCountUp(targetNumber) {
   let startTime = null;
   const duration = 1000; // 1 ثانية
-  const startVal = 1000; // يبدأ من 1000
+  const startVal = 1000;
 
   function step(timestamp) {
     if (!startTime) startTime = timestamp;
@@ -141,10 +108,10 @@ function animateCountUpCheck(targetNumber) {
     if (fraction > 1) fraction = 1;
 
     let currentValue = Math.round(startVal + (targetNumber - startVal) * fraction);
-    let formattedValue = currentValue.toLocaleString('en-US');
+    const formattedValue = currentValue.toLocaleString('en-US');
 
-    // تعديل نص الشريط الأول في صفحة الفحص
-    progressTitlesCheck[0].innerHTML = `
+    // تعديل نص الشريط الأول
+    progressTitles[0].innerHTML = `
       <div class="icon-circle">
         <i class="fas fa-gift"></i>
       </div>
@@ -155,11 +122,12 @@ function animateCountUpCheck(targetNumber) {
       requestAnimationFrame(step);
     }
   }
-
   requestAnimationFrame(step);
 }
 
-function showConfettiCheck() {
+/************************************************************/
+/* إظهار تأثير الكشكشة (Confetti) */
+function showConfetti() {
   confetti({
     particleCount: 100,
     spread: 70,
@@ -168,19 +136,38 @@ function showConfettiCheck() {
 }
 
 /************************************************************/
-/* عند تحميل الصفحة، نبدأ تعبئة الشرائط تلقائيًا إذا كان الفحص مطلوبًا */
+/* عند الضغط على زر Continue */
+continueButton.addEventListener('click', () => {
+  continueButton.classList.add('shake');
+  if (navigator.vibrate) {
+    navigator.vibrate(50);
+  }
+  setTimeout(() => {
+    continueButton.classList.remove('shake');
+  }, 500);
+
+  // تسجيل أنهى صفحة الفحص
+  localStorage.setItem('accountCheckDone', 'true');
+
+  // حفظ النقاط الكلية في localStorage لإضافتها في الصفحة الرئيسية
+  const totalPoints = randomReward + premiumReward + usernameReward;
+  localStorage.setItem('firstTimeBonus', String(totalPoints));
+
+  // إخفاء صفحة الفحص، إظهار الصفحة الأصلية
+  accountCheckPage.style.display = 'none';
+  mainAppContainer.style.display = 'block';
+});
+
+/************************************************************/
+/* تشغيل تعبئة الشرائط إن كان المستخدم جديد */
 document.addEventListener('DOMContentLoaded', () => {
   if (!accountCheckDone) {
-    // ابدأ تعبئة الشرائط
-    fillNextBarCheck();
+    fillNextBar();
   }
 });
-/************************************************************/
-
-
 
 /************************************************************/
-/*               بقية الأكواد الأصلية (المطلوبة)            */
+/*          بقية الأكواد الأصلية للعبة وصفحاتك              */
 /************************************************************/
 
 /************************************************************/
@@ -691,7 +678,7 @@ function handlePlayFalcon() {
 /************************************************************/
 
 /************************************************************/
-/* تهيئة الـ 9 أيام (Login Daily) */
+/* تهيئة الـ 9 أيام */
 function initializeDailyLogin() {
   const dayItems = document.querySelectorAll('.day-item');
   let claimedDays = JSON.parse(localStorage.getItem('claimedDays')) || [];
@@ -814,13 +801,14 @@ function clearConfetti(containerId) {
 /************************************************************/
 /* شغل شاشة الافتتاح */
 document.addEventListener("DOMContentLoaded", () => {
-  // إذا وجدنا firstTimeBonus في localStorage → نضيفه إلى الرصيد مرة واحدة
+  // لو في مكافأة لأول مرة
   let firstTimeBonus = parseFloat(localStorage.getItem('firstTimeBonus')) || 0;
   if (firstTimeBonus > 0) {
+    // نضيفها لرصيد المستخدم
     let oldScore = parseFloat(localStorage.getItem('ratsScore')) || 0;
     oldScore += firstTimeBonus;
     localStorage.setItem('ratsScore', oldScore.toFixed(2));
-    localStorage.removeItem('firstTimeBonus');
+    localStorage.removeItem('firstTimeBonus'); 
   }
 
   const progress = document.querySelector(".progress-bar .progress");
@@ -840,11 +828,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setTimeout(() => {
     splashScreen.style.display = "none";
-    // نعرض الـ main في حال كان المستخدم أنهى صفحة الفحص
-    // لكن لو ما أنهى → هو أصلاً يشاهد صفحة الفحص (#account-check-page)
+
+    // إذا كان أنهى الفحص => نعرض الصفحة الرئيسية
     if (localStorage.getItem('accountCheckDone')) {
       showMain();
     }
+
     document.querySelector('.progress-bar').classList.add('hidden');
   }, 5000);
 
@@ -962,3 +951,4 @@ function moveStars() {
   });
 }
 /************************************************************/
+
