@@ -1,65 +1,444 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Account Checking</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rats Kingdom</title>
 
-  <!-- مكتبة Telegram WebApp -->
+  <!-- FontAwesome -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    rel="stylesheet"
+  />
+  <!-- ملف التنسيقات -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Telegram Web Apps JavaScript API -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <!-- مكتبة Canvas Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-  
-  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
+
+  <!-- ملف JavaScript المعدل الذي يشمل كل الأكواد -->
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <!-- الفيديو أعلى النص، في وسط الشاشة -->
-  <div class="video-container">
-    <video autoplay muted loop>
-      <source src="https://files.catbox.moe/hx6hfb.mp4" type="video/mp4">
-      <!-- في حال لم يدعم المتصفّح الفيديو -->
-      Your browser does not support the video tag.
-    </video>
+  <!-- ############## الصفحة الجديدة: فحص الحساب (تظهر لمرة واحدة) ############## -->
+  <div id="account-check-page">
+    <div class="video-container">
+      <video autoplay muted loop>
+        <source src="https://files.catbox.moe/hx6hfb.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <h1>Checking your account</h1>
+
+    <div class="progress-container">
+      <!-- الشريط الأول -->
+      <div class="progress-item">
+        <div class="progress-title">
+          <div class="icon-circle"><i class="fas fa-gift"></i></div>
+          <strong>Random Reward</strong> { 1000 }
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- الشريط الثاني -->
+      <div class="progress-item">
+        <div class="progress-title">
+          <div class="icon-circle"><i class="fas fa-crown"></i></div>
+          <strong>Telegram Premium</strong>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- الشريط الثالث -->
+      <div class="progress-item">
+        <div class="progress-title">
+          <div class="icon-circle"><i class="fas fa-user"></i></div>
+          <strong>UserName Telegram</strong>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- زر Continue (مخفي في البداية) -->
+    <button id="continueButton">Continue</button>
   </div>
+  <!-- ############## نهاية الصفحة الجديدة ############## -->
 
-  <h1>Checking your account</h1>
 
-  <div class="progress-container">
-    <!-- الشريط الأول -->
-    <div class="progress-item">
-      <div class="progress-title">
-        <strong>Random Reward</strong> {  1000  }
+  <!-- ############## بقية الصفحة الأصلية ############## -->
+  <!-- غلاف شامل للصفحة الأصلية؛ سيظهر بعد الفحص -->
+  <div id="main-app-container" style="display:none;">
+
+    <!-- شريط التحميل الأخضر في أعلى الصفحة -->
+    <div class="progress-bar">
+      <div class="progress"></div>
+    </div>
+
+    <!-- شاشة التحميل -->
+    <div id="splash-screen">
+      <!-- محتويات شاشة التحميل إذا لزم الأمر -->
+    </div>
+
+    <!-- الهيدر -->
+    <header class="hidden">
+      <div class="top-bar">
+        <h1 class="glow-text">RATS Kingdom</h1>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
+    </header>
+
+    <!-- شاشة التحميل العام (النقاط الثلاث) -->
+    <div class="loader hidden">
+      <div class="dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
       </div>
     </div>
 
-    <!-- الشريط الثاني (Telegram Premium) -->
-    <div class="progress-item">
-      <div class="progress-title">
-        <strong>Telegram Premium</strong>
+    <!-- المحتوى الرئيسي -->
+    <main id="main-content" class="hidden">
+      <canvas id="snow"></canvas>
+      
+      <div class="profile-section">
+        <img
+          src="https://i.ibb.co/6DDKSS7/logo.png"
+          alt="Profile Icon"
+          class="profile-icon"
+        />
+        <div class="stats">
+          <h2 id="ratsScore" class="glow-text">0.00</h2>
+          <p class="glow-text">RATS</p>
+        </div>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
+
+      <div class="two-columns">
+        <div class="column">
+          <div class="button-card">
+            <h3 class="glow-text">𝐘𝐨𝐮𝐭𝐮𝐛𝐞 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</h3>
+            <button class="ripple-button" onclick="window.open('https://www.youtube.com/@Falcon_Communiity', '_blank');">
+              Subscribe
+            </button>
+          </div>
+
+          <div class="button-card">
+            <h3 class="glow-text">𝐅𝐨𝐥𝐥𝐨𝐰 𝐗</h3>
+            <button class="ripple-button" onclick="window.open('https://www.twitter.com/@Falcon_Communiity', '_blank');">
+              Follow
+            </button>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="button-card">
+            <h3 class="glow-text">𝐓𝐞𝐥𝐞𝐠𝐫𝐚𝐦 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</h3>
+            <button class="ripple-button" onclick="window.open('https://t.me/Falcon_Community_Bot', '_blank');">
+              Join
+            </button>
+          </div>
+
+          <div class="button-card">
+            <h3 class="glow-text">𝐒𝐡𝐚𝐫𝐞 𝐋𝐢𝐧𝐤 𝐁𝐨𝐭</h3>
+            <button class="ripple-button" onclick="shareInviteLink()">Share</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="play-container">
+        <div class="button-card">
+          <h3 class="glow-text">𝐏𝐥𝐚𝐲 𝐅𝐚𝐥𝐜𝐨𝐧</h3>
+          <p class="cards-label">» ᴄᴀʀᴅꜱ : <span id="cardsCount">0</span></p>
+          <button id="playFalconBtn" class="ripple-button" onclick="handlePlayFalcon()">Play</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- صفحة الأصدقاء -->
+    <div id="friends-page" class="hidden">
+      <div class="friends-section">
+        <img
+          src="https://i.ibb.co/6DDKSS7/logo.png"
+          alt="Profile Icon"
+          class="profile-icon"
+        />
+        <h2 class="glow-text">𝗜𝗻𝘃𝗶𝘁𝗲 𝗳𝗿𝗶𝗲𝗻𝗱𝘀 𝗮𝗻𝗱 𝗴𝗲𝘁 𝗺𝗼𝗿𝗲 𝗥𝗔𝗧𝗦</h2>
+        <div class="friends-buttons">
+          <button class="ripple-button" onclick="copyInviteLink()">𝐂𝐨𝐩𝐲 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
+          <button class="ripple-button" onclick="shareInviteLink()">𝐒𝐡𝐚𝐫𝐞 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
+        </div>
+
+        <div class="friends-table">
+          <p style="text-align: center; color: #fff;">This is your custom table area</p>
+        </div>
       </div>
     </div>
 
-    <!-- الشريط الثالث (UserName Telegram) -->
-    <div class="progress-item">
-      <div class="progress-title">
-        <strong>UserName Telegram</strong>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
+    <!-- Collab -->
+    <div id="collab-page" class="hidden">
+      <div class="tasks-section">
+        <div class="task-card">
+          <img 
+            src="https://i.ibb.co/xJH1Qpz/Picsart-24-12-26-03-59-05-253.png" 
+            alt="Put ... next to your name"
+          />
+          <div>
+            <h3 class="glow-text">Put ... next to your name</h3>
+            <p class="glow-text">+6,000 PAWS</p>
+          </div>
+          <button class="action-btn start-btn ripple-button" data-points="6000" data-link="https://example.com/task1">Start</button>
+        </div>
+
+        <div class="task-card">
+          <img 
+            src="https://i.ibb.co/V9FPRbL/Picsart-24-12-26-03-07-35-183.png" 
+            alt="Follow Telegram Channel"
+          />
+          <div>
+            <h3 class="glow-text">Follow Telegram Channel</h3>
+            <p class="glow-text">+250 PAWS</p>
+          </div>
+          <button class="action-btn start-btn ripple-button" data-points="250" data-link="https://t.me/Falcon_Community_Bot">Start</button>
+        </div>
+
+        <div class="task-card">
+          <img 
+            src="https://i.ibb.co/BV0tDyw/Picsart-24-12-26-03-13-44-267.png"
+            alt="Follow us on X"
+          />
+          <div>
+            <h3 class="glow-text">Follow us on X</h3>
+            <p class="glow-text">+2,000 PAWS</p>
+          </div>
+          <button class="action-btn start-btn ripple-button" data-points="2000" data-link="https://www.twitter.com/@Falcon_Communiity">Start</button>
+        </div>
+
+        <div class="task-card">
+          <img 
+            src="https://i.ibb.co/N28QCRM/Picsart-24-12-26-03-23-37-573.png"
+            alt="Boost Channel"
+          />
+          <div>
+            <h3 class="glow-text">Boost Channel</h3>
+            <p class="glow-text">+5,000 PAWS</p>
+          </div>
+          <button class="action-btn start-btn ripple-button" data-points="5000" data-link="https://example.com/task4">Start</button>
+        </div>
+        
+        <div class="task-card">
+          <img 
+            src="https://i.ibb.co/wNqSmVn/Picsart-24-12-26-10-58-21-444.png" 
+            alt="YouTube Subscribe"
+          />
+          <div>
+            <h3 class="glow-text">Subscribe to our YouTube channel</h3>
+            <p class="glow-text">+3,000 PAWS</p>
+          </div>
+          <button class="action-btn start-btn ripple-button" data-points="3000" data-link="https://www.youtube.com/@Falcon_Communiity">Start</button>
+        </div>
+
+        <div class="task-card">
+          <img 
+            src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
+            alt="Invite 3 Friends"
+          />
+          <div>
+            <h3 class="glow-text">Invite 3 friends</h3>
+            <p class="glow-text">+3,000 PAWS</p>
+          </div>
+          <button class="action-btn start-btn ripple-button" data-points="3000" data-link="https://example.com/invite3">Start</button>
+        </div>
+
+        <div class="task-card">
+          <img 
+            src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
+            alt="Invite 5 Friends"
+          />
+          <div>
+            <h3 class="glow-text">Invite 5 friends</h3>
+            <p class="glow-text">+5,000 PAWS</p>
+          </div>
+          <button class="action-btn start-btn ripple-button" data-points="5000" data-link="https://example.com/invite5">Start</button>
+        </div>
+
+        <div class="task-card">
+          <img 
+            src="https://i.ibb.co/n3KSHGm/Lovepik-com-450087768-Friends-Avatar-Icon-Vector.png" 
+            alt="Invite 25 Friends"
+          />
+          <div>
+            <h3 class="glow-text">Invite 25 friends</h3>
+            <p class="glow-text">+30,000 PAWS</p>
+          </div>
+          <button class="action-btn start-btn ripple-button" data-points="30000" data-link="https://example.com/invite25">Start</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- زر Continue (مخفي في البداية) -->
-  <button id="continueButton" style="display: none;">Continue</button>
+    <!-- Login Daily Page -->
+    <div id="login-daily-page" class="hidden">
+      <div class="login-daily-header">
+        <h2 class="header-title">Daily Entry 🎁</h2>
+        <p class="header-subtitle">Log in daily to the bot and get mysterious rewards</p>
+      </div>
+      <div class="login-daily-table">
+        <div class="day-item" data-day="1">
+          <div class="day-box">
+            <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="1 Day">
+            <div class="overlay">
+              <i class="fas fa-lock"></i>
+            </div>
+          </div>
+          <div class="day-label">1 Day</div>
+        </div>
+        <div class="day-item" data-day="2">
+          <div class="day-box">
+            <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="2 Day">
+            <div class="overlay">
+              <i class="fas fa-lock"></i>
+            </div>
+          </div>
+          <div class="day-label">2 Day</div>
+        </div>
+        <div class="day-item" data-day="3">
+          <div class="day-box">
+            <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="3 Day">
+            <div class="overlay">
+              <i class="fas fa-lock"></i>
+            </div>
+          </div>
+          <div class="day-label">3 Day</div>
+        </div>
+        <div class="day-item" data-day="4">
+          <div class="day-box">
+            <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="4 Day">
+            <div class="overlay">
+              <i class="fas fa-lock"></i>
+            </div>
+          </div>
+          <div class="day-label">4 Day</div>
+        </div>
+        <div class="day-item" data-day="5">
+          <div class="day-box">
+            <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="5 Day">
+            <div class="overlay">
+              <i class="fas fa-lock"></i>
+            </div>
+          </div>
+          <div class="day-label">5 Day</div>
+        </div>
+        <div class="day-item" data-day="6">
+          <div class="day-box">
+            <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="6 Day">
+            <div class="overlay">
+              <i class="fas fa-lock"></i>
+            </div>
+          </div>
+          <div class="day-label">6 Day</div>
+        </div>
+        <div class="day-item" data-day="7">
+          <div class="day-box">
+            <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="7 Day">
+            <div class="overlay">
+              <i class="fas fa-lock"></i>
+            </div>
+          </div>
+          <div class="day-label">7 Day</div>
+        </div>
+        <div class="day-item" data-day="8">
+          <div class="day-box">
+            <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="8 Day">
+            <div class="overlay">
+              <i class="fas fa-lock"></i>
+            </div>
+          </div>
+          <div class="day-label">8 Day</div>
+        </div>
+        <div class="day-item" data-day="9">
+          <div class="day-box">
+            <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="9 Day">
+            <div class="overlay">
+              <i class="fas fa-lock"></i>
+            </div>
+          </div>
+          <div class="day-label">9 Day</div>
+        </div>
+      </div>
+      <div id="confetti-container-login" class="confetti-container"></div>
+    </div>
 
-  <script src="script.js"></script>
+    <!-- واجهة اللعبة -->
+    <div id="game-overlay" class="hidden">
+      <div class="score-panel">
+        <p>𝗙𝗮𝗹𝗰𝗼𝗻𝘀: <span id="falconScore">0</span></p>
+        <p>𝗕𝗼𝗺𝗯𝘀: <span id="bombScore">0</span></p>
+      </div>
+      <div class="timer-panel">
+        <p id="timer">30.00</p>
+      </div>
+    </div>
+
+    <!-- شاشة نهاية اللعبة -->
+    <div id="end-game-screen" class="hidden end-game-screen">
+      <!-- حاوية النجوم -->
+      <div id="stars-container"></div>
+
+      <div class="end-content">
+        <!-- تأثير قوس قزح أعلى صفحة النهاية -->
+        <div class="rainbow-effect" style="margin-top: 30px;">
+          <div class="number-container" id="endFalconScore">100</div>
+          <div class="text-falcon">FALCON</div>
+        </div>
+
+        <!-- حاوية الكشكشة -->
+        <div id="confetti-container" class="confetti-container"></div>
+
+        <div class="buttons-container">
+          <!-- زر Play Again -->
+          <button id="btn-new-round" class="ripple-button">
+            <span class="btn-icon"><i class="fas fa-play"></i></span> 
+            <span class="btn-text">𝐏𝐥𝐚𝐲 𝐚𝐠𝐚𝐢𝐧</span>
+          </button>
+
+          <!-- زر Return Home -->
+          <button id="btn-back-home" class="ripple-button">
+            <span class="btn-icon"><i class="fas fa-arrow-left"></i></span> 
+            <span class="btn-text">𝐁𝐚𝐜𝐤</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- فوتر -->
+    <footer>
+      <nav class="bottom-nav">
+        <a href="#" class="active glow-text ripple-button" onclick="handleNavClick('main')">
+          <i class="fas fa-home"></i> Home
+        </a>
+        <a href="#" class="glow-text ripple-button" onclick="handleNavClick('collab')">
+          <i class="fas fa-handshake"></i> Collab
+        </a>
+        <a href="#" class="glow-text ripple-button" onclick="handleNavClick('loginDaily')">
+          <i class="fas fa-calendar-check"></i> Login Daily
+        </a>
+        <a href="#" class="glow-text ripple-button" onclick="handleNavClick('leaderboard')">
+          <i class="fas fa-trophy"></i> Leaderboard
+        </a>
+        <a href="#" class="glow-text ripple-button" onclick="handleNavClick('friends')">
+          <i class="fas fa-user-friends"></i> Friends
+        </a>
+      </nav>
+    </footer>
+
+  </div><!-- نهاية main-app-container -->
+
 </body>
 </html>
