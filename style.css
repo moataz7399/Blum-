@@ -1,10 +1,9 @@
-/**********************************/
-/*          الصفحة الجديدة        */
-/*       Account Checking Page    */
-/**********************************/
+/****************************************************************************/
+/*                       (A) تنسيقات خاصة بصفحة الفحص                      */
+/****************************************************************************/
 
-/* نجعل الـ div الخاص بالصفحة الجديدة يغطي الشاشة بالكامل */
 #account-checking-page {
+  /* نجعله يغطي الشاشة؛ سيظهر أولًا */
   position: fixed;
   top: 0;
   left: 0;
@@ -16,17 +15,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  z-index: 99999; /* حتى تظهر فوق كل شيء */
+  z-index: 99999;
+  overflow: hidden; /* منع أي تمرير في الخلفية */
 }
 
-#account-checking-page .video-container {
+.video-container {
   width: 100%;
   max-width: 150px;
-  margin: 20px auto 0;
+  margin: 20px auto 0; 
   position: relative;
 }
 
-#account-checking-page .video-container video {
+.video-container video {
   width: 100%;
   height: auto;
   object-fit: cover;
@@ -41,44 +41,43 @@
   text-align: center;
 }
 
-/* الشرائط */
-#account-checking-page .progress-container {
+.progress-container {
   width: 90%;
   max-width: 400px;
   margin-bottom: 20px;
 }
 
-#account-checking-page .progress-item {
+.progress-item {
   margin-bottom: 20px;
 }
 
-#account-checking-page .progress-title {
+.progress-title {
   font-size: 1.2rem;
   margin-bottom: 5px;
   display: flex;
   align-items: center;
 }
 
-/* الدائرة للأيقونات */
-#account-checking-page .icon-circle {
-  width: 40px;
-  height: 40px;
+/* الحاوية الدائرية للأيقونة */
+.icon-circle {
+  width: 40px;        
+  height: 40px;       
   border: 2px solid #fff;
   border-radius: 50%;
   color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex;     
+  align-items: center;        
+  justify-content: center;    
   margin-right: 15px;
   box-sizing: border-box;
 }
 
-#account-checking-page .icon-circle i {
+.icon-circle i {
   font-size: 1.2em;
 }
 
 /* شريط التقدم */
-#account-checking-page .progress-bar {
+.progress-bar {
   width: 100%;
   height: 15px;
   background-color: #333;
@@ -87,7 +86,7 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-#account-checking-page .progress-fill {
+.progress-fill {
   height: 100%;
   background: linear-gradient(45deg, #6a5acd, #483d8b);
   width: 0;
@@ -119,7 +118,7 @@
   transform: translateY(1px);
 }
 
-/* تأثير الظهور من الأسفل للأعلى للزر */
+/* تأثير الانزلاق للأعلى لزر Continue */
 @keyframes slideUp {
   0% {
     transform: translateY(50px);
@@ -130,11 +129,12 @@
     opacity: 1;
   }
 }
+
 .slide-up {
   animation: slideUp 1s ease forwards;
 }
 
-/* تأثير اهتزاز للشكل */
+/* تأثير اهتزاز */
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
@@ -146,7 +146,7 @@
 }
 
 /****************************************************************************/
-/*        أدناه جميع الأكواد القديمة (CSS) كما أرسلتها في سؤالك بالضبط    */
+/*            (B) بقية الأكواد القديمة (CSS) كما هي في مثالك السابق        */
 /****************************************************************************/
 
 /* RESET */
@@ -193,8 +193,8 @@ button, input, textarea, select {
   user-select: auto;
 }
 
-/* شريط التحميل الأخضر أعلى الصفحة */
-.progress-bar {
+/* شريط التحميل الأخضر (القديم) */
+.progress-bar-legacy {
   position: fixed;
   top: 0;
   left: 0;
@@ -203,11 +203,9 @@ button, input, textarea, select {
   background: #555;
   z-index: 10000; 
   overflow: hidden;
+  display: none; /* نبدأ بإخفائه */
 }
-.progress-bar.hidden {
-  display: none;
-}
-.progress-bar .progress {
+.progress-bar-legacy .progress-legacy {
   position: absolute;
   top: 0;
   left: 0;
@@ -228,21 +226,7 @@ body {
   position: relative;
 }
 
-/* شاشة الافتتاح */
-#splash-screen {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('https://i.ibb.co/KmqHJFh/Picsart-24-12-27-14-35-12-356.jpg') no-repeat center center / cover;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-/* شاشة التحميل */
+/* شاشة التحميل العام (نفسها) */
 .loader {
   position: fixed;
   top: 0; left: 0;
@@ -284,176 +268,18 @@ body {
   }
 }
 
-/* مربع الأصدقاء */
-.friends-table {
-  margin-top: 20px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #fff;
-  border-radius: 10px;
-  width: 90%;
-  height: calc(100vh - 300px);
-  margin: 0 auto 70px auto;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  overflow-y: auto;
-}
-.friends-table p {
-  color: #fff;
-  font-size: 1.2rem;
-  text-align: center;
-}
-
-/* اصلاح شريط التمرير */
-.login-daily-table {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  grid-gap: 20px;
+/* شاشة الافتتاح القديمة */
+#splash-screen {
+  position: fixed;
+  top: 0; left: 0;
   width: 100%;
-  max-width: 800px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  margin-bottom: 70px;
-}
-.login-daily-table::-webkit-scrollbar {
-  width: 8px;
-}
-.login-daily-table::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 4px;
-}
-.login-daily-table::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
-
-.day-item {
-  position: relative;
+  height: 100%;
+  background: url('https://i.ibb.co/KmqHJFh/Picsart-24-12-27-14-35-12-356.jpg') no-repeat center center / cover;
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
-}
-.day-box {
-  background: #1a1a1a;
-  border: 2px solid #fff;
-  border-radius: 10px;
-  width: 100%;
-  height: 150px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  position: relative;
-}
-.day-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
   justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  transition: opacity 0.3s ease;
-}
-.overlay.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-.overlay i {
-  color: #fff;
-  font-size: 2rem;
-}
-.overlay.completed {
-  background: rgba(0, 0, 0, 0.6);
-}
-.overlay.completed i {
-  color: #28a745;
-  font-size: 2rem;
-}
-.day-label {
-  margin-top: 10px;
-  font-size: 1.2rem;
-  color: #fff;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
-}
-
-/* confetti */
-.confetti-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 10002;
-  overflow: hidden;
-}
-.confetti {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background-color: #ffc107;
-  border-radius: 50%;
-  animation: confetti-fall 2s ease-in forwards;
-  will-change: transform, opacity;
-  opacity: 1;
-}
-.confetti.line {
-  width: 2px;
-  height: 10px;
-  background-color: #ff0000;
-}
-.confetti.star {
-  width: 8px;
-  height: 8px;
-  background-color: #00ff00;
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
-}
-.confetti.circle {
-  border-radius: 50%;
-  background-color: #0000ff;
-}
-@keyframes confetti-fall {
-  0% {
-    transform: translate(0, 0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--translateX), var(--translateY)) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-/* توهج */
-header .glow-text,
-#game-overlay .score-panel p,
-#end-game-screen .stats-line {
-  text-shadow: 0 0 3px rgba(255,255,255,0.7),
-               0 0 6px rgba(255,255,255,0.5);
-}
-#game-overlay .score-panel p {
-  text-shadow: none;
-}
-.glow-text {
-  text-shadow: none;
-}
-
-.hidden {
-  display: none !important;
+  z-index: 9998;
 }
 
 /* هيدر */
@@ -470,6 +296,9 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.hidden {
+  display: none !important;
 }
 
 /* المحتوى الرئيسي */
@@ -723,7 +552,7 @@ header {
 }
 
 /* اهتزاز */
-@keyframes shake {
+@keyframes shake2 {
   0%   { transform: translate(0,0); }
   20%  { transform: translate(-10px,0); }
   40%  { transform: translate(10px,0); }
@@ -731,8 +560,8 @@ header {
   80%  { transform: translate(10px,0); }
   100% { transform: translate(0,0); }
 }
-.shake {
-  animation: shake 0.3s;
+.shake2 {
+  animation: shake2 0.3s;
 }
 
 /* نهاية اللعبة */
@@ -903,31 +732,94 @@ footer {
   color: #fff;
   text-shadow: 0 0 3px #fff, 0 0 6px #fff;
 }
-
-/* للأجهزة الصغيرة */
-@media (max-width: 600px) {
-  .button-card {
-    width: 80%;
-  }
-  .play-container .button-card {
-    width: 80%;
-  }
-  .login-daily-table {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  }
-  .day-box {
-    height: 120px;
-  }
-  .timer-panel p {
-    font-size: 1.5rem;
-  }
-  .score-panel {
-    font-size: 1.2rem;
-  }
+.login-daily-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-gap: 20px;
+  width: 100%;
+  max-width: 800px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  margin-bottom: 70px;
+}
+.login-daily-table::-webkit-scrollbar {
+  width: 8px;
+}
+.login-daily-table::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+.login-daily-table::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+.day-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+.day-box {
+  background: #1a1a1a;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  width: 100%;
+  height: 150px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+}
+.day-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: opacity 0.3s ease;
+}
+.overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.overlay i {
+  color: #fff;
+  font-size: 2rem;
+}
+.overlay.completed {
+  background: rgba(0, 0, 0, 0.6);
+}
+.overlay.completed i {
+  color: #28a745;
+  font-size: 2rem;
+}
+.day-label {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
 }
 
-/* ---------------------------------------------------------- */
-/* تأثير النجوم في شاشة النهاية */
+/* confetti container */
+.confetti-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10002;
+  overflow: hidden;
+}
+
+/* شاشة نهاية اللعبة - النجوم */
 #stars-container {
   position: absolute;
   top: 0;
@@ -953,9 +845,7 @@ footer {
     opacity: 0.4;
   }
 }
-/* ---------------------------------------------------------- */
 
-/* ---------------------------------------------------------- */
 /* تأثير قوس قزح لعدد الصقور ونص FALCON */
 .rainbow-effect {
   margin-top: 20px; 
@@ -985,36 +875,35 @@ footer {
 
 @keyframes rainbow-border {
   0% {
-      border-color: red;
-      transform: scale(1);
+    border-color: red;
+    transform: scale(1);
   }
   14% {
-      border-color: orange;
-      transform: scale(1.02);
+    border-color: orange;
+    transform: scale(1.02);
   }
   28% {
-      border-color: yellow;
-      transform: scale(1.05);
+    border-color: yellow;
+    transform: scale(1.05);
   }
   42% {
-      border-color: green;
-      transform: scale(1.03);
+    border-color: green;
+    transform: scale(1.03);
   }
   57% {
-      border-color: blue;
-      transform: scale(1.04);
+    border-color: blue;
+    transform: scale(1.04);
   }
   71% {
-      border-color: indigo;
-      transform: scale(1.02);
+    border-color: indigo;
+    transform: scale(1.02);
   }
   85% {
-      border-color: violet;
-      transform: scale(1.05);
+    border-color: violet;
+    transform: scale(1.05);
   }
   100% {
-      border-color: red;
-      transform: scale(1);
+    border-color: red;
+    transform: scale(1);
   }
 }
-/* ---------------------------------------------------------- */
