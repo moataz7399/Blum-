@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Rats Kingdom</title>
-  
-  <!-- مكتبة FontAwesome من الأكواد القديمة -->
+
+  <!-- مكتبة FontAwesome القديمة -->
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     rel="stylesheet"
   />
-
-  <!-- مكتبة FontAwesome (من الأكواد الجديدة؛ للإبقاء على كل شيء) -->
+  <!-- مكتبة FontAwesome (من الأكواد الجديدة) -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -20,19 +19,19 @@
   <!-- Telegram Web Apps JavaScript API -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- مكتبة Canvas Confetti (إبقاء الروابط كما هي) -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
+  <!-- مكتبة Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
-  <!-- رابط ملف التنسيقات الموحد الذي سيحتوي كل الـ CSS القديم + الجديد -->
+  <!-- ملف التنسيقات الموحد -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- سنقوم باستدعاء ملف السكربت في النهاية (script.js) -->
 </head>
 <body>
-  <!-- ------------------------------------------------------------------- -->
-  <!-- الصفحة الجديدة التي يجب أن تظهر أولاً: Account Checking -->
-  <!-- ------------------------------------------------------------------- -->
+
+  <!-- =======================
+       (1) صفحة الفحص أولاً 
+       ======================= -->
   <div id="account-checking-page">
+    <!-- الفيديو أعلى النص، في وسط الشاشة -->
     <div class="video-container">
       <video autoplay muted loop>
         <source src="https://files.catbox.moe/hx6hfb.mp4" type="video/mp4">
@@ -85,22 +84,23 @@
       </div>
     </div>
 
-    <!-- زر Continue (سيظهر بعد انتهاء التقدم) -->
+    <!-- زر Continue (مخفي في البداية) -->
     <button id="continueButton" style="display: none;">Continue</button>
   </div>
 
-  <!-- ------------------------------------------------------------------- -->
-  <!-- بقية الأكواد القديمة كما هي (HTML الصفحة الأصلية) -->
-  <!-- ------------------------------------------------------------------- -->
+
+  <!-- ================================
+       (2) بقية الصفحات القديمة 
+       ================================ -->
 
   <!-- شريط التحميل الأخضر في أعلى الصفحة -->
-  <div class="progress-bar">
-    <div class="progress"></div>
+  <div class="progress-bar-legacy">
+    <div class="progress-legacy"></div>
   </div>
 
-  <!-- شاشة التحميل (Splash) -->
-  <div id="splash-screen">
-    <!-- محتويات شاشة التحميل إذا لزم الأمر -->
+  <!-- شاشة الافتتاح القديمة (الخلفية فقط) -->
+  <div id="splash-screen" style="display: none;">
+    <!-- محتويات شاشة التحميل القديمة إن وُجدت -->
   </div>
 
   <!-- الهيدر -->
@@ -452,7 +452,7 @@
     </nav>
   </footer>
 
-  <!-- ملف السكربت النهائي الذي يضم كل الأكواد الجافاسكربت الجديدة والقديمة -->
+  <!-- ملف السكربت -->
   <script src="script.js"></script>
 </body>
 </html>
