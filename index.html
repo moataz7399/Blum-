@@ -1,33 +1,37 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Rats Kingdom</title>
 
-  <!-- FontAwesome -->
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    rel="stylesheet"
-  />
-  <!-- ملف التنسيقات -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Telegram Web Apps JavaScript API -->
+  <!-- مكتبة Telegram WebApp -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <!-- مكتبة Canvas Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
-  <!-- ملف JavaScript المعدل الذي يشمل كل الأكواد -->
-  <script src="script.js" defer></script>
+  <!-- مكتبة Font Awesome للأيقونات -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <!-- ملف التنسيقات الموحد (يشمل تنسيق صفحة الفحص + تنسيقات الصفحة الأصلية) -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- ############## الصفحة الجديدة: فحص الحساب (تظهر لمرة واحدة) ############## -->
-  <div id="account-check-page">
+
+  <!-- ***************************************
+       الصفحة الجديدة: فحص الحساب 
+       تظهر مرة واحدة فقط للمستخدم الجديد
+       *************************************** -->
+  <div id="account-check-page" style="display: none;"> 
+    <!-- الفيديو أعلى النص، في وسط الشاشة -->
     <div class="video-container">
       <video autoplay muted loop>
-        <source src="https://files.catbox.moe/hx6hfb.mp4" type="video/mp4">
+        <source src="https://files.catbox.moe/hx6hfb.mp4" type="video/mp4" />
+        <!-- في حال لم يدعم المتصفّح الفيديو -->
         Your browser does not support the video tag.
       </video>
     </div>
@@ -38,7 +42,10 @@
       <!-- الشريط الأول -->
       <div class="progress-item">
         <div class="progress-title">
-          <div class="icon-circle"><i class="fas fa-gift"></i></div>
+          <!-- حاوية دائرية للأيقونة -->
+          <div class="icon-circle">
+            <i class="fas fa-gift"></i> <!-- أيقونة الهدية -->
+          </div>
           <strong>Random Reward</strong> { 1000 }
         </div>
         <div class="progress-bar">
@@ -49,7 +56,9 @@
       <!-- الشريط الثاني -->
       <div class="progress-item">
         <div class="progress-title">
-          <div class="icon-circle"><i class="fas fa-crown"></i></div>
+          <div class="icon-circle">
+            <i class="fas fa-crown"></i> <!-- أيقونة التاج -->
+          </div>
           <strong>Telegram Premium</strong>
         </div>
         <div class="progress-bar">
@@ -60,7 +69,9 @@
       <!-- الشريط الثالث -->
       <div class="progress-item">
         <div class="progress-title">
-          <div class="icon-circle"><i class="fas fa-user"></i></div>
+          <div class="icon-circle">
+            <i class="fas fa-user"></i> <!-- أيقونة المستخدم -->
+          </div>
           <strong>UserName Telegram</strong>
         </div>
         <div class="progress-bar">
@@ -70,15 +81,14 @@
     </div>
 
     <!-- زر Continue (مخفي في البداية) -->
-    <button id="continueButton">Continue</button>
+    <button id="continueButton" style="display: none;">Continue</button>
   </div>
-  <!-- ############## نهاية الصفحة الجديدة ############## -->
+  <!-- ************** نهاية صفحة الفحص ************** -->
 
-
-  <!-- ############## بقية الصفحة الأصلية ############## -->
-  <!-- غلاف شامل للصفحة الأصلية؛ سيظهر بعد الفحص -->
+  <!-- ***********************************
+       الصفحة الأصلية (Rats Kingdom)
+       *********************************** -->
   <div id="main-app-container" style="display:none;">
-
     <!-- شريط التحميل الأخضر في أعلى الصفحة -->
     <div class="progress-bar">
       <div class="progress"></div>
@@ -398,7 +408,7 @@
           <div class="text-falcon">FALCON</div>
         </div>
 
-        <!-- حاوية الكشكشة -->
+        <!-- حاوية الكشكشة (موجودة في حالة تم استدعاؤها) -->
         <div id="confetti-container" class="confetti-container"></div>
 
         <div class="buttons-container">
@@ -437,8 +447,9 @@
         </a>
       </nav>
     </footer>
-
   </div><!-- نهاية main-app-container -->
 
+  <!-- ملف السكربت الذي يضم كل الأكواد -->
+  <script src="script.js"></script>
 </body>
 </html>
