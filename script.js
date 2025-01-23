@@ -91,13 +91,38 @@ function animateCountUp(targetNumber) {
   requestAnimationFrame(step);
 }
 
-// تأثير الكشكشة
+/**
+ * إظهار تأثير الكشكشة (Confetti) عبر Canvas مؤقت
+ */
 function showConfetti() {
-  confetti({
+  // ننشئ عنصر <canvas> يغطي كامل الشاشة
+  const confettiCanvas = document.createElement('canvas');
+  confettiCanvas.style.position = 'fixed';
+  confettiCanvas.style.top = '0';
+  confettiCanvas.style.left = '0';
+  confettiCanvas.style.width = '100%';
+  confettiCanvas.style.height = '100%';
+  confettiCanvas.style.pointerEvents = 'none';
+  confettiCanvas.style.zIndex = '99999'; // فوق كل شيء
+  document.body.appendChild(confettiCanvas);
+
+  // نستخدم مكتبة confetti لإنشاء حفلة على هذا الـcanvas
+  const myConfetti = confetti.create(confettiCanvas, {
+    resize: true,    // يتكيّف مع تغيير الحجم
+    useWorker: true, // تحسين الأداء
+  });
+
+  // نستدعي الكشكشة مع الإعدادات التي تريدها
+  myConfetti({
     particleCount: 100,
     spread: 70,
-    origin: { y: 0.6 }
+    origin: { y: 0.6 },
   });
+
+  // بعد 3 ثوانٍ نزيل الـcanvas
+  setTimeout(() => {
+    document.body.removeChild(confettiCanvas);
+  }, 3000);
 }
 
 // عند التحميل نبدأ التعبئة
