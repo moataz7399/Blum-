@@ -1,47 +1,30 @@
-/************************************
- * Telegram WebApp إعدادات 
- ************************************/
+/************************************************************/
+/*            الصفحة الجديدة: Account Checking             */
+/************************************************************/
+
+// التأكد من جاهزية Telegram WebApp
 if (window.Telegram && window.Telegram.WebApp) {
   Telegram.WebApp.ready();
 }
-const initDataUnsafe = (window.Telegram && window.Telegram.WebApp)
-  ? Telegram.WebApp.initDataUnsafe
-  : { user: {} };
 
-/************************************************************/
-/*                 منطق عرض/إخفاء صفحة الفحص                */
-/************************************************************/
-const accountCheckPage = document.getElementById('account-check-page');
-const mainAppContainer = document.getElementById('main-app-container');
+const initDataUnsafe = window.Telegram && window.Telegram.WebApp 
+                       ? Telegram.WebApp.initDataUnsafe 
+                       : { user: null };
+
+// استهداف عناصر الصفحة الجديدة
+const progressBars = document.querySelectorAll('#account-checking-page .progress-fill');
+const progressTitles = document.querySelectorAll('#account-checking-page .progress-title');
 const continueButton = document.getElementById('continueButton');
 
-let accountCheckDone = localStorage.getItem('accountCheckDone'); 
-if (!accountCheckDone) {
-  // المستخدم لم يشاهد صفحة الفحص من قبل
-  accountCheckPage.style.display = 'block';
-  mainAppContainer.style.display = 'none';
-} else {
-  // المستخدم سبق وأنهى الفحص
-  accountCheckPage.style.display = 'none';
-  mainAppContainer.style.display = 'block';
-}
+let indexCheck = 0;
 
-/************************************************************/
-/* الأكواد الخاصة بشرائط الفحص */
-const progressBars = document.querySelectorAll('#account-check-page .progress-fill');
-const progressTitles = document.querySelectorAll('#account-check-page .progress-title');
-
-let index = 0;         // لترتيب الشرائط
-let randomReward = 1000; 
-let premiumReward = 0;
-let usernameReward = 0;
-
+// دالة لملء الشرائط بالتتابع
 function fillNextBar() {
-  if (index < progressBars.length) {
+  if (indexCheck < progressBars.length) {
     // ملء الشريط بالكامل
-    progressBars[index].style.width = '100%';
+    progressBars[indexCheck].style.width = '100%';
 
-    const currentIndex = index;
+    const currentIndex = indexCheck;
 
     // بعد 5 ثوانٍ من بدء التعبئة
     setTimeout(() => {
@@ -50,56 +33,56 @@ function fillNextBar() {
         navigator.vibrate(50);
       }
 
-      /******** الشريط الأول (Random Reward) ********/
+      // الشريط الأول (Random Reward)
       if (currentIndex === 0) {
+        // يتحول للون الأخضر
         progressBars[currentIndex].style.background = 'green';
+        // تشغيل الكشكشة
         showConfetti();
-        // رقم عشوائي بين 1000 و 10000
-        randomReward = Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000;
-        animateCountUp(randomReward);
+        // عداد من 1000 إلى رقم عشوائي
+        const randomNumber = Math.floor(Math.random() * 9001) + 1000;
+        animateCountUp(randomNumber);
       }
-
-      /******** الشريط الثاني (Telegram Premium) ********/
+      // الشريط الثاني (Telegram Premium)
       else if (currentIndex === 1) {
         if (initDataUnsafe.user && initDataUnsafe.user.is_premium) {
           progressBars[currentIndex].style.background = 'green';
           showConfetti();
-          premiumReward = 5000;
         } else {
           progressBars[currentIndex].style.background = 'red';
-          premiumReward = 0;
         }
       }
-
-      /******** الشريط الثالث (UserName Telegram) ********/
+      // الشريط الثالث (UserName Telegram)
       if (currentIndex === 2) {
         if (initDataUnsafe.user && initDataUnsafe.user.username) {
           progressBars[currentIndex].style.background = 'green';
           showConfetti();
-          usernameReward = 2500;
         } else {
           progressBars[currentIndex].style.background = 'red';
-          usernameReward = 0;
         }
-
-        // إظهار زر Continue
+        // إظهار زر Continue مع تأثير الانزلاق
         continueButton.style.display = 'inline-block';
         continueButton.classList.add('slide-up');
       }
+
     }, 5000);
 
     // الانتقال للشريط التالي بعد 5 ثوانٍ
-    index++;
+    indexCheck++;
     setTimeout(fillNextBar, 5000);
   }
 }
 
-/************************************************************/
-/* عداد من 1000 إلى رقم محدد */
+// تشغيل تعبئة الشرائط عند تحميل الصفحة (DOM جاهز)
+document.addEventListener('DOMContentLoaded', () => {
+  fillNextBar();
+});
+
+// دالة تشغيل مؤقت لعدّاد
 function animateCountUp(targetNumber) {
   let startTime = null;
   const duration = 1000; // 1 ثانية
-  const startVal = 1000;
+  const startVal = 1000; // يبدأ من 1000
 
   function step(timestamp) {
     if (!startTime) startTime = timestamp;
@@ -110,23 +93,23 @@ function animateCountUp(targetNumber) {
     let currentValue = Math.round(startVal + (targetNumber - startVal) * fraction);
     const formattedValue = currentValue.toLocaleString('en-US');
 
-    // تعديل نص الشريط الأول
+    // تحديث نص الشريط الأول:
     progressTitles[0].innerHTML = `
       <div class="icon-circle">
         <i class="fas fa-gift"></i>
       </div>
-      <strong>Random Reward</strong> { ${formattedValue} }
+      <strong>Random Reward</strong> {  ${formattedValue}  }
     `;
 
     if (fraction < 1) {
       requestAnimationFrame(step);
     }
   }
+
   requestAnimationFrame(step);
 }
 
-/************************************************************/
-/* إظهار تأثير الكشكشة (Confetti) */
+// تأثير الكشكشة
 function showConfetti() {
   confetti({
     particleCount: 100,
@@ -135,9 +118,9 @@ function showConfetti() {
   });
 }
 
-/************************************************************/
-/* عند الضغط على زر Continue */
+// زر Continue
 continueButton.addEventListener('click', () => {
+  // هزّة للزر
   continueButton.classList.add('shake');
   if (navigator.vibrate) {
     navigator.vibrate(50);
@@ -146,28 +129,19 @@ continueButton.addEventListener('click', () => {
     continueButton.classList.remove('shake');
   }, 500);
 
-  // تسجيل أنهى صفحة الفحص
-  localStorage.setItem('accountCheckDone', 'true');
+  // إخفاء صفحة الفحص (Account Checking)
+  document.getElementById('account-checking-page').style.display = 'none';
 
-  // حفظ النقاط الكلية في localStorage لإضافتها في الصفحة الرئيسية
-  const totalPoints = randomReward + premiumReward + usernameReward;
-  localStorage.setItem('firstTimeBonus', String(totalPoints));
+  // يمكنك أن تترك الـSplash Screen كما هو (سيختفي بعد 5 ثوانٍ من كودك القديم).
+  // أو إذا أردت إجبار ظهوره الآن، يمكنك إزالة التعليق أدناه:
+  // document.getElementById('splash-screen').style.display = 'block';
 
-  // إخفاء صفحة الفحص، إظهار الصفحة الأصلية
-  accountCheckPage.style.display = 'none';
-  mainAppContainer.style.display = 'block';
+  // بقية الصفحات والكود القديم سيظهر ببساطة في الخلفية.
 });
 
-/************************************************************/
-/* تشغيل تعبئة الشرائط إن كان المستخدم جديد */
-document.addEventListener('DOMContentLoaded', () => {
-  if (!accountCheckDone) {
-    fillNextBar();
-  }
-});
 
 /************************************************************/
-/*          بقية الأكواد الأصلية للعبة وصفحاتك              */
+/*          الأكواد القديمة (Javascript) كما هي             */
 /************************************************************/
 
 /************************************************************/
@@ -425,7 +399,7 @@ function endGame() {
     createStars();
     setInterval(moveStars, 50);
 
-    // تحديث رقم الصقور في تأثير قوس قزح
+    // تحديث رقم الصقور في تأثير القوس قزح
     document.getElementById('endFalconScore').textContent = falconScore;
 
     // إضافة falconScore إلى ratsScore
@@ -457,8 +431,8 @@ function createFallingEmoji(type) {
   emojiEl.classList.add('falling-emoji');
 
   if (type === 'falcon') {
-    emojiEl.innerHTML = '<i class="fas fa-dove"></i>'; 
-    emojiEl.style.color = '#FFD700'; 
+    emojiEl.innerHTML = '<i class="fas fa-dove"></i>';
+    emojiEl.style.color = '#FFD700';
   } else if (type === 'bomb') {
     emojiEl.innerHTML = '<i class="fas fa-bomb"></i>';
     emojiEl.style.color = '#FF0000';
@@ -476,7 +450,7 @@ function createFallingEmoji(type) {
       document.getElementById('falconScore').textContent = falconScore;
     } else {
       bombScore++;
-      falconScore = 0; 
+      falconScore = 0;
       document.getElementById('falconScore').textContent = falconScore;
       document.getElementById('bombScore').textContent = bombScore;
       bombEffect();
@@ -678,7 +652,7 @@ function handlePlayFalcon() {
 /************************************************************/
 
 /************************************************************/
-/* تهيئة الـ 9 أيام */
+/* تهيئة الـ 9 أيام (Daily Login) */
 function initializeDailyLogin() {
   const dayItems = document.querySelectorAll('.day-item');
   let claimedDays = JSON.parse(localStorage.getItem('claimedDays')) || [];
@@ -710,7 +684,7 @@ function initializeDailyLogin() {
       const dayNumber = index + 1;
       if (isDayUnlocked(dayNumber)) {
         if (!claimedDays.includes(dayNumber)) {
-          unlockDay(dayItem, true); 
+          unlockDay(dayItem, true);
           showConfetti('confetti-container-login');
           if (navigator.vibrate) {
             navigator.vibrate(200);
@@ -723,7 +697,7 @@ function initializeDailyLogin() {
           if (reward) {
             ratsScore += reward.points;
             let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
-            cardsCount += reward.cards; 
+            cardsCount += reward.cards;
             localStorage.setItem('ratsScore', ratsScore.toFixed(2));
             localStorage.setItem('cardsCount', cardsCount);
             document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
@@ -801,16 +775,6 @@ function clearConfetti(containerId) {
 /************************************************************/
 /* شغل شاشة الافتتاح */
 document.addEventListener("DOMContentLoaded", () => {
-  // لو في مكافأة لأول مرة
-  let firstTimeBonus = parseFloat(localStorage.getItem('firstTimeBonus')) || 0;
-  if (firstTimeBonus > 0) {
-    // نضيفها لرصيد المستخدم
-    let oldScore = parseFloat(localStorage.getItem('ratsScore')) || 0;
-    oldScore += firstTimeBonus;
-    localStorage.setItem('ratsScore', oldScore.toFixed(2));
-    localStorage.removeItem('firstTimeBonus'); 
-  }
-
   const progress = document.querySelector(".progress-bar .progress");
   const splashScreen = document.getElementById("splash-screen");
   const ratsScoreElement = document.getElementById("ratsScore");
@@ -828,12 +792,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setTimeout(() => {
     splashScreen.style.display = "none";
-
-    // إذا كان أنهى الفحص => نعرض الصفحة الرئيسية
-    if (localStorage.getItem('accountCheckDone')) {
-      showMain();
-    }
-
+    showMain();
     document.querySelector('.progress-bar').classList.add('hidden');
   }, 5000);
 
@@ -951,4 +910,3 @@ function moveStars() {
   });
 }
 /************************************************************/
-
