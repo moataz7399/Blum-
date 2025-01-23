@@ -1,16 +1,8 @@
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
-}
-
-/************************************************************/
-/*               تنسيقات الصفحة الجديدة (فحص الحساب)        */
-/************************************************************/
+/* ---------------------------------- */
+/* تنسيقات صفحة الفحص الجديدة          */
+/* ---------------------------------- */
+/* الصفحة (Account Check) ستكون مخفية افتراضيًا في HTML  */
 #account-check-page {
-  display: none; /* افتراضيًا مخفي، يُعرض للمستخدم الجديد */
   background-color: black;
   color: white;
   width: 100%;
@@ -18,21 +10,24 @@
   position: fixed;
   top: 0; 
   left: 0;
-  z-index: 99999; /* أعلى من كل شيء */
+  z-index: 99999;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  margin: 0;
   padding-top: 20px;
+  box-sizing: border-box;
 }
 
-#account-check-page .video-container {
+/* حاوية الفيديو */
+.video-container {
   width: 100%;
-  max-width: 150px;
+  max-width: 150px; /* يمكنك تعديل الحجم كما تشاء */
   margin: 20px auto 0;
   position: relative;
 }
-#account-check-page .video-container video {
+.video-container video {
   width: 100%;
   height: auto;
   object-fit: cover;
@@ -41,27 +36,29 @@
   border-radius: 8px;
 }
 
+/* عنوان صفحة الفحص */
 #account-check-page h1 {
-  margin: 20px 0;
   font-size: 2rem;
+  margin: 20px 0;
   text-align: center;
 }
 
-#account-check-page .progress-container {
+/* حاوية الشرائط */
+.progress-container {
   width: 90%;
   max-width: 400px;
   margin-bottom: 20px;
 }
-#account-check-page .progress-item {
+.progress-item {
   margin-bottom: 20px;
 }
-#account-check-page .progress-title {
+.progress-title {
   font-size: 1.2rem;
   margin-bottom: 5px;
   display: flex;
   align-items: center;
 }
-#account-check-page .icon-circle {
+.icon-circle {
   width: 40px;
   height: 40px;
   border: 2px solid #fff;
@@ -73,18 +70,18 @@
   margin-right: 15px;
   box-sizing: border-box;
 }
-#account-check-page .icon-circle i {
+.icon-circle i {
   font-size: 1.2em;
 }
-#account-check-page .progress-bar {
+.progress-bar {
   width: 100%;
   height: 15px;
   background-color: #333;
   border-radius: 7.5px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.5);
 }
-#account-check-page .progress-fill {
+.progress-fill {
   height: 100%;
   background: linear-gradient(45deg, #6a5acd, #483d8b);
   width: 0;
@@ -103,18 +100,19 @@
   font-weight: bold;
   padding: 10px 20px;
   border-radius: 25px;
-  box-shadow: 0 4px 8px rgba(72, 61, 139, 0.5);
+  box-shadow: 0px 4px 8px rgba(72, 61, 139, 0.5);
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
 #continueButton:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(72, 61, 139, 0.7);
+  box-shadow: 0px 6px 12px rgba(72,61,139,0.7);
 }
 #continueButton:active {
   transform: translateY(1px);
 }
 
+/* تأثير الظهور من الأسفل للأعلى (Baseline) للزر */
 @keyframes slideUp {
   0% {
     transform: translateY(50px);
@@ -126,22 +124,31 @@
   }
 }
 .slide-up {
-  animation: slideUp 1s forwards;
+  animation: slideUp 1s ease forwards;
 }
 
-@keyframes shake-acc {
+/* تأثير الاهتزاز لزر Continue */
+@keyframes shake-account {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
   50% { transform: translateX(5px); }
   75% { transform: translateX(-5px); }
 }
 #continueButton.shake {
-  animation: shake-acc 0.5s;
+  animation: shake-account 0.5s;
 }
 
-/************************************************************/
-/*        بقية التنسيقات الأصلية كما هي دون حذف            */
-/************************************************************/
+/* ---------------------------------- */
+/*    بقية التنسيقات الأساسية التي أرسلتها سابقًا    */
+/* ---------------------------------- */
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
 
 /* منع تفعيل قائمة السياق والاختيارات على الصور */
 img {
@@ -172,7 +179,6 @@ img {
 }
 
 body {
-  user-select: none;
   background: #000;
   color: #fff;
   margin: 0;
@@ -181,6 +187,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
+  user-select: none; /* سابقًا */
 }
 
 /* شريط التحميل الأخضر في أعلى الصفحة */
