@@ -14,6 +14,221 @@ const progressBars = document.querySelectorAll('#account-checking-page .progress
 const progressTitles = document.querySelectorAll('#account-checking-page .progress-title');
 const continueButton = document.getElementById('continueButton');
 
+// سنحتفظ بعدد نقاط المستخدم في ratsScore
+let ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0;
+// لمعرفة هل سبق للمستخدم أن شاهد صفحة الفحص
+const visitedCheckPage = localStorage.getItem('visitedCheckPage');
+let indexCheck = 0;
+
+/**
+ * عند تحميل الصفحة:
+ * - إذا المستخدم قد دخل قبل ذلك (visitedCheckPage موجودة)، نتخطى الفحص.
+ * - غير ذلك، نعرض صفحة الفحص (3 شرائط).
+ */
+document.addEventListener('DOMContentLoaded', () => {
+  if (visitedCheckPage) {
+    // إخفاء صفحة الفحص
+    document.getElementById('account-checking-page').style.display = 'none';
+    // نُظهر الصفحة القديمة + الرئيسية
+    showSplashAndThenMain();
+  } else {
+    // مستخدم جديد
+    fillNextBar();
+  }
+});
+
+/**
+ * تعبئة الشرائط بالتتابع، كل واحد 5 ثوانٍ
+ */
+function fillNextBar() {
+  if (indexCheck < progressBars.length) {
+    progressBars[indexCheck].style.width = '100%'; // ملء الشريط
+    const currentIndex = indexCheck;
+    
+    // بعد 5 ثوانٍ
+    setTimeout(() => {
+      if (navigator.vibrate) navigator.vibrate(50);
+
+      // الشريط الأول (Random Reward)
+      if (currentIndex === 0) {
+        progressBars[currentIndex].style.background = 'green';
+        showConfetti();
+        // رقم عشوائي 1000 - 10000
+        const randomNumber = Math.floor(Math.random() * 9001) + 1000;
+        // إضافة هذا الرقم لـ ratsScore
+        ratsScore += randomNumber;
+        localStorage.setItem('ratsScore', ratsScore.toFixed(2));
+
+        // تشغيل العدّاد
+        animateCountUp(randomNumber);
+      }
+      // الشريط الثاني (Telegram Premium)
+      else if (currentIndex === 1) {
+        if (initDataUnsafe.user && initDataUnsafe.user.is_premium) {
+          progressBars[currentIndex].style.background = 'green';
+          showConfetti();
+          // إضافة 5000 نقطة
+          ratsScore += 5000;
+          localStorage.setItem('ratsScore', ratsScore.toFixed(2));
+        } else {
+          progressBars[currentIndex].style.background = 'red';
+        }
+      }
+      // الشريط الثالث (UserName Telegram)
+      if (currentIndex === 2) {
+        if (initDataUnsafe.user && initDataUnsafe.user.username) {
+          progressBars[currentIndex].style.background = 'green';
+          showConfetti();
+          // إضافة 2500 نقطة
+          ratsScore += 2500;
+          localStorage.setItem('ratsScore', ratsScore.toFixed(2));
+        } else {
+          progressBars[currentIndex].style.background = 'red';
+        }
+        // ظهور زر Continue
+        continueButton.style.display = 'inline-block';
+        continueButton.classList.add('slide-up');
+      }
+    }, 5000);
+
+    indexCheck++;
+    setTimeout(fillNextBar, 5000);
+  }
+}
+
+/**
+ * دالة العداد من 1000 إلى الرقم (الشريط الأول)
+ */
+function animateCountUp(targetNumber) {
+  let startTime = null;
+  const duration = 1000; 
+  const startVal = 1000; 
+
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const progress = timestamp - startTime;
+    let fraction = progress / duration;
+    if (fraction > 1) fraction = 1;
+
+    let currentValue = Math.round(startVal + (targetNumber - startVal) * fraction);
+    const formattedValue = currentValue.toLocaleString('en-US');
+
+    // تعديل النص في الشريط الأول
+    progressTitles[0].innerHTML = `
+      <div class="icon-circle">
+        <i class="fas fa-gift"></i>
+      </div>
+      <strong>Random Reward</strong> {  ${formattedValue}  }
+    `;
+    if (fraction < 1) {
+      requestAnimationFrame(step);
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+/**
+ * إظهار تأثير الكشكشة (Confetti)
+ */
+function showConfetti() {
+  // ننشئ عنصر <canvas> يغطي كامل الشاشة
+  const confettiCanvas = document.createElement('canvas');
+  confettiCanvas.style.position = 'fixed';
+  confettiCanvas.style.top = '0';
+  confettiCanvas.style.left = '0';
+  confettiCanvas.style.width = '100%';
+  confettiCanvas.style.height = '100%';
+  confettiCanvas.style.pointerEvents = 'none';
+  confettiCanvas.style.zIndex = '99999'; // فوق كل شيء
+  document.body.appendChild(confettiCanvas);
+
+  const myConfetti = confetti.create(confettiCanvas, {
+    resize: true,
+    useWorker: true,
+  });
+
+  myConfetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+  });
+
+  // بعد 3 ثوانٍ نزيل الـcanvas
+  setTimeout(() => {
+    document.body.removeChild(confettiCanvas);
+  }, 3000);
+}
+
+/**
+ * عند الضغط على زر Continue
+ */
+continueButton.addEventListener('click', () => {
+  continueButton.classList.add('shake');
+  if (navigator.vibrate) navigator.vibrate(50);
+  setTimeout(() => {
+    continueButton.classList.remove('shake');
+  }, 500);
+
+  // حتى لا تظهر صفحة الفحص مرة أخرى
+  localStorage.setItem('visitedCheckPage', 'true');
+
+  // إخفاء صفحة الفحص
+  document.getElementById('account-checking-page').style.display = 'none';
+
+  // إظهار شاشة الافتتاح القديمة + الصفحة الرئيسية
+  showSplashAndThenMain();
+});
+
+/************************************************************/
+/* (B) بقية الأكواد القديمة من سؤالك كما هي                */
+/************************************************************/
+
+/**
+ * دالة جديدة لإظهار شاشة التحميل الأخضر 5 ثوانٍ
+ * ثم إخفاؤها وإظهار الـHome
+ */
+function showSplashAndThenMain() {
+  // نظهر الشريط الأخضر القديم
+  const legacyBar = document.querySelector('.progress-bar-legacy');
+  const legacyProgress = document.querySelector('.progress-bar-legacy .progress-legacy');
+  const splashScreen = document.getElementById('splash-screen');
+  
+  legacyBar.style.display = 'block';
+  splashScreen.style.display = 'block';
+  // إعادة الشريط إلى الصفر
+  legacyProgress.style.width = '0';
+
+  // بعد لحظة بسيطة نجعله يتحرك من 0% إلى 100% خلال 5 ثوانٍ
+  setTimeout(() => {
+    legacyProgress.style.width = '100%';
+  }, 50);
+
+  // بعد 5 ثوانٍ
+  setTimeout(() => {
+    // نخفي الشاشة + الشريط
+    splashScreen.style.display = 'none';
+    legacyBar.style.display = 'none';
+    // نظهر الصفحة الرئيسية
+    showMain();
+  }, 5000);
+}
+
+/************************************************************/
+/* (A) أكواد خاصة بصفحة الفحص (3 شرائط + زر Continue)      */
+/************************************************************/
+
+// التأكد من جاهزية Telegram WebApp
+if (window.Telegram && window.Telegram.WebApp) {
+  Telegram.WebApp.ready();
+}
+const initDataUnsafe = (window.Telegram && window.Telegram.WebApp)
+                       ? Telegram.WebApp.initDataUnsafe
+                       : { user: null };
+
+const progressBars = document.querySelectorAll('#account-checking-page .progress-fill');
+const progressTitles = document.querySelectorAll('#account-checking-page .progress-title');
+const continueButton = document.getElementById('continueButton');
+
 let indexCheck = 0;
 
 // تعبئة الشرائط بالتتابع
