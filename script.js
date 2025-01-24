@@ -6,67 +6,84 @@
 if (window.Telegram && window.Telegram.WebApp) {
   Telegram.WebApp.ready();
 }
-const initDataUnsafe = (window.Telegram && window.Telegram.WebApp)
-                       ? Telegram.WebApp.initDataUnsafe
-                       : { user: null };
 
+// الحصول على بيانات المستخدم من Telegram WebApp
+const initDataUnsafe = (window.Telegram && window.Telegram.WebApp)
+  ? Telegram.WebApp.initDataUnsafe
+  : { user: null };
+
+// التحقق هل المستخدم جديد أم لا
+const visitedCheckPage = localStorage.getItem('visitedCheckPage');
+
+// سنخزّن نقاط المستخدم هنا (ratsScore)
+let ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0;
+
+// الحصول على عناصر الـ3 شرائط (progress-fill) وعناوينها
 const progressBars = document.querySelectorAll('#account-checking-page .progress-fill');
 const progressTitles = document.querySelectorAll('#account-checking-page .progress-title');
 const continueButton = document.getElementById('continueButton');
 
-// سنحتفظ بعدد نقاط المستخدم في ratsScore
-let ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0;
-// لمعرفة هل سبق للمستخدم أن شاهد صفحة الفحص
-const visitedCheckPage = localStorage.getItem('visitedCheckPage');
+// مؤشر أي شريط نعبّئ
 let indexCheck = 0;
 
 /**
  * عند تحميل الصفحة:
- * - إذا المستخدم قد دخل قبل ذلك (visitedCheckPage موجودة)، نتخطى الفحص.
- * - غير ذلك، نعرض صفحة الفحص (3 شرائط).
+ *  - إذا المستخدم شاهد صفحة الفحص سابقًا → نتخطّاها فورًا
+ *  - وإلا نبدأ تعبئة الشرائط
  */
 document.addEventListener('DOMContentLoaded', () => {
   if (visitedCheckPage) {
     // إخفاء صفحة الفحص
     document.getElementById('account-checking-page').style.display = 'none';
-    // نُظهر الصفحة القديمة + الرئيسية
+    // الذهاب مباشرةً للشاشة القديمة + الصفحة الرئيسية
     showSplashAndThenMain();
   } else {
-    // مستخدم جديد
+    // مستخدم جديد → تعبئة الشرائط
     fillNextBar();
   }
 });
 
 /**
- * تعبئة الشرائط بالتتابع، كل واحد 5 ثوانٍ
+ * تعبئة الشرائط الثلاثة واحدًا تلو الآخر، كل واحد 5 ثوانٍ
  */
 function fillNextBar() {
   if (indexCheck < progressBars.length) {
-    progressBars[indexCheck].style.width = '100%'; // ملء الشريط
+    // ملء الشريط بالكامل
+    progressBars[indexCheck].style.width = '100%';
+
     const currentIndex = indexCheck;
-    
-    // بعد 5 ثوانٍ
+
+    // بعد 5 ثوانٍ من بدء تعبئة الشريط
     setTimeout(() => {
-      if (navigator.vibrate) navigator.vibrate(50);
+      // اهتزاز بسيط
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
 
       // الشريط الأول (Random Reward)
       if (currentIndex === 0) {
+        // لون أخضر + كشكشة + حساب النقاط
         progressBars[currentIndex].style.background = 'green';
         showConfetti();
-        // رقم عشوائي 1000 - 10000
+
+        // رقم عشوائي بين 1000 و 10000
         const randomNumber = Math.floor(Math.random() * 9001) + 1000;
-        // إضافة هذا الرقم لـ ratsScore
+
+        // نضيفه إلى رصيد المستخدم
         ratsScore += randomNumber;
         localStorage.setItem('ratsScore', ratsScore.toFixed(2));
 
-        // تشغيل العدّاد
+        // تشغيل العدّاد المرئي
         animateCountUp(randomNumber);
       }
+
       // الشريط الثاني (Telegram Premium)
       else if (currentIndex === 1) {
+        // إن كان المستخدم لديه بريميوم
         if (initDataUnsafe.user && initDataUnsafe.user.is_premium) {
           progressBars[currentIndex].style.background = 'green';
           showConfetti();
+
           // إضافة 5000 نقطة
           ratsScore += 5000;
           localStorage.setItem('ratsScore', ratsScore.toFixed(2));
@@ -74,35 +91,40 @@ function fillNextBar() {
           progressBars[currentIndex].style.background = 'red';
         }
       }
+
       // الشريط الثالث (UserName Telegram)
       if (currentIndex === 2) {
+        // إن كان لديه username
         if (initDataUnsafe.user && initDataUnsafe.user.username) {
           progressBars[currentIndex].style.background = 'green';
           showConfetti();
+
           // إضافة 2500 نقطة
           ratsScore += 2500;
           localStorage.setItem('ratsScore', ratsScore.toFixed(2));
         } else {
           progressBars[currentIndex].style.background = 'red';
         }
-        // ظهور زر Continue
+
+        // بعد انتهاء الشريط الثالث، يظهر زر Continue
         continueButton.style.display = 'inline-block';
         continueButton.classList.add('slide-up');
       }
     }, 5000);
 
+    // ننتقل للشريط التالي
     indexCheck++;
     setTimeout(fillNextBar, 5000);
   }
 }
 
 /**
- * دالة العداد من 1000 إلى الرقم (الشريط الأول)
+ * عدّاد من 1000 إلى رقمٍ محدّد (للشريط الأول)
  */
 function animateCountUp(targetNumber) {
   let startTime = null;
-  const duration = 1000; 
-  const startVal = 1000; 
+  const duration = 1000; // 1 ثانية
+  const startVal = 1000;
 
   function step(timestamp) {
     if (!startTime) startTime = timestamp;
@@ -113,17 +135,19 @@ function animateCountUp(targetNumber) {
     let currentValue = Math.round(startVal + (targetNumber - startVal) * fraction);
     const formattedValue = currentValue.toLocaleString('en-US');
 
-    // تعديل النص في الشريط الأول
+    // تحديث نص الشريط الأول بما فيه الأيقونة
     progressTitles[0].innerHTML = `
       <div class="icon-circle">
         <i class="fas fa-gift"></i>
       </div>
       <strong>Random Reward</strong> {  ${formattedValue}  }
     `;
+
     if (fraction < 1) {
       requestAnimationFrame(step);
     }
   }
+
   requestAnimationFrame(step);
 }
 
@@ -131,7 +155,7 @@ function animateCountUp(targetNumber) {
  * إظهار تأثير الكشكشة (Confetti)
  */
 function showConfetti() {
-  // ننشئ عنصر <canvas> يغطي كامل الشاشة
+  // إنشاء عنصر <canvas> على كامل الشاشة
   const confettiCanvas = document.createElement('canvas');
   confettiCanvas.style.position = 'fixed';
   confettiCanvas.style.top = '0';
@@ -139,9 +163,10 @@ function showConfetti() {
   confettiCanvas.style.width = '100%';
   confettiCanvas.style.height = '100%';
   confettiCanvas.style.pointerEvents = 'none';
-  confettiCanvas.style.zIndex = '99999'; // فوق كل شيء
+  confettiCanvas.style.zIndex = '99999';
   document.body.appendChild(confettiCanvas);
 
+  // تفعيل مكتبة confetti
   const myConfetti = confetti.create(confettiCanvas, {
     resize: true,
     useWorker: true,
@@ -163,21 +188,25 @@ function showConfetti() {
  * عند الضغط على زر Continue
  */
 continueButton.addEventListener('click', () => {
+  // اهتزاز بسيط للزر
   continueButton.classList.add('shake');
-  if (navigator.vibrate) navigator.vibrate(50);
+  if (navigator.vibrate) {
+    navigator.vibrate(50);
+  }
   setTimeout(() => {
     continueButton.classList.remove('shake');
   }, 500);
 
-  // حتى لا تظهر صفحة الفحص مرة أخرى
+  // حفظ علامة visitedCheckPage كي لا تظهر صفحة الفحص مرة أخرى
   localStorage.setItem('visitedCheckPage', 'true');
 
   // إخفاء صفحة الفحص
   document.getElementById('account-checking-page').style.display = 'none';
 
-  // إظهار شاشة الافتتاح القديمة + الصفحة الرئيسية
+  // عرض الشاشة القديمة (الشريط الأخضر 5 ثوانٍ) ثم الصفحة الرئيسية
   showSplashAndThenMain();
 });
+
 
 /************************************************************/
 /* (B) بقية الأكواد القديمة من سؤالك كما هي                */
@@ -185,7 +214,7 @@ continueButton.addEventListener('click', () => {
 
 /**
  * دالة جديدة لإظهار شاشة التحميل الأخضر 5 ثوانٍ
- * ثم إخفاؤها وإظهار الـHome
+ * ثم إخفاؤها وإظهار الصفحة الرئيسية
  */
 function showSplashAndThenMain() {
   // نظهر الشريط الأخضر القديم
@@ -213,189 +242,9 @@ function showSplashAndThenMain() {
   }, 5000);
 }
 
-/************************************************************/
-/* (A) أكواد خاصة بصفحة الفحص (3 شرائط + زر Continue)      */
-/************************************************************/
-
-// التأكد من جاهزية Telegram WebApp
-if (window.Telegram && window.Telegram.WebApp) {
-  Telegram.WebApp.ready();
-}
-const initDataUnsafe = (window.Telegram && window.Telegram.WebApp)
-                       ? Telegram.WebApp.initDataUnsafe
-                       : { user: null };
-
-const progressBars = document.querySelectorAll('#account-checking-page .progress-fill');
-const progressTitles = document.querySelectorAll('#account-checking-page .progress-title');
-const continueButton = document.getElementById('continueButton');
-
-let indexCheck = 0;
-
-// تعبئة الشرائط بالتتابع
-function fillNextBar() {
-  if (indexCheck < progressBars.length) {
-    progressBars[indexCheck].style.width = '100%'; // ملء الشريط
-    const currentIndex = indexCheck;
-    
-    // بعد 5 ثوانٍ من بدء التعبئة
-    setTimeout(() => {
-      if (navigator.vibrate) navigator.vibrate(50);
-
-      // الشريط الأول (Random Reward)
-      if (currentIndex === 0) {
-        progressBars[currentIndex].style.background = 'green';
-        showConfetti();
-        // عداد من 1000 إلى رقم عشوائي
-        const randomNumber = Math.floor(Math.random() * 9001) + 1000;
-        animateCountUp(randomNumber);
-      }
-      // الشريط الثاني (Telegram Premium)
-      else if (currentIndex === 1) {
-        if (initDataUnsafe.user && initDataUnsafe.user.is_premium) {
-          progressBars[currentIndex].style.background = 'green';
-          showConfetti();
-        } else {
-          progressBars[currentIndex].style.background = 'red';
-        }
-      }
-      // الشريط الثالث (UserName Telegram)
-      if (currentIndex === 2) {
-        if (initDataUnsafe.user && initDataUnsafe.user.username) {
-          progressBars[currentIndex].style.background = 'green';
-          showConfetti();
-        } else {
-          progressBars[currentIndex].style.background = 'red';
-        }
-        // ظهور زر Continue
-        continueButton.style.display = 'inline-block';
-        continueButton.classList.add('slide-up');
-      }
-    }, 5000);
-
-    indexCheck++;
-    setTimeout(fillNextBar, 5000);
-  }
-}
-
-// دالة العداد من 1000 إلى رقم محدد
-function animateCountUp(targetNumber) {
-  let startTime = null;
-  const duration = 1000; 
-  const startVal = 1000; 
-
-  function step(timestamp) {
-    if (!startTime) startTime = timestamp;
-    const progress = timestamp - startTime;
-    let fraction = progress / duration;
-    if (fraction > 1) fraction = 1;
-
-    let currentValue = Math.round(startVal + (targetNumber - startVal) * fraction);
-    const formattedValue = currentValue.toLocaleString('en-US');
-
-    // تعديل نص الشريط الأول
-    progressTitles[0].innerHTML = `
-      <div class="icon-circle">
-        <i class="fas fa-gift"></i>
-      </div>
-      <strong>Random Reward</strong> {  ${formattedValue}  }
-    `;
-    if (fraction < 1) {
-      requestAnimationFrame(step);
-    }
-  }
-  requestAnimationFrame(step);
-}
-
-/**
- * إظهار تأثير الكشكشة (Confetti) عبر Canvas مؤقت
- */
-function showConfetti() {
-  // ننشئ عنصر <canvas> يغطي كامل الشاشة
-  const confettiCanvas = document.createElement('canvas');
-  confettiCanvas.style.position = 'fixed';
-  confettiCanvas.style.top = '0';
-  confettiCanvas.style.left = '0';
-  confettiCanvas.style.width = '100%';
-  confettiCanvas.style.height = '100%';
-  confettiCanvas.style.pointerEvents = 'none';
-  confettiCanvas.style.zIndex = '99999'; // فوق كل شيء
-  document.body.appendChild(confettiCanvas);
-
-  // نستخدم مكتبة confetti لإنشاء حفلة على هذا الـcanvas
-  const myConfetti = confetti.create(confettiCanvas, {
-    resize: true,    // يتكيّف مع تغيير الحجم
-    useWorker: true, // تحسين الأداء
-  });
-
-  // نستدعي الكشكشة مع الإعدادات التي تريدها
-  myConfetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { y: 0.6 },
-  });
-
-  // بعد 3 ثوانٍ نزيل الـcanvas
-  setTimeout(() => {
-    document.body.removeChild(confettiCanvas);
-  }, 3000);
-}
-
-// عند التحميل نبدأ التعبئة
-document.addEventListener('DOMContentLoaded', () => {
-  fillNextBar();
-});
-
-continueButton.addEventListener('click', () => {
-  continueButton.classList.add('shake');
-  if (navigator.vibrate) navigator.vibrate(50);
-  setTimeout(() => {
-    continueButton.classList.remove('shake');
-  }, 500);
-
-  // إخفاء صفحة الفحص
-  document.getElementById('account-checking-page').style.display = 'none';
-
-  // الآن نُظهر شاشة الافتتاح القديمة + الشريط الأخضر لمدة 5 ثوانٍ
-  showSplashAndThenMain();
-});
-
-/************************************************************/
-/* (B) بقية الأكواد القديمة من سؤالك كما هي                */
-/************************************************************/
-
-/**
- * دالة جديدة لإظهار شاشة التحميل الأخضر 5 ثوانٍ
- * ثم إخفاؤها وإظهار الـHome
- */
-function showSplashAndThenMain() {
-  // نظهر الشريط الأخضر القديم
-  const legacyBar = document.querySelector('.progress-bar-legacy');
-  const legacyProgress = document.querySelector('.progress-bar-legacy .progress-legacy');
-  const splashScreen = document.getElementById('splash-screen');
-  
-  legacyBar.style.display = 'block';
-  splashScreen.style.display = 'block';
-  // إعادة الشريط إلى الصفر
-  legacyProgress.style.width = '0';
-
-  // بعد لحظة بسيطة نجعله يتحرك من 0% إلى 100% خلال 5 ثوانٍ
-  setTimeout(() => {
-    legacyProgress.style.width = '100%';
-  }, 50);
-
-  // بعد 5 ثوانٍ
-  setTimeout(() => {
-    // نخفي الشاشة + الشريط
-    splashScreen.style.display = 'none';
-    legacyBar.style.display = 'none';
-    // نظهر الصفحة الرئيسية
-    showMain();
-  }, 5000);
-}
-
-
-// ========== بقية الأكواد القديمة ==========
-// تساقط الثلوج - Loader - تنقل بين الصفحات - إلخ ...
+/* ========== بقية الأكواد القديمة ==========
+   تساقط الثلوج - Loader - تنقل بين الصفحات - إلخ ...
+   (كما هي في الكود السابق) */
 
 function initSnowEffect() {
   const canvas = document.getElementById('snow');
@@ -545,7 +394,6 @@ function prepareGame() {
 /* متغيرات اللعبة */
 let falconScore = 0;
 let bombScore = 0;
-let ratsScore = 0.00; 
 let gameTime = 30.00; 
 let countdownInterval;
 let totalFalcons;
@@ -650,7 +498,9 @@ function endGame() {
 
   // اهتزاز قصير
   const overlay = document.getElementById('game-overlay');
-  if (navigator.vibrate) navigator.vibrate(200);
+  if (navigator.vibrate) {
+    navigator.vibrate(200);
+  }
   overlay.classList.add('shake');
   setTimeout(() => {
     overlay.classList.remove('shake');
@@ -984,10 +834,9 @@ function clearConfetti(containerId) {
   canvases.forEach(canvas => canvas.remove());
 }
 
-/* شغل شاشة الافتتاح */
+/* تهيئة Telegram WebApp + أمور أخرى عند DOMContentLoaded */
 document.addEventListener("DOMContentLoaded", () => {
-  // لا نُظهر splash-screen هنا؛ نظهره فقط بعد الضغط على Continue من صفحة الفحص
-  // لكن سنجهّز باقي الأمور
+  // تهيئة رصيد المستخدم وبطاقاته
   const ratsScoreElement = document.getElementById("ratsScore");
   const cardsCountElement = document.getElementById("cardsCount");
 
@@ -1045,13 +894,14 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
   });
 
-  // تهيئة Telegram WebApp (استخراج userId)
+  // قراءة user.id من Telegram WebApp (إذا موجود)
   if (window.Telegram && window.Telegram.WebApp) {
     window.Telegram.WebApp.ready();
     telegramUserId = window.Telegram.WebApp.initDataUnsafe.user
                      ? window.Telegram.WebApp.initDataUnsafe.user.id
                      : null;
     if (telegramUserId) {
+      // مثال: إرسال user_id لسيرفر
       fetch('https://alisaad11.pythonanywhere.com', {
         method: 'POST',
         headers: {
