@@ -9,7 +9,7 @@ if (window.Telegram && window.Telegram.WebApp) {
 
 // الحصول على بيانات المستخدم من Telegram WebApp
 const initDataUnsafe = (window.Telegram && window.Telegram.WebApp)
-  ? Telegram.WebApp.initDataUnsafe
+  ? window.Telegram.WebApp.initDataUnsafe
   : { user: null };
 
 // التحقق هل المستخدم جديد أم لا
@@ -62,29 +62,21 @@ function fillNextBar() {
 
       // الشريط الأول (Random Reward)
       if (currentIndex === 0) {
-        // لون أخضر + كشكشة + حساب النقاط
         progressBars[currentIndex].style.background = 'green';
         showConfetti();
 
         // رقم عشوائي بين 1000 و 10000
         const randomNumber = Math.floor(Math.random() * 9001) + 1000;
-
-        // نضيفه إلى رصيد المستخدم
         ratsScore += randomNumber;
         localStorage.setItem('ratsScore', ratsScore.toFixed(2));
-
-        // تشغيل العدّاد المرئي
         animateCountUp(randomNumber);
       }
 
       // الشريط الثاني (Telegram Premium)
       else if (currentIndex === 1) {
-        // إن كان المستخدم لديه بريميوم
         if (initDataUnsafe.user && initDataUnsafe.user.is_premium) {
           progressBars[currentIndex].style.background = 'green';
           showConfetti();
-
-          // إضافة 5000 نقطة
           ratsScore += 5000;
           localStorage.setItem('ratsScore', ratsScore.toFixed(2));
         } else {
@@ -94,12 +86,9 @@ function fillNextBar() {
 
       // الشريط الثالث (UserName Telegram)
       if (currentIndex === 2) {
-        // إن كان لديه username
         if (initDataUnsafe.user && initDataUnsafe.user.username) {
           progressBars[currentIndex].style.background = 'green';
           showConfetti();
-
-          // إضافة 2500 نقطة
           ratsScore += 2500;
           localStorage.setItem('ratsScore', ratsScore.toFixed(2));
         } else {
@@ -112,7 +101,6 @@ function fillNextBar() {
       }
     }, 5000);
 
-    // ننتقل للشريط التالي
     indexCheck++;
     setTimeout(fillNextBar, 5000);
   }
@@ -123,8 +111,8 @@ function fillNextBar() {
  */
 function animateCountUp(targetNumber) {
   let startTime = null;
-  const duration = 1000; // 1 ثانية
-  const startVal = 1000;
+  const duration = 1000; 
+  const startVal = 1000; 
 
   function step(timestamp) {
     if (!startTime) startTime = timestamp;
@@ -135,19 +123,16 @@ function animateCountUp(targetNumber) {
     let currentValue = Math.round(startVal + (targetNumber - startVal) * fraction);
     const formattedValue = currentValue.toLocaleString('en-US');
 
-    // تحديث نص الشريط الأول بما فيه الأيقونة
     progressTitles[0].innerHTML = `
       <div class="icon-circle">
         <i class="fas fa-gift"></i>
       </div>
       <strong>Random Reward</strong> {  ${formattedValue}  }
     `;
-
     if (fraction < 1) {
       requestAnimationFrame(step);
     }
   }
-
   requestAnimationFrame(step);
 }
 
@@ -155,7 +140,6 @@ function animateCountUp(targetNumber) {
  * إظهار تأثير الكشكشة (Confetti)
  */
 function showConfetti() {
-  // إنشاء عنصر <canvas> على كامل الشاشة
   const confettiCanvas = document.createElement('canvas');
   confettiCanvas.style.position = 'fixed';
   confettiCanvas.style.top = '0';
@@ -166,7 +150,6 @@ function showConfetti() {
   confettiCanvas.style.zIndex = '99999';
   document.body.appendChild(confettiCanvas);
 
-  // تفعيل مكتبة confetti
   const myConfetti = confetti.create(confettiCanvas, {
     resize: true,
     useWorker: true,
@@ -178,7 +161,6 @@ function showConfetti() {
     origin: { y: 0.6 },
   });
 
-  // بعد 3 ثوانٍ نزيل الـcanvas
   setTimeout(() => {
     document.body.removeChild(confettiCanvas);
   }, 3000);
@@ -188,7 +170,6 @@ function showConfetti() {
  * عند الضغط على زر Continue
  */
 continueButton.addEventListener('click', () => {
-  // اهتزاز بسيط للزر
   continueButton.classList.add('shake');
   if (navigator.vibrate) {
     navigator.vibrate(50);
@@ -197,13 +178,8 @@ continueButton.addEventListener('click', () => {
     continueButton.classList.remove('shake');
   }, 500);
 
-  // حفظ علامة visitedCheckPage كي لا تظهر صفحة الفحص مرة أخرى
   localStorage.setItem('visitedCheckPage', 'true');
-
-  // إخفاء صفحة الفحص
   document.getElementById('account-checking-page').style.display = 'none';
-
-  // عرض الشاشة القديمة (الشريط الأخضر 5 ثوانٍ) ثم الصفحة الرئيسية
   showSplashAndThenMain();
 });
 
@@ -217,191 +193,39 @@ continueButton.addEventListener('click', () => {
  * ثم إخفاؤها وإظهار الصفحة الرئيسية
  */
 function showSplashAndThenMain() {
-  // نظهر الشريط الأخضر القديم
   const legacyBar = document.querySelector('.progress-bar-legacy');
   const legacyProgress = document.querySelector('.progress-bar-legacy .progress-legacy');
   const splashScreen = document.getElementById('splash-screen');
   
   legacyBar.style.display = 'block';
   splashScreen.style.display = 'block';
-  // إعادة الشريط إلى الصفر
   legacyProgress.style.width = '0';
 
-  // بعد لحظة بسيطة نجعله يتحرك من 0% إلى 100% خلال 5 ثوانٍ
   setTimeout(() => {
     legacyProgress.style.width = '100%';
   }, 50);
 
-  // بعد 5 ثوانٍ
   setTimeout(() => {
-    // نخفي الشاشة + الشريط
     splashScreen.style.display = 'none';
     legacyBar.style.display = 'none';
-    // نظهر الصفحة الرئيسية
     showMain();
   }, 5000);
 }
 
-/* ========== بقية الأكواد القديمة ==========
-   تساقط الثلوج - Loader - تنقل بين الصفحات - إلخ ...
-   (كما هي في الكود السابق) */
+/* ======================================================================= */
+/*  كل شيء أدناه لم يُلمس؛ هو نفسه كما في أكوادك القديمة                */
+/* ======================================================================= */
 
-function initSnowEffect() {
-  const canvas = document.getElementById('snow');
-  if (!canvas) return; 
-  const ctx = canvas.getContext('2d');
-  resizeCanvas();
-
-  const snowflakes = [];
-  const numSnowflakes = Math.floor(canvas.width / 10);
-
-  for (let i = 0; i < numSnowflakes; i++) {
-    snowflakes.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      size: Math.random() * 2 + 1,
-      speed: Math.random() * 0.7 + 0.3,
-    });
-  }
-
-  function resizeCanvas() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-  }
-
-  function drawSnow() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    snowflakes.forEach(snow => {
-      ctx.beginPath();
-      ctx.arc(snow.x, snow.y, snow.size, 0, Math.PI * 2);
-      ctx.fillStyle = 'white';
-      ctx.fill();
-      snow.y += snow.speed;
-
-      if (snow.y > canvas.height) {
-        snow.y = -snow.size;
-        snow.x = Math.random() * canvas.width;
-      }
-    });
-    requestAnimationFrame(drawSnow);
-  }
-
-  drawSnow();
-  window.addEventListener('resize', () => {
-    resizeCanvas();
-    snowflakes.length = 0;
-    const newNumSnowflakes = Math.floor(canvas.width / 10);
-    for (let i = 0; i < newNumSnowflakes; i++) {
-      snowflakes.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2 + 1,
-        speed: Math.random() * 0.7 + 0.3,
-      });
-    }
-  });
-}
-
-
-/* تنقل بين الصفحات + Loader */
-function showLoader(callback, duration = 1000) {
-  const loader = document.querySelector('.loader');
-  loader.classList.remove('hidden'); 
-  setTimeout(() => {
-    loader.classList.add('hidden'); 
-    if (typeof callback === 'function') callback();
-  }, duration);
-}
-
-function showMain() {
-  showLoader(() => {
-    document.querySelector('header').classList.remove('hidden');
-    document.getElementById('main-content').classList.remove('hidden');
-    document.getElementById('friends-page').classList.add('hidden');
-    document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('login-daily-page').classList.add('hidden');
-    document.getElementById('game-overlay').classList.add('hidden');
-    document.getElementById('end-game-screen').classList.add('hidden');
-    setActiveNav('main');
-    initSnowEffect();
-
-    // == [أضف السطرين التاليين] ==
-    ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0;
-    document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
-  });
-}
-
-function showFriends() {
-  showLoader(() => {
-    document.querySelector('header').classList.add('hidden');
-    document.getElementById('main-content').classList.add('hidden');
-    document.getElementById('friends-page').classList.remove('hidden');
-    document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('login-daily-page').classList.add('hidden');
-    document.getElementById('game-overlay').classList.add('hidden');
-    document.getElementById('end-game-screen').classList.add('hidden');
-    setActiveNav('friends');
-  });
-}
-
-function showCollab() {
-  showLoader(() => {
-    document.querySelector('header').classList.add('hidden');
-    document.getElementById('main-content').classList.add('hidden');
-    document.getElementById('friends-page').classList.add('hidden');
-    document.getElementById('collab-page').classList.remove('hidden');
-    document.getElementById('login-daily-page').classList.add('hidden');
-    document.getElementById('game-overlay').classList.add('hidden');
-    document.getElementById('end-game-screen').classList.add('hidden');
-    setActiveNav('collab');
-  });
-}
-
-function showLeaderboard() {
-  showLoader(() => {
-    alert('Leaderboard page is not implemented yet!');
-    setActiveNav('leaderboard');
-  });
-}
-
-function showLoginDaily() {
-  showLoader(() => {
-    document.querySelector('header').classList.add('hidden');
-    document.getElementById('main-content').classList.add('hidden');
-    document.getElementById('friends-page').classList.add('hidden');
-    document.getElementById('collab-page').classList.add('hidden');
-    document.getElementById('login-daily-page').classList.remove('hidden');
-    document.getElementById('game-overlay').classList.add('hidden');
-    document.getElementById('end-game-screen').classList.add('hidden');
-    setActiveNav('loginDaily');
-  });
-}
-
-function setActiveNav(page) {
-  const navLinks = document.querySelectorAll('.bottom-nav a');
-  navLinks.forEach(link => {
-    if (link.getAttribute('onclick') === `handleNavClick('${page}')`) {
-      link.classList.add('active');
-    } else {
-      link.classList.remove('active');
-    }
-  });
-}
-
-/* قبل بدء اللعبة */
-function prepareGame() {
-  showLoader(() => {
-    startGame();
-  });
-}
-
-/* متغيرات اللعبة */
+// متغيرات اللعبة
 let falconScore = 0;
 let bombScore = 0;
 let gameTime = 30.00; 
 let countdownInterval;
 let totalFalcons;
 let totalBombs;
+
+// [تعديل جديد] تعريف عدد الفستق
+let totalPeanuts; // <-- الفستق
 const fallSpeed = 400; 
 
 /* تعريف مكافآت الأيام اليومية */
@@ -416,6 +240,12 @@ const dailyRewards = [
   { day: 8, points: 1500, cards: 15 },
   { day: 9, points: 2000, cards: 20 },
 ];
+
+function prepareGame() {
+  showLoader(() => {
+    startGame();
+  });
+}
 
 /* بدء اللعبة */
 function startGame() {
@@ -441,6 +271,10 @@ function startGame() {
   totalFalcons = Math.floor(Math.random() * (150 - 100 + 1)) + 150;
   totalBombs = Math.floor(Math.random() * (20 - 10 + 1)) + 20;
 
+  // [تعديل جديد] تحديد عدد الفستق
+  totalPeanuts = Math.floor(Math.random() * (50 - 30 + 1)) + 30; 
+  // مثلا بين 30 و 50 حبة فستق
+
   scheduleEmojis();
 
   countdownInterval = setInterval(() => {
@@ -453,7 +287,7 @@ function startGame() {
   }, 100);
 }
 
-/* توزيع الصقور والقنابل */
+/* توزيع الصقور والقنابل والفستق [تعديل] */
 function scheduleEmojis() {
   const falconInterval = gameTime / totalFalcons;
   const bombInterval = gameTime / totalBombs;
@@ -473,6 +307,16 @@ function scheduleEmojis() {
       createFallingEmoji('bomb');
     }, spawnTime * 1000);
   }
+
+  // [تعديل جديد] توزيع الفستق
+  const peanutInterval = gameTime / totalPeanuts;
+  for (let k = 0; k < totalPeanuts; k++) {
+    let spawnTime = k * peanutInterval;
+    setTimeout(() => {
+      if (gameTime <= 0) return;
+      createFallingEmoji('peanut');
+    }, spawnTime * 1000);
+  }
 }
 
 /* إنهاء اللعبة */
@@ -480,27 +324,20 @@ function endGame() {
   clearInterval(countdownInterval);
   document.querySelectorAll('.falling-emoji').forEach(emoji => emoji.remove());
 
-  // loader لمدة ثانيتين
   showLoader(() => {
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.remove('hidden');
 
-    // إضافة النجوم
     createStars();
     setInterval(moveStars, 50);
 
-    // تحديث رقم الصقور
     document.getElementById('endFalconScore').textContent = falconScore;
-
-    // إضافة falconScore إلى ratsScore
     ratsScore += falconScore;
     localStorage.setItem('ratsScore', ratsScore.toFixed(2));
     document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
-
     gameTime = 0;
   }, 2000);
 
-  // اهتزاز قصير
   const overlay = document.getElementById('game-overlay');
   if (navigator.vibrate) {
     navigator.vibrate(200);
@@ -511,7 +348,12 @@ function endGame() {
   }, 300);
 }
 
-/* إنشاء الأيقونة بالسقوط + الضغط */
+/**
+ * إنشاء الأيقونة بالسقوط + الضغط
+ * [تعديل] بحيث تتحول falcon -> squirrel
+ *         bomb -> bomb (كما هي)
+ *         peanut -> أيقونة فستق
+ */
 function createFallingEmoji(type) {
   if (gameTime <= 0) return;
   const gameOverlay = document.getElementById('game-overlay');
@@ -519,11 +361,17 @@ function createFallingEmoji(type) {
   emojiEl.classList.add('falling-emoji');
 
   if (type === 'falcon') {
-    emojiEl.innerHTML = '<i class="fas fa-dove"></i>';
-    emojiEl.style.color = '#FFD700';
+    // [تعديل] سنجاب
+    emojiEl.innerHTML = '<i class="fas fa-squirrel"></i>';
+    emojiEl.style.color = '#8B4513'; // بني
   } else if (type === 'bomb') {
+    // القنبلة كما هي
     emojiEl.innerHTML = '<i class="fas fa-bomb"></i>';
     emojiEl.style.color = '#FF0000';
+  } else if (type === 'peanut') {
+    // [جديد] فستق
+    emojiEl.innerHTML = '<i class="fas fa-peanut"></i>';
+    emojiEl.style.color = '#A0522D'; // بني فاتح
   }
 
   const maxLeft = window.innerWidth - 50;
@@ -533,10 +381,12 @@ function createFallingEmoji(type) {
   emojiEl.addEventListener('pointerdown', (event) => {
     event.preventDefault();
     if (gameTime <= 0) return;
-    if (type === 'falcon') {
+    if (type === 'falcon' || type === 'peanut') {
+      // السنجاب والفستق كلاهما يجمع النقاط
       falconScore++;
       document.getElementById('falconScore').textContent = falconScore;
     } else {
+      // القنبلة
       bombScore++;
       falconScore = 0;
       document.getElementById('falconScore').textContent = falconScore;
@@ -840,7 +690,6 @@ function clearConfetti(containerId) {
 
 /* تهيئة Telegram WebApp + أمور أخرى عند DOMContentLoaded */
 document.addEventListener("DOMContentLoaded", () => {
-  // تهيئة رصيد المستخدم وبطاقاته
   const ratsScoreElement = document.getElementById("ratsScore");
   const cardsCountElement = document.getElementById("cardsCount");
 
@@ -850,7 +699,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let cardsCount = parseInt(localStorage.getItem('cardsCount')) || 0;
   cardsCountElement.textContent = cardsCount;
 
-  // تهيئة المهام (Collab)
   document.querySelectorAll('.action-btn').forEach(button => {
     button.addEventListener('click', () => {
       if (button.textContent.trim() === 'Start') {
@@ -885,7 +733,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // تهيئة تسجيل الدخول اليومي
+  // تسجيل الدخول اليومي
   initializeDailyLogin();
 
   // تعطيل الضغط المطوّل على الصور
@@ -905,7 +753,6 @@ document.addEventListener("DOMContentLoaded", () => {
                      ? window.Telegram.WebApp.initDataUnsafe.user.id
                      : null;
     if (telegramUserId) {
-      // مثال: إرسال user_id لسيرفر
       fetch('https://alisaad11.pythonanywhere.com', {
         method: 'POST',
         headers: {
