@@ -324,6 +324,10 @@ function showMain() {
     document.getElementById('end-game-screen').classList.add('hidden');
     setActiveNav('main');
     initSnowEffect();
+
+    // == [أضف السطرين التاليين] ==
+    ratsScore = parseFloat(localStorage.getItem('ratsScore')) || 0;
+    document.getElementById('ratsScore').textContent = formatNumber(ratsScore.toFixed(2));
   });
 }
 
