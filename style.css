@@ -274,7 +274,7 @@ body {
   top: 0; left: 0;
   width: 100%;
   height: 100%;
-  background: url('https://i.ibb.co/Ytpk096/Follow-us-on-20250124-143733.jpg') no-repeat center center / cover;
+  background: url('https://i.ibb.co/KmqHJFh/Picsart-24-12-27-14-35-12-356.jpg') no-repeat center center / cover;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -673,23 +673,30 @@ footer {
     opacity: 0;
   }
 }
-.active::after {
+.bottom-nav a.active::after {
   content: '';
   position: absolute;
   bottom: -5px;
   left: 50%;
   transform: translateX(-50%);
   width: 60%;
-  height: 4px;
+  height: 3px;
   background-color: white;
   border-radius: 2px;
+  animation: underline-grow 0.3s ease-out;
 }
+
+@keyframes underline-grow {
+  from { width: 0%; }
+  to { width: 60%; }
+}
+
 .ripple-button .icon {
   width: 30px;
   height: auto;
   margin-right: 10px;
   vertical-align: middle;
-}
+} 
 
 /* رسالة النجاح */
 .success-message {
