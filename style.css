@@ -673,30 +673,23 @@ footer {
     opacity: 0;
   }
 }
-.bottom-nav a.active::after {
+.active::after {
   content: '';
   position: absolute;
   bottom: -5px;
   left: 50%;
   transform: translateX(-50%);
   width: 60%;
-  height: 3px;
+  height: 4px;
   background-color: white;
   border-radius: 2px;
-  animation: underline-grow 0.3s ease-out;
 }
-
-@keyframes underline-grow {
-  from { width: 0%; }
-  to { width: 60%; }
-}
-
 .ripple-button .icon {
   width: 30px;
   height: auto;
   margin-right: 10px;
   vertical-align: middle;
-} 
+}
 
 /* رسالة النجاح */
 .success-message {
@@ -714,6 +707,39 @@ footer {
   z-index: 1000;
   opacity: 0.9;
   pointer-events: none;
+}
+
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  background-color: #000; /* خلفية شريط التنقل */
+  padding: 10px 0; /* مسافة عمودية */
+}
+
+.bottom-nav a {
+  flex-grow: 1; /* لجعل الأزرار متساوية العرض */
+  text-align: center;
+  color: #fff; /* لون النص */
+  padding: 10px 0; /* مسافة داخلية */
+  position: relative; /* ضروري لإضافة الخط الأبيض */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.bottom-nav a.active {
+  color: #fff; /* لون النص للزر النشط */
+}
+
+.bottom-nav a.active::after {
+  content: ''; /* محتوى الخط */
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%); /* محاذاة الخط للمنتصف */
+  width: 50%; /* عرض الخط */
+  height: 2px; /* سماكة الخط */
+  background-color: #fff; /* لون الخط */
+  border-radius: 2px; /* زوايا الخط مستديرة */
 }
 
 /* صفحة تسجيل الدخول اليومي */
