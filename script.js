@@ -322,7 +322,7 @@ function showMain() {
     document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    setActiveNav('main');
+    setActiveNav('main'); // << تمت الإضافة هنا
     initSnowEffect();
   });
 }
@@ -336,7 +336,7 @@ function showFriends() {
     document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    setActiveNav('friends');
+    setActiveNav('friends'); // << تمت الإضافة هنا
   });
 }
 
@@ -349,7 +349,7 @@ function showCollab() {
     document.getElementById('login-daily-page').classList.add('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    setActiveNav('collab');
+    setActiveNav('collab'); // << تمت الإضافة هنا
   });
 }
 
@@ -369,7 +369,7 @@ function showLoginDaily() {
     document.getElementById('login-daily-page').classList.remove('hidden');
     document.getElementById('game-overlay').classList.add('hidden');
     document.getElementById('end-game-screen').classList.add('hidden');
-    setActiveNav('loginDaily');
+    setActiveNav('loginDaily'); // << تمت الإضافة هنا
   });
 }
 
