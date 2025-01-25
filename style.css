@@ -423,6 +423,7 @@ header {
   overflow-y: auto;
   padding-right: 10px;
   scrollbar-width: thin;
+  padding-bottom: 70px; /* إضافة هامش سفلي */
 }
 .tasks-section::-webkit-scrollbar {
   width: 8px;
