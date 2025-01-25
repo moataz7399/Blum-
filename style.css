@@ -597,7 +597,7 @@ header {
   color: #000;
   background-color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 9999px;
   font-weight: bold;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
