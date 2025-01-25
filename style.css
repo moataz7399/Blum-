@@ -400,10 +400,38 @@ header {
   display: block;
   margin: 0 auto;
 }
-.friends-buttons button {
+
+.friends-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 80%;
   margin: 10px auto;
-  padding: 15px 0;
+}
+
+.invite-friends-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 9999px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  padding: 15px 20px;
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.invite-friends-button img {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.copy-icon-button {
   background: #fff;
   color: #000;
   border: none;
@@ -411,9 +439,12 @@ header {
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s;
-}
-.friends-buttons button:hover {
-  background: #e5e5e5;
+  padding: 15px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Collab */
