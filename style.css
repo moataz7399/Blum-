@@ -772,25 +772,25 @@ footer {
   padding: 50px 20px;
 }
 .login-daily-header {
-  width: 100%; /* تم تغييرها من 95% */
-  margin: 0; /* تم إزالة الهوامش */
+  width: 100%;
+  margin: 0;
   text-align: center;
-  padding: 0; /* تم إزالة الحشو */
-  background-color: black; /* تأكد من أن لون الخلفية أسود */
-  display: flex; /* محاذاة الصورة في الوسط */
-  justify-content: center;
-  align-items: center;
+  padding: 0;
+  background-color: black;
+  /* إزالة display: flex */
+  /* إزالة justify-content: center */
+  /* إزالة align-items: center */
 }
 
-.daily-entry-image { /* أو .invite-friends-image */
+.invite-friends-image { /* أو .daily-entry-image */
   display: block;
   max-width: 100%;
-  height: auto;
-  border-radius: 0; /* إزالة تدوير الزوايا */
-  box-shadow: none; /* إزالة الظل */
-  width: 100%; /* جعل الصورة تمتد على كامل عرض الحاوية */
-  object-fit: cover; /* جعل الصورة تغطي المساحة بالكامل */
-  object-position: center; /* توسيط الصورة */
+  height: auto; /* تم تعديلها */
+  border-radius: 0;
+  box-shadow: none;
+  width: 100%;
+  object-fit: contain; /* تم تعديلها */
+  object-position: center;
 }
 .login-daily-table {
   display: grid;
