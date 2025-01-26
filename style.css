@@ -777,19 +777,20 @@ footer {
   text-align: center;
   padding: 0;
   background-color: black;
-  /* إزالة display: flex */
-  /* إزالة justify-content: center */
-  /* إزالة align-items: center */
+  display: flex; /* إعادة الإضافة */
+  justify-content: center;
+  align-items: center;
+  height: 270px; /* ارتفاع ثابت للحاوية */
 }
 
 .invite-friends-image { /* أو .daily-entry-image */
   display: block;
   max-width: 100%;
-  height: auto; /* تم تعديلها */
+  height: auto;
   border-radius: 0;
   box-shadow: none;
   width: 100%;
-  object-fit: contain; /* تم تعديلها */
+  object-fit: cover; /* العودة إلى cover */
   object-position: center;
 }
 .login-daily-table {
