@@ -447,6 +447,29 @@ header {
   justify-content: center;
 }
 
+.invite-friends-image-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* تعديل الهامش العلوي حسب الحاجة */
+}
+
+.invite-friends-image-container img {
+  width: 95%; /* تعديل عرض الصورة حسب الحاجة */
+  max-width: 400px; /* أقصى عرض للصورة */
+  height: auto;
+  border-radius: 10px; /* تعديل تدوير الزوايا حسب الحاجة */
+}
+
+.invite-friends-image-container .copy-icon {
+  width: 30px; /* تعديل عرض الأيقونة حسب الحاجة */
+  height: auto;
+  margin-left: -60px; /* تعديل الهامش بين الزر والأيقونة */
+  cursor: pointer;
+  border-radius: 10px; /* قد تحتاج إلى تعديل هذا */
+}
+
 /* Collab */
 .tasks-section {
   margin: 20px;
@@ -749,20 +772,25 @@ footer {
   padding: 50px 20px;
 }
 .login-daily-header {
-  width: 100%;
-  margin-bottom: 20px;
+  width: 100%; /* تم تغييرها من 95% */
+  margin: 0; /* تم إزالة الهوامش */
+  text-align: center;
+  padding: 0; /* تم إزالة الحشو */
+  background-color: black; /* تأكد من أن لون الخلفية أسود */
+  display: flex; /* محاذاة الصورة في الوسط */
+  justify-content: center;
+  align-items: center;
 }
-.header-title {
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: #fff;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
-}
-.header-subtitle {
-  font-weight: normal;
-  font-size: 1rem;
-  color: #fff;
-  text-shadow: 0 0 3px #fff, 0 0 6px #fff;
+
+.daily-entry-image { /* أو .invite-friends-image */
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0; /* إزالة تدوير الزوايا */
+  box-shadow: none; /* إزالة الظل */
+  width: 100%; /* جعل الصورة تمتد على كامل عرض الحاوية */
+  object-fit: cover; /* جعل الصورة تغطي المساحة بالكامل */
+  object-position: center; /* توسيط الصورة */
 }
 .login-daily-table {
   display: grid;
