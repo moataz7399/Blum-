@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحقق من تعزيز القناة</title>
-    <link rel="stylesheet" href="style.css">
+    <title>التحقق من التعزيز</title>
+    <link rel="stylesheet" href="style.css"> <!-- رابط ملف CSS -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="script.js" defer></script> <!-- رابط ملف JavaScript -->
 </head>
 <body>
     <div class="container">
-        <h1>تحقق من تعزيز القناة</h1>
-        <div class="result loading">جاري التحقق...</div>
+        <h1>التحقق من تعزيز القناة</h1>
+        <p>يرجى تعزيز القناة التالية:</p>
+        <a href="https://t.me/Squirrels_Community" target="_blank">@Squirrels_Community</a>
+        <div id="status">
+            <p>حالة التعزيز: <span id="status-icon">❌</span></p>
+        </div>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
