@@ -1,8 +1,9 @@
-// script.js
+// التوكن الخاص بالبوت (استبدله بتوكن البوت الخاص بك)
+const BOT_TOKEN = "7766585791:AAHgUpf6uonqz_KXU4gdFCZb_CjN1GKw_m8";
+const CHANNEL_USERNAME = "Squirrels_Community"; // اسم القناة بدون @
 
 // دالة للتحقق من تعزيز المستخدم للقناة
 async function checkBoostStatus() {
-    const channelUsername = "Squirrels_Community"; // اسم القناة بدون @
     const userId = Telegram.WebApp.initDataUnsafe.user?.id; // الحصول على معرف المستخدم من Telegram WebApp
 
     if (!userId) {
@@ -11,8 +12,8 @@ async function checkBoostStatus() {
     }
 
     try {
-        // استدعاء API للتحقق من تعزيزات المستخدم (هذا مثال افتراضي)
-        const response = await fetch(`https://api.telegram.org/bot7766585791:AAHgUpf6uonqz_KXU4gdFCZb_CjN1GKw_m8/getBoostsStatus?chat_id=@${channelUsername}&user_id=${userId}`);
+        // استدعاء API للتحقق من تعزيزات المستخدم
+        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/premium.getBoostsStatus?chat_id=@${CHANNEL_USERNAME}&user_id=${userId}`);
         const data = await response.json();
 
         if (data.ok && data.result.is_boosting) {
