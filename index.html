@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>التحقق من الاشتراك</title>
-    <link rel="stylesheet" href="styles.css"> <!-- رابط ملف CSS -->
+    <title>تتبع الروابط - Telegram Web App</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="script.js" defer></script> <!-- رابط ملف JavaScript -->
 </head>
 <body>
     <div class="container">
-        <h1>التحقق من الاشتراك في القناة</h1>
-        <p>يرجى الاشتراك في القناة التالية:</p>
-        <a href="https://t.me/Squirrels_Community" target="_blank">@Squirrels_Community</a>
-        <div id="status">
-            <p>حالة الاشتراك: <span id="status-icon">❌</span></p>
-        </div>
+        <h1>مرحباً! 👋</h1>
+        <p>انسخ الرابط الخاص بك وشاركه مع أصدقائك لتتبع من دخل منه.</p>
+        <button id="copy-button">نسخ الرابط</button>
+        <div id="status-message"></div>
+        <h2>الأشخاص الذين دخلوا من الرابط:</h2>
+        <ul id="user-list"></ul>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>
