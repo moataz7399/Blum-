@@ -11,6 +11,7 @@ Telegram.WebApp.ready();
 // الحصول على بيانات المستخدم
 const user = Telegram.WebApp.initDataUnsafe.user;
 const userId = user.id; // معرف المستخدم الحالي
+const username = user.username || `User ${userId}`; // اسم المستخدم أو معرفه
 
 // إنشاء الرابط المخصص
 const customLink = `https://t.me/${botUsername}/${appName}?startapp=${userId}`;
@@ -30,26 +31,30 @@ const originalUserId = urlParams.get('startapp'); // معرف المستخدم �
 
 // إذا كان هناك معرف مستخدم أصلي، قم بتتبع المستخدم الحالي
 if (originalUserId && originalUserId !== userId) {
-    // إرسال البيانات إلى الخادم لتتبع المستخدم
-    fetch('/track-user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ originalUserId, currentUserId: userId })
-    });
+    // الحصول على البيانات المحفوظة في localStorage
+    const storedData = localStorage.getItem(`referrals_${originalUserId}`);
+    let referrals = storedData ? JSON.parse(storedData) : [];
+
+    // إضافة المستخدم الحالي إلى القائمة
+    referrals.push({ userId, username });
+
+    // حفظ البيانات المحدثة في localStorage
+    localStorage.setItem(`referrals_${originalUserId}`, JSON.stringify(referrals));
 
     // إضافة المستخدم الحالي إلى القائمة
     const li = document.createElement("li");
-    li.textContent = user.username || `User ${userId}`;
+    li.textContent = username;
     userList.appendChild(li);
 }
 
-// استرداد قائمة المستخدمين من الخادم (مثال)
-fetch('/get-users')
-    .then(response => response.json())
-    .then(data => {
-        data.users.forEach(user => {
-            const li = document.createElement("li");
-            li.textContent = user.username || `User ${user.id}`;
-            userList.appendChild(li);
-        });
+// عرض المستخدمين الذين دخلوا من الرابط (لصاحب الرابط)
+if (!originalUserId || originalUserId === userId) {
+    const storedData = localStorage.getItem(`referrals_${userId}`);
+    const referrals = storedData ? JSON.parse(storedData) : [];
+
+    referrals.forEach(ref => {
+        const li = document.createElement("li");
+        li.textContent = ref.username;
+        userList.appendChild(li);
     });
+}
