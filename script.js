@@ -1,36 +1,40 @@
-// التوكن الخاص بالبوت
-const botToken = '7766585791:AAHgUpf6uonqz_KXU4gdFCZb_CjN1GKw_m8';
-// معرف القناة (يمكن استخراجه من الرابط)
-const chatId = '@Squirrels_Community';
+// تعريف المتغيرات
+const botToken = "7766585791:AAHgUpf6uonqz_KXU4gdFCZb_CjN1GKw_m8"; // توكن البوت
+const channelUsername = "@Squirrels_Community"; // اسم القناة
+const statusIcon = document.getElementById("status-icon"); // عنصر حالة التعزيز
 
-// بيانات المستخدم من Telegram WebApp
-const initData = new URLSearchParams(window.Telegram.WebApp.initData);
-const userId = initData.get('user.id');
+// تهيئة Telegram Web App
+Telegram.WebApp.ready();
 
-// عنصر النتيجة في HTML
-const resultElement = document.querySelector('.result');
+// الحصول على بيانات المستخدم
+const user = Telegram.WebApp.initDataUnsafe.user;
+const userId = user.id; // معرف المستخدم
 
 // دالة للتحقق من التعزيز
-async function checkBoost() {
+async function checkBoost(userId) {
     try {
-        // استدعاء API للتحقق من حالة العضو
-        const response = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${chatId}&user_id=${userId}`);
+        const response = await fetch(
+            `https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${channelUsername}&user_id=${userId}`
+        );
         const data = await response.json();
 
         // التحقق من حالة التعزيز
         if (data.result && data.result.status === 'member' && data.result.is_boosting) {
-            resultElement.innerHTML = '✅ لقد قمت بتعزيز القناة!';
-            resultElement.classList.add('success');
+            return true; // إذا كان معززًا
         } else {
-            resultElement.innerHTML = '❌ لم تقم بتعزيز القناة بعد.';
-            resultElement.classList.add('error');
+            return false; // إذا لم يكن معززًا
         }
     } catch (error) {
-        resultElement.innerHTML = '❌ حدث خطأ أثناء التحقق. يرجى المحاولة لاحقًا.';
-        resultElement.classList.add('error');
-        console.error(error);
+        console.error("حدث خطأ أثناء التحقق من التعزيز:", error);
+        return false;
     }
 }
 
-// بدء التحقق عند تحميل الصفحة
-checkBoost();
+// تحديث حالة التعزيز
+checkBoost(userId).then(isBoosted => {
+    if (isBoosted) {
+        statusIcon.textContent = "✅"; // إذا كان معززًا
+    } else {
+        statusIcon.textContent = "❌"; // إذا لم يكن معززًا
+    }
+});
