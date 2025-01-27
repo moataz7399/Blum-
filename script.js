@@ -1,40 +1,51 @@
-// تعريف المتغيرات
-const botToken = "7766585791:AAHgUpf6uonqz_KXU4gdFCZb_CjN1GKw_m8"; // توكن البوت
-const channelUsername = "@javaoavaobqpqja"; // اسم القناة
-const statusIcon = document.getElementById("status-icon"); // عنصر حالة التعزيز
+// توكن البوت الخاص بك
+const token = "7766585791:AAHgUpf6uonqz_KXU4gdFCZb_CjN1GKw_m8";
+// اسم المستخدم أو معرف القناة
+const channelUsername = "@javaoavaobqpqja";
 
-// تهيئة Telegram Web App
-Telegram.WebApp.ready();
-
-// الحصول على بيانات المستخدم
-const user = Telegram.WebApp.initDataUnsafe.user;
-const userId = user.id; // معرف المستخدم
-
-// دالة للتحقق من التعزيز
+// التحقق من تعزيز القناة
 async function checkBoost(userId) {
-    try {
-        const response = await fetch(
-            `https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${channelUsername}&user_id=${userId}`
-        );
-        const data = await response.json();
+  const statusDiv = document.getElementById("status");
 
-        // التحقق من حالة التعزيز
-        if (data.result && data.result.status === 'member' && data.result.is_boosting) {
-            return true; // إذا كان معززًا
-        } else {
-            return false; // إذا لم يكن معززًا
-        }
-    } catch (error) {
-        console.error("حدث خطأ أثناء التحقق من التعزيز:", error);
-        return false;
+  try {
+    // استدعاء API للتحقق من حالة المستخدم
+    const response = await fetch(
+      `https://api.telegram.org/bot${token}/getChatMember?chat_id=${channelUsername}&user_id=${userId}`
+    );
+    const data = await response.json();
+
+    if (data.ok) {
+      const status = data.result.status;
+      // تحقق من حالة العضو
+      if (status === "member" || status === "administrator" || status === "creator") {
+        statusDiv.textContent = "✅ Boosted!";
+        statusDiv.className = "status green";
+      } else {
+        statusDiv.textContent = "❌ Not Boosted!";
+        statusDiv.className = "status red";
+      }
+    } else {
+      statusDiv.textContent = "❌ Error: " + data.description;
+      statusDiv.className = "status red";
     }
+  } catch (error) {
+    statusDiv.textContent = "❌ Error: " + error.message;
+    statusDiv.className = "status red";
+  }
 }
 
-// تحديث حالة التعزيز
-checkBoost(userId).then(isBoosted => {
-    if (isBoosted) {
-        statusIcon.textContent = "✅"; // إذا كان معززًا
-    } else {
-        statusIcon.textContent = "❌"; // إذا لم يكن معززًا
-    }
-});
+// الحصول على بيانات المستخدم من Telegram Web App
+window.onload = () => {
+  const telegram = window.Telegram.WebApp;
+  telegram.ready();
+
+  const initData = telegram.initDataUnsafe;
+  if (initData && initData.user) {
+    const userId = initData.user.id; // معرف المستخدم الذي فتح الصفحة
+    checkBoost(userId);
+  } else {
+    const statusDiv = document.getElementById("status");
+    statusDiv.textContent = "❌ Unable to fetch user data.";
+    statusDiv.className = "status red";
+  }
+};
