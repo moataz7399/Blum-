@@ -1,60 +1,30 @@
-// تعريف المتغيرات
-const botUsername = "FALCON_tapbot"; // اسم البوت
-const appName = "FALCON"; // اسم التطبيق المصغر
-const copyButton = document.getElementById("copy-button"); // زر نسخ الرابط
-const statusMessage = document.getElementById("status-message"); // رسالة الحالة
-const userList = document.getElementById("user-list"); // قائمة المستخدمين
+// script.js
 
-// تهيئة Telegram Web App
-Telegram.WebApp.ready();
+// دالة للتحقق من تعزيز المستخدم للقناة
+async function checkBoostStatus() {
+    const channelUsername = "Squirrels_Community"; // اسم القناة بدون @
+    const userId = Telegram.WebApp.initDataUnsafe.user?.id; // الحصول على معرف المستخدم من Telegram WebApp
 
-// الحصول على بيانات المستخدم
-const user = Telegram.WebApp.initDataUnsafe.user;
-const userId = user.id; // معرف المستخدم الحالي
-const username = user.username || `User ${userId}`; // اسم المستخدم أو معرفه
+    if (!userId) {
+        document.getElementById("status").textContent = "❌ لم يتم العثور على معرف المستخدم.";
+        return;
+    }
 
-// إنشاء الرابط المخصص
-const customLink = `https://t.me/${botUsername}/${appName}?startapp=${userId}`;
+    try {
+        // استدعاء API للتحقق من تعزيزات المستخدم (هذا مثال افتراضي)
+        const response = await fetch(`https://api.telegram.org/bot7766585791:AAHgUpf6uonqz_KXU4gdFCZb_CjN1GKw_m8/getBoostsStatus?chat_id=@${channelUsername}&user_id=${userId}`);
+        const data = await response.json();
 
-// نسخ الرابط عند النقر على الزر
-copyButton.addEventListener("click", () => {
-    navigator.clipboard.writeText(customLink).then(() => {
-        statusMessage.textContent = "تم نسخ الرابط بنجاح! 🎉";
-    }).catch(() => {
-        statusMessage.textContent = "حدث خطأ أثناء نسخ الرابط. ❌";
-    });
-});
-
-// التحقق من المعلمة startapp في الرابط
-const urlParams = new URLSearchParams(window.location.search);
-const originalUserId = urlParams.get('startapp'); // معرف المستخدم الأصلي
-
-// إذا كان هناك معرف مستخدم أصلي، قم بتتبع المستخدم الحالي
-if (originalUserId && originalUserId !== userId) {
-    // الحصول على البيانات المحفوظة في localStorage
-    const storedData = localStorage.getItem(`referrals_${originalUserId}`);
-    let referrals = storedData ? JSON.parse(storedData) : [];
-
-    // إضافة المستخدم الحالي إلى القائمة
-    referrals.push({ userId, username });
-
-    // حفظ البيانات المحدثة في localStorage
-    localStorage.setItem(`referrals_${originalUserId}`, JSON.stringify(referrals));
-
-    // إضافة المستخدم الحالي إلى القائمة
-    const li = document.createElement("li");
-    li.textContent = username;
-    userList.appendChild(li);
+        if (data.ok && data.result.is_boosting) {
+            document.getElementById("status").textContent = "✅ أنت معزز لهذه القناة!";
+        } else {
+            document.getElementById("status").textContent = "❌ أنت لست معززًا لهذه القناة.";
+        }
+    } catch (error) {
+        console.error("حدث خطأ أثناء التحقق:", error);
+        document.getElementById("status").textContent = "❌ حدث خطأ أثناء التحقق.";
+    }
 }
 
-// عرض المستخدمين الذين دخلوا من الرابط (لصاحب الرابط)
-if (!originalUserId || originalUserId === userId) {
-    const storedData = localStorage.getItem(`referrals_${userId}`);
-    const referrals = storedData ? JSON.parse(storedData) : [];
-
-    referrals.forEach(ref => {
-        const li = document.createElement("li");
-        li.textContent = ref.username;
-        userList.appendChild(li);
-    });
-}
+// تشغيل الدالة عند تحميل الصفحة
+window.onload = checkBoostStatus;
