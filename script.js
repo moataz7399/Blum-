@@ -1,6 +1,6 @@
 // تعريف المتغيرات
 const botToken = "7766585791:AAHgUpf6uonqz_KXU4gdFCZb_CjN1GKw_m8"; // توكن البوت
-const channelUsername = "@Squirrels_Community"; // اسم القناة
+const channelUsername = "@javaoavaobqpqja"; // اسم القناة
 const statusIcon = document.getElementById("status-icon"); // عنصر حالة التعزيز
 
 // تهيئة Telegram Web App
