@@ -25,8 +25,15 @@ body {
 /* تنسيق العنوان */
 h1 {
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: #007bff;
+}
+
+/* تنسيق النصوص */
+p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
 }
 
 /* تنسيق زر نسخ الرابط */
@@ -43,6 +50,13 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+/* تنسيق الرسائل التحذيرية */
+#status-message {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #28a745;
 }
 
 /* تنسيق قائمة المستخدمين */
@@ -67,40 +81,4 @@ button:hover {
 #user-list li::before {
     content: "👤";
     margin-right: 10px;
-}
-
-/* تنسيق الرسائل التحذيرية أو الإشعارات */
-.alert {
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 20px;
-    font-size: 14px;
-}
-
-.alert.success {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-.alert.error {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-/* تنسيق الروابط */
-a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* تنسيق النصوص الصغيرة */
-.small-text {
-    font-size: 12px;
-    color: #777;
-    margin-top: 10px;
 }
