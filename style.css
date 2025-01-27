@@ -1,34 +1,41 @@
-// تعريف المتغيرات
-const botToken = "7766585791:AAHgUpf6uonqz_KXU4gdFCZb_CjN1GKw_m8"; // توكن البوت
-const channelUsername = "@Squirrels_Community"; // اسم القناة
-const statusIcon = document.getElementById("status-icon"); // عنصر حالة الاشتراك
-
-// تهيئة Telegram Web App
-Telegram.WebApp.ready();
-
-// الحصول على بيانات المستخدم
-const user = Telegram.WebApp.initDataUnsafe.user;
-const userId = user.id; // معرف المستخدم
-
-// دالة للتحقق من الاشتراك
-async function checkSubscription(userId) {
-    try {
-        const response = await fetch(
-            `https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${channelUsername}&user_id=${userId}`
-        );
-        const data = await response.json();
-        return data.result.status === 'member' || data.result.status === 'administrator' || data.result.status === 'creator';
-    } catch (error) {
-        console.error("حدث خطأ أثناء التحقق من الاشتراك:", error);
-        return false;
-    }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    text-align: center;
+    padding: 20px;
 }
 
-// تحديث حالة الاشتراك
-checkSubscription(userId).then(isSubscribed => {
-    if (isSubscribed) {
-        statusIcon.textContent = "✅"; // إذا كان مشتركًا
-    } else {
-        statusIcon.textContent = "❌"; // إذا لم يكن مشتركًا
-    }
-});
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#status {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+#status-icon {
+    font-size: 24px;
+    font-weight: bold;
+}
