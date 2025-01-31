@@ -1,51 +1,69 @@
-// توكن البوت الخاص بك
-const token = "7766585791:AAHgUpf6uonqz_KXU4gdFCZb_CjN1GKw_m8";
-// اسم المستخدم أو معرف القناة
-const channelUsername = "@javaoavaobqpqja";
+// script.js
+// تهيئة Telegram WebApp
+const tg = window.Telegram.WebApp;
 
-// التحقق من تعزيز القناة
-async function checkBoost(userId) {
-  const statusDiv = document.getElementById("status");
+// بيانات المستخدم الحالي
+const user = {
+    id: tg.initDataUnsafe.user?.id || "غير معروف",
+    name: tg.initDataUnsafe.user?.first_name || "مستخدم",
+    score: 0,
+};
 
-  try {
-    // استدعاء API للتحقق من حالة المستخدم
-    const response = await fetch(
-      `https://api.telegram.org/bot${token}/getChatMember?chat_id=${channelUsername}&user_id=${userId}`
-    );
-    const data = await response.json();
+// جلب النقاط من LocalStorage
+let leaderboardData = JSON.parse(localStorage.getItem("leaderboard")) || [];
 
-    if (data.ok) {
-      const status = data.result.status;
-      // تحقق من حالة العضو
-      if (status === "member" || status === "administrator" || status === "creator") {
-        statusDiv.textContent = "✅ Boosted!";
-        statusDiv.className = "status green";
-      } else {
-        statusDiv.textContent = "❌ Not Boosted!";
-        statusDiv.className = "status red";
-      }
+// عرض اسم المستخدم
+document.getElementById("name").textContent = user.name;
+
+// عرض النقاط الحالية
+const currentScoreElement = document.getElementById("current-score");
+currentScoreElement.textContent = user.score;
+
+// زر إضافة نقطة
+document.getElementById("add-point").addEventListener("click", () => {
+    user.score += 1;
+    currentScoreElement.textContent = user.score;
+    updateLeaderboard();
+});
+
+// تحديث لوحة المتصدرين
+function updateLeaderboard() {
+    // البحث عن المستخدم في اللوحة
+    const userIndex = leaderboardData.findIndex((u) => u.id === user.id);
+
+    // إذا كان المستخدم موجودًا، قم بتحديث نقاطه
+    if (userIndex !== -1) {
+        leaderboardData[userIndex].score = user.score;
     } else {
-      statusDiv.textContent = "❌ Error: " + data.description;
-      statusDiv.className = "status red";
+        // إذا لم يكن موجودًا، أضفه إلى اللوحة
+        leaderboardData.push({ id: user.id, name: user.name, score: user.score });
     }
-  } catch (error) {
-    statusDiv.textContent = "❌ Error: " + error.message;
-    statusDiv.className = "status red";
-  }
+
+    // ترتيب اللوحة تنازليًا حسب النقاط
+    leaderboardData.sort((a, b) => b.score - a.score);
+
+    // حفظ اللوحة في LocalStorage
+    localStorage.setItem("leaderboard", JSON.stringify(leaderboardData));
+
+    // عرض اللوحة
+    displayLeaderboard();
 }
 
-// الحصول على بيانات المستخدم من Telegram Web App
-window.onload = () => {
-  const telegram = window.Telegram.WebApp;
-  telegram.ready();
+// عرض لوحة المتصدرين
+function displayLeaderboard() {
+    const leaderboardList = document.getElementById("leaderboard-list");
+    leaderboardList.innerHTML = "";
 
-  const initData = telegram.initDataUnsafe;
-  if (initData && initData.user) {
-    const userId = initData.user.id; // معرف المستخدم الذي فتح الصفحة
-    checkBoost(userId);
-  } else {
-    const statusDiv = document.getElementById("status");
-    statusDiv.textContent = "❌ Unable to fetch user data.";
-    statusDiv.className = "status red";
-  }
-};
+    // عرض أعلى 10 مستخدمين
+    leaderboardData.slice(0, 10).forEach((user, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <span>${index + 1}. ${user.name}</span>
+            <span>${user.score} نقطة</span>
+        `;
+        leaderboardList.appendChild(li);
+    });
+}
+
+// تهيئة الصفحة
+updateLeaderboard();
