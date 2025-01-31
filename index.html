@@ -1,14 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Check Boost Status</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تجميع النقاط</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Check Channel Boost</h1>
-  <div class="status" id="status">Waiting...</div>
-  <script src="script.js"></script>
+    <div class="container">
+        <h1>تجميع النقاط</h1>
+        <div class="score-section">
+            <p id="user-name">مرحبًا، <span id="name"></span>!</p>
+            <p>نقاطك الحالية: <span id="current-score">0</span></p>
+            <button id="add-point">إضافة نقطة</button>
+        </div>
+        <div class="leaderboard">
+            <h2>لوحة المتصدرين</h2>
+            <ul id="leaderboard-list"></ul>
+        </div>
+    </div>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
