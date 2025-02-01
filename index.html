@@ -5,15 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ربط محفظة TON</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/@tonconnect/sdk"></script>
 </head>
 <body>
+
     <div class="container">
-        <h1>ربط محفظة TON</h1>
-        <button id="connect-wallet">اتصل بالمحفظة</button>
-        <p id="wallet-address"></p>
+        <h1>اتصل بمحفظة TON</h1>
+        <button id="connectButton">🔗 ربط المحفظة</button>
+        <p id="walletStatus">لم يتم الاتصال بعد</p>
     </div>
 
-    <script src="https://unpkg.com/@tonconnect/sdk@latest"></script>
     <script src="script.js"></script>
+
 </body>
 </html>
