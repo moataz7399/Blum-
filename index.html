@@ -3,23 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تجميع النقاط</title>
-    <link rel="stylesheet" href="style.css">
+    <title>ربط محفظة TON</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>تجميع النقاط</h1>
-        <div class="score-section">
-            <p id="user-name">مرحبًا، <span id="name"></span>!</p>
-            <p>نقاطك الحالية: <span id="current-score">0</span></p>
-            <button id="add-point">إضافة نقطة</button>
-        </div>
-        <div class="leaderboard">
-            <h2>لوحة المتصدرين</h2>
-            <ul id="leaderboard-list"></ul>
-        </div>
+        <h1>ربط محفظة TON</h1>
+        <button id="connect-wallet">اتصل بالمحفظة</button>
+        <p id="wallet-address"></p>
     </div>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <script src="https://unpkg.com/@tonconnect/sdk@latest"></script>
     <script src="script.js"></script>
 </body>
 </html>
