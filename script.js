@@ -1,14 +1,17 @@
-// استيراد TON Connect SDK
-const { TonConnect } = window.tonconnect;
+import { TonConnectUI } from "@tonconnect/ui";
 
-const tonConnect = new TonConnect();
-const connectButton = document.getElementById("connect-wallet");
+const tonConnectUI = new TonConnectUI({
+    manifestUrl: "https://moataz7399.github.io/repository-name/tonconnect-manifest.json"
+});
 
-connectButton.addEventListener("click", async () => {
+document.getElementById("connect-wallet").addEventListener("click", async () => {
     try {
-        const wallet = await tonConnect.connectWallet();
-        alert("تم الاتصال بالمحفظة: " + wallet.address);
+        await tonConnectUI.modal.open();
+        const wallet = tonConnectUI.wallet;
+        if (wallet) {
+            document.getElementById("wallet-info").innerText = `✅ تم الربط بمحفظة: ${wallet.account}`;
+        }
     } catch (error) {
-        console.error("خطأ في الاتصال:", error);
+        console.error("❌ فشل الاتصال بالمحفظة", error);
     }
 });
