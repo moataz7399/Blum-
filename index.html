@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ربط محفظة TON</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="container">
+        <h2>اضغط لربط محفظتك مع التطبيق</h2>
+        <button id="connect-wallet">🔗 ربط المحفظة</button>
+        <p id="wallet-info">لم يتم ربط أي محفظة بعد.</p>
+    </div>
 
-    <h1>اضغط على الزر لربط محفظة TON</h1>
-    <button id="connect-wallet">اتصل بالمحفظة</button>
+    <!-- مكتبة Telegram Web Apps -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <script src="https://unpkg.com/@tonconnect/sdk@latest"></script>
-    <script src="script.js"></script>
-
+    <!-- الكود البرمجي -->
+    <script src="script.js" type="module"></script>
 </body>
 </html>
