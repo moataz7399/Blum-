@@ -1,22 +1,789 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ربط محفظة TON</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rats Kingdom</title>
+
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h2>اضغط لربط محفظتك مع التطبيق</h2>
-        <button id="connect-wallet">🔗 ربط المحفظة</button>
-        <p id="wallet-info">لم يتم ربط أي محفظة بعد.</p>
+
+  <div id="account-checking-page">
+    <div class="video-container">
+      <video autoplay muted loop>
+        <source src="https://files.catbox.moe/hx6hfb.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
     </div>
 
-    <!-- مكتبة Telegram Web Apps -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <h1>Checking your account</h1>
 
-    <!-- الكود البرمجي -->
-    <script src="script.js" type="module"></script>
+    <div class="progress-container">
+      <div class="progress-item">
+        <div class="progress-title">
+          <div class="icon-circle">
+            <i class="fas fa-gift"></i> </div>
+          <strong>Random Reward</strong> {  1000  }
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="progress-item">
+        <div class="progress-title">
+          <div class="icon-circle">
+            <i class="fas fa-crown"></i> </div>
+          <strong>Telegram Premium</strong>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="progress-item">
+        <div class="progress-title">
+          <div class="icon-circle">
+            <i class="fas fa-user"></i> </div>
+          <strong>UserName Telegram</strong>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <button id="continueButton" style="display: none;">Continue</button>
+  </div>
+
+
+  <div class="progress-bar-legacy">
+    <div class="progress-legacy"></div>
+  </div>
+
+  <div id="splash-screen" style="display: none;">
+    </div>
+
+  <header class="hidden">
+    <div class="top-bar">
+      <h1 class="glow-text">RATS Kingdom</h1>
+    </div>
+  </header>
+
+  <div class="loader hidden">
+    <div class="dots">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+
+  <main id="main-content" class="hidden">
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            touch-action: none;
+            position: relative;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            display: block;
+            pointer-events: none;
+        }
+
+        .image-container {
+            width: 300px;
+            height: 200px;
+            margin-top: 20px;
+        }
+
+        .circular-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-top: -140px;
+            border: 3px solid white;
+            box-sizing: border-box;
+        }
+
+        .circular-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .price-text {
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .main-container {
+            width: 90%;
+            max-width: 600px;
+            padding: 20px 0;
+            position: relative;
+            z-index: 10;
+            margin-top: 3px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .rectangle {
+            width: 30%;
+            aspect-ratio: 7 / 4;
+            background: #2a2a2a;
+            border-radius: 10px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            font-weight: bold;
+            position: relative;
+            padding-top: 6px;
+            cursor: pointer;
+            border: 1px solid white;
+        }
+
+        .rectangle .underline {
+            width: 80%;
+            height: 28px;
+            background: #fff;
+            border-radius: 9999px;
+            position: absolute;
+            bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #000;
+            font-size: 12px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.01);
+                opacity: 0.98;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .rectangle:active .underline {
+            transform: scale(0.9);
+            opacity: 0.8;
+            animation: none;
+        }
+
+        .row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .small-text {
+            font-size: 12px;
+        }
+
+        .large-rectangle {
+            width: 70%;
+            max-width: 600px;
+            height: 50px;
+            border-radius: 9999px;
+            margin-top: 20px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            border: 1px solid white;
+        }
+
+        .large-rectangle video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .large-rectangle .top-text {
+            position: absolute;
+            top: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .large-rectangle .left-text {
+            position: absolute;
+            bottom: 5px;
+            left: 10px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .large-rectangle .play-text {
+            position: absolute;
+            top: 50%;
+            left: 85%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+            background: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .large-rectangle .play-text:active {
+            transform: translate(-50%, -50%) scale(0.9);
+            opacity: 0.8;
+        }
+
+        #tsparticles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* التعديل الجديد هنا */
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 150%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            transform: skewX(-20deg);
+            animation: shimmer-animation 0.6s linear infinite,
+                       shimmer-pause 3.6s linear infinite;
+        }
+
+        @keyframes shimmer-animation {
+            0% {
+                left: -150%;
+            }
+            100% {
+                left: 150%;
+            }
+        }
+
+        @keyframes shimmer-pause {
+            0%, 16.67% {
+                animation-timing-function: step-end;
+                opacity: 1;
+            }
+            16.67% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+    <div class="image-container">
+        <img src="https://i.ibb.co/F55Wjfr/IMG.png" alt="صورة 1">
+    </div>
+
+    <div class="circular-image">
+        <img src="https://i.ibb.co/7NsSVQD/20250128-112228.png" alt="صورة دائرية">
+    </div>
+
+    <div class="price-text">0.00</div>
+
+    <div class="main-container">
+        <div class="row">
+            <div class="rectangle shimmer" id="subscribeButton">
+                <span class="small-text">YouTube Channel</span>
+                <div class="underline">Subscribe</div>
+            </div>
+            <div class="rectangle shimmer" id="joinButton">
+                <span class="small-text">Telegram Channel</span>
+                <div class="underline">Join</div>
+            </div>
+        </div>
+
+        <div class="row reverse">
+            <div class="rectangle shimmer" id="followButton">
+                <span class="small-text">Follow X</span>
+                <div class="underline">Follow</div>
+            </div>
+            <div class="rectangle shimmer" id="shareButton">
+                <span class="small-text">Share Link Bot</span>
+                <div class="underline">Share</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="large-rectangle shimmer">
+        <video autoplay muted loop>
+            <source src="https://files.catbox.moe/7at8yz.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <span class="top-text">Play Squirrel</span>
+        <span class="left-text">» ᴄᴀʀᴅꜱ :</span>
+        <span class="play-text">Play</span>
+    </div>
+
+    <div id="tsparticles"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@1.37.5/tsparticles.min.js"></script>
+    <script>
+        tsParticles.load("tsparticles", {
+            particles: {
+                number: {
+                    value: 100,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#ffffff"
+                },
+                shape: {
+                    type: "circle"
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: false,
+                        speed: 4,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: "bottom",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: false,
+                    },
+                    onclick: {
+                        enable: false
+                    },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+
+        // إضافة event listeners للأزرار
+        document.getElementById('subscribeButton').addEventListener('click', function() {
+            window.location.href = 'https://t.me/aaaaaa';
+        });
+
+        document.getElementById('joinButton').addEventListener('click', function() {
+            window.location.href = 'https://t.me/aaaaaa';
+        });
+
+        document.getElementById('followButton').addEventListener('click', function() {
+            window.location.href = 'https://t.me/aaaaaa';
+        });
+
+        document.getElementById('shareButton').addEventListener('click', function() {
+            window.location.href = 'https://t.me/aaaaaa';
+        });
+    </script>
+  </main>
+
+<div id="friends-page" class="hidden">
+    <div class="friends-section">
+        <img src="https://i.ibb.co/6DDKSS7/logo.png" alt="Profile Icon" class="profile-icon"/>
+        <h2 class="glow-text">𝗜𝗻𝘃𝗶𝘁𝗲 𝗳𝗿𝗶𝗲𝗻𝗱𝘀 𝗮𝗻𝗱 𝗴𝗲𝘁 𝗺𝗼𝗿𝗲 𝗥𝗔𝗧𝗦</h2>
+        <div class="friends-buttons">
+            <button class="ripple-button" onclick="copyInviteLink()">𝐂𝐨𝐩𝐲 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
+            <button class="ripple-button" onclick="shareInviteLink()">𝐒𝐡𝐚𝐫𝐞 𝐈𝐧𝐯𝐢𝐭𝐞 𝐋𝐢𝐧𝐤</button>
+        </div>
+        <div class="friends-table">
+            <p style="text-align: center; color: #fff;">This is your custom table area</p>
+        </div>
+
+        <div class="invite-container">
+            <button class="btn-invite">
+                Invite friends
+                <i class="fas fa-user-friends"></i>
+            </button>
+            <div class="circle" onclick="copyInviteLink()">
+                <i class="fas fa-copy"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="collab-page" class="hidden">
+    <img src="https://i.ibb.co/qYQBgy8s/IMG.png" alt="الصورة" id="image" oncontextmenu="return false;" draggable="false">
+    <div class="text-container">
+        <p id="tasks-tab">Tasks</p>
+        <p id="social-tab">Social Media</p>
+        <p id="partnerships-tab">Partnerships</p>
+        <p id="secret-tab">Secret</p>
+    </div>
+    <div class="tasks-container">
+        <div class="tasks-list-container" id="tasks-list">
+            <div class="tasks-list" id="tasks-tasks">
+                <div class="task">
+                    <div class="task-icon">
+                        <span class="squirrel-emoji">🐿</span>
+                    </div>
+                    <div class="task-info">
+                        <div class="task-title">Put 🐿 next to your name</div>
+                        <div class="task-bp">+250 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+                    <div class="task-icon"><i class="fab fa-telegram"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Join Telegram Channel</div>
+                        <div class="task-bp">+499 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+                    <div class="task-icon"><i class="fab fa-youtube"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Subscribe Channel Youtube</div>
+                        <div class="task-bp">+300 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+                    <div class="task-icon"><i class="fab fa-x-twitter"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">𝕏 Follow us on</div>
+                        <div class="task-bp">+250 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+                    <div class="task-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Boost Channel</div>
+                        <div class="task-bp">+250 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+                    <div class="task-icon"><i class="fas fa-play"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Play Game</div>
+                        <div class="task-bp">+500 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+            </div>
+            <div class="tasks-list" id="social-tasks" style="display: none;">
+                <div class="task">
+                    <div class="task-icon"><i class="fab fa-youtube"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">youtube</div>
+                        <div class="task-bp">+250 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+            </div>
+            <div class="tasks-list" id="partnerships-tasks" style="display: none;">
+                <div class="empty-message">Opps! There are no tasks here currently</div>
+            </div>
+            <div class="tasks-list" id="secret-tasks" style="display: none;">
+                <div class="task">
+                    <div class="task-icon"><i class="fas fa-phone-volume"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Secret Task 1</div>
+                        <div class="task-bp">+100 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+                    <div class="task-icon"><i class="fas fa-fingerprint"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Secret Task 2</div>
+                        <div class="task-bp">+150 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+                    <div class="task-icon"><i class="fas fa-key"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Secret Task 3</div>
+                        <div class="task-bp">+200 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                    <div class="pin-code-container">
+                        <div class="pin-code-box">
+                            <div class="close-icon" id="close-pin-code">&#10005;</div>
+                            <div class="pin-code-title">Enter PIN Code</div>
+                            <input type="number" inputmode="numeric" pattern="\d*" class="pin-code-input" maxlength="4" placeholder="Enter PIN">
+                            <button class="pin-code-button">Check</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="done-message" id="done-message">DONE</div>
+    
+    <div class="verification-container" id="verification-container">
+        <div class="verification-box">
+            <div class="verification-close-icon-container" onclick="document.getElementById('verification-container').style.display = 'none'; document.querySelector('.keyword-input').value = '';">
+                <svg class="circle-svg" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="11" fill="none" stroke="#999" stroke-width="1"/>
+                  <path d="M8.5 8.5l7 7m-7 0l7-7" stroke="#999" stroke-width="1.5" />
+                </svg>
+            </div>
+            <div class="verification-header">
+                <h1><a href="https://t.me/Baoow" target="_blank">S1 Weekly Giveaway</a></h1>
+            </div>
+            <div class="verification-title">Confirm Code</div>
+            <div class="keyword-input-container">
+                <input type="text" class="keyword-input" placeholder="Keyword">
+            </div>
+            <div class="verify-reward-text">Enter the code to receive your prize</div>
+            <button class="verify-button">Verify</button>
+        </div>
+    </div>
+  </div>
+
+  <div id="login-daily-page" class="hidden">
+    <div class="login-daily-header">
+      <h2 class="header-title">Daily Entry 🎁</h2>
+      <p class="header-subtitle">Log in daily to the bot and get mysterious rewards</p>
+    </div>
+    <div class="login-daily-table">
+      <div class="day-item" data-day="1">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="1 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">1 Day</div>
+      </div>
+      <div class="day-item" data-day="2">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="2 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">2 Day</div>
+      </div>
+      <div class="day-item" data-day="3">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="3 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">3 Day</div>
+      </div>
+      <div class="day-item" data-day="4">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="4 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">4 Day</div>
+      </div>
+      <div class="day-item" data-day="5">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="5 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">5 Day</div>
+      </div>
+      <div class="day-item" data-day="6">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="6 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">6 Day</div>
+      </div>
+      <div class="day-item" data-day="7">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="7 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">7 Day</div>
+      </div>
+      <div class="day-item" data-day="8">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="8 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">8 Day</div>
+      </div>
+      <div class="day-item" data-day="9">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="9 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">9 Day</div>
+      </div>
+    </div>
+    <div id="confetti-container-login" class="confetti-container"></div>
+  </div>
+
+  <div id="game-overlay" class="hidden">
+    <div class="score-panel">
+      <p>𝗙𝗮𝗹𝗰𝗼𝗻𝘀: <span id="falconScore">0</span></p>
+      <p>𝗕𝗼𝗺𝗯𝘀: <span id="bombScore">0</span></p>
+    </div>
+    <div class="timer-panel">
+      <p id="timer">30.00</p>
+    </div>
+  </div>
+
+  <div id="end-game-screen" class="hidden end-game-screen">
+    <div id="stars-container"></div>
+
+    <div class="end-content">
+      <div class="rainbow-effect" style="margin-top: 30px;">
+        <div class="number-container" id="endFalconScore">100</div>
+        <div class="text-falcon">FALCON</div>
+      </div>
+
+      <div id="confetti-container" class="confetti-container"></div>
+
+      <div class="buttons-container">
+        <button id="btn-new-round" class="ripple-button">
+          <span class="btn-icon"><i class="fas fa-play"></i></span> 
+          <span class="btn-text">𝐏𝐥𝐚𝐲 𝐚𝐠𝐚𝐢𝐧</span>
+        </button>
+
+        <button id="btn-back-home" class="ripple-button">
+          <span class="btn-icon"><i class="fas fa-arrow-left"></i></span> 
+          <span class="btn-text">𝐁𝐚𝐜𝐤</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <nav class="bottom-nav">
+      <a href="#" class="active glow-text ripple-button" onclick="handleNavClick('main')">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('collab')">
+        <i class="fas fa-handshake"></i> Collab
+      </a>
+      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('loginDaily')">
+        <i class="fas fa-calendar-check"></i> Login Daily
+      </a>
+      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('leaderboard')">
+        <i class="fas fa-trophy"></i> Leaderboard
+      </a>
+      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('friends')">
+        <i class="fas fa-user-friends"></i> Friends
+      </a>
+    </nav>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
