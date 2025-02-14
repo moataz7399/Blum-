@@ -1,24 +1,17 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    padding: 20px;
+    margin-top: 50px;
+}
+
+.admin {
     background-color: #f0f0f0;
-}
-
-.owner-view, .user-view {
-    display: none; /* إخفاء العناصر بشكل افتراضي */
     padding: 20px;
-    border-radius: 10px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-    max-width: 400px;
+    border: 2px solid #ccc;
 }
 
-h1 {
-    color: #333;
-}
-
-p {
-    color: #666;
+.user {
+    background-color: #e0e0ff;
+    padding: 20px;
+    border: 2px solid #aaa;
 }
