@@ -1,16 +1,446 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق تيليجرام المصغر</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rats Kingdom</title>
+
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@1.37.5/tsparticles.min.js"></script> <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="content">
-        <!-- سيتم تحديث هذا المحتوى بناءً على هوية المستخدم -->
+
+  <div id="account-checking-page">
+    <div class="video-container">
+      <video autoplay muted loop>
+        <source src="https://files.catbox.moe/hx6hfb.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
     </div>
-    <script src="script.js"></script>
+
+    <h1>Checking your account</h1>
+
+    <div class="progress-container">
+      <div class="progress-item">
+        <div class="progress-title">
+          <div class="icon-circle">
+            <i class="fas fa-gift"></i> </div>
+          <strong>Random Reward</strong> {  1000  }
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="progress-item">
+        <div class="progress-title">
+          <div class="icon-circle">
+            <i class="fas fa-crown"></i> </div>
+          <strong>Telegram Premium</strong>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="progress-item">
+        <div class="progress-title">
+          <div class="icon-circle">
+            <i class="fas fa-user"></i> </div>
+          <strong>UserName Telegram</strong>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <button id="continueButton" style="display: none;">Continue</button>
+  </div>
+
+
+  <div class="progress-bar-legacy">
+    <div class="progress-legacy"></div>
+  </div>
+
+  <div id="splash-screen" style="display: none;">
+    </div>
+
+  <header class="hidden">
+    <div class="top-bar" style="height: 60px;"> </div>
+</header>
+
+  <div class="loader hidden">
+    <div class="dots">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+
+    <main id="main-content" class="hidden">
+        <div id="snow-container"></div>
+
+        <div class="image-container">
+            <img src="https://i.ibb.co/F55Wjfr/IMG.png" alt="صورة 1">
+        </div>
+
+        <div class="circular-image">
+            <img src="https://i.ibb.co/7NsSVQD/20250128-112228.png" alt="صورة دائرية">
+        </div>
+
+        <div class="price-text">
+            <span id="ratsScore" class="glow-text">0.00</span>
+            <span class="glow-text">RATS</span>
+        </div>
+
+
+        <div class="main-container">
+            <div class="row">
+                <div class="rectangle shimmer" id="subscribeButton">
+                    <span class="small-text">YouTube Channel</span>
+                    <div class="underline">Subscribe</div>
+                </div>
+                <div class="rectangle shimmer" id="joinButton">
+                    <span class="small-text">Telegram Channel</span>
+                    <div class="underline">Join</div>
+                </div>
+            </div>
+
+            <div class="row reverse">
+                <div class="rectangle shimmer" id="followButton">
+                    <span class="small-text">Follow X</span>
+                    <div class="underline">Follow</div>
+                </div>
+                <div class="rectangle shimmer" id="shareButton">
+                    <span class="small-text">Share Link Bot</span>
+                    <div class="underline">Share</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="large-rectangle shimmer">
+            <video autoplay muted loop>
+                <source src="https://files.catbox.moe/7at8yz.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <span class="top-text">Play Squirrel</span>
+            <span class="left-text">» ᴄᴀʀᴅꜱ : <span id="cardsCount">0</span></span>
+            <span class="play-text" onclick="handlePlayFalcon()">Play</span>
+        </div>
+    </main>
+
+  <div id="friends-page" class="hidden">
+    <img src="https://i.ibb.co/MRttkCn/IMG.png" alt="Header Image">
+    <div class="box">
+        <div class="top-bar">
+            <span>Total</span>
+            <span id="total-users">0 users</span>
+        </div>
+        <p>&nbsp;</p>
+    </div>
+
+    <div class="container">
+        <button class="btn-invite" onclick="shareInviteLink()">
+            Invite friends
+            <i class="fas fa-user-friends"></i>
+        </button>
+        <div class="circle" onclick="copyInviteLink()">
+            <i class="fas fa-copy"></i>
+        </div>
+    </div>
+</div>
+
+  <div id="collab-page" class="hidden">
+    <img src="https://i.ibb.co/qYQBgy8s/IMG.png" alt="الصورة" id="image" oncontextmenu="return false;" draggable="false">
+    <div class="text-container">
+        <p id="tasks-tab">Tasks</p>
+        <p id="social-tab">Social Media</p>
+        <p id="partnerships-tab">Partnerships</p>
+        <p id="secret-tab">Secret</p>
+    </div>
+    <div class="tasks-container">
+        <div class="tasks-list-container" id="tasks-list">
+            <div class="tasks-list" id="tasks-tasks">
+                <div class="task">
+                    <div class="task-icon">
+                        <span class="squirrel-emoji">🐿</span>
+                    </div>
+                    <div class="task-info">
+                        <div class="task-title">Put 🐿 next to your name</div>
+                        <div class="task-bp">+250 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+                    <div class="task-icon"><i class="fab fa-telegram"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Join Telegram Channel</div>
+                        <div class="task-bp">+499 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+    <div class="task-icon"><i class="fab fa-youtube"></i></div>
+    <div class="task-info">
+        <div class="task-title">Subscribe Channel Youtube</div>
+        <div class="task-bp">+300 BP</div> </div>
+    <button class="task-button start">Start</button>
+</div>
+                <div class="task">
+                    <div class="task-icon"><i class="fab fa-x-twitter"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">𝕏 Follow us on</div>
+                        <div class="task-bp">+250 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+                    <div class="task-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Boost Channel</div>
+                        <div class="task-bp">+250 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+                    <div class="task-icon"><i class="fas fa-play"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Play Game</div>
+                        <div class="task-bp">+500 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+            </div>
+            <div class="tasks-list" id="social-tasks" style="display: none;">
+                <div class="task">
+                    <div class="task-icon"><i class="fab fa-youtube"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">youtube</div>
+                        <div class="task-bp">+250 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+            </div>
+            <div class="tasks-list" id="partnerships-tasks" style="display: none;">
+                <div class="empty-message">Opps! There are no tasks here currently</div>
+            </div>
+            <div class="tasks-list" id="secret-tasks" style="display: none;">
+                <div class="task">
+                    <div class="task-icon"><i class="fas fa-phone-volume"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Secret Task 1</div>
+                        <div class="task-bp">+100 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+                    <div class="task-icon"><i class="fas fa-fingerprint"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Secret Task 2</div>
+                        <div class="task-bp">+150 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                </div>
+                <div class="task">
+                    <div class="task-icon"><i class="fas fa-key"></i></div>
+                    <div class="task-info">
+                        <div class="task-title">Secret Task 3</div>
+                        <div class="task-bp">+200 BP</div>
+                    </div>
+                    <button class="task-button start">Start</button>
+                    <div class="pin-code-container">
+                        <div class="pin-code-box">
+                            <div class="close-icon" id="close-pin-code">&#10005;</div>
+                            <div class="pin-code-title">Enter PIN Code</div>
+                            <input type="number" inputmode="numeric" pattern="\d*" class="pin-code-input" maxlength="4" placeholder="Enter PIN">
+                            <button class="pin-code-button">Check</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="done-message" id="done-message">DONE</div>
+
+    <div class="verification-container" id="verification-container">
+        <div class="verification-box">
+            <div class="verification-close-icon-container" onclick="document.getElementById('verification-container').style.display = 'none'; document.querySelector('.keyword-input').value = '';">
+                <svg class="circle-svg" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="11" fill="none" stroke="#999" stroke-width="1"/>
+                  <path d="M8.5 8.5l7 7m-7 0l7-7" stroke="#999" stroke-width="1.5" />
+                </svg>
+            </div>
+            <div class="verification-header">
+                <h1><a href="https://t.me/Baoow" target="_blank">S1 Weekly Giveaway</a></h1>
+            </div>
+            <div class="verification-title">Confirm Code</div>
+            <div class="keyword-input-container">
+                <input type="text" class="keyword-input" placeholder="Keyword">
+            </div>
+            <div class="verify-reward-text">Enter the code to receive your prize</div>
+            <button class="verify-button">Verify</button>
+        </div>
+    </div>
+  </div>
+
+  <div id="login-daily-page" class="hidden">
+    <div class="login-daily-header">
+      <h2 class="header-title">Daily Entry 🎁</h2>
+      <p class="header-subtitle">Log in daily to the bot and get mysterious rewards</p>
+    </div>
+    <div class="login-daily-table">
+      <div class="day-item" data-day="1">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="1 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">1 Day</div>
+      </div>
+      <div class="day-item" data-day="2">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="2 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">2 Day</div>
+      </div>
+      <div class="day-item" data-day="3">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="3 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">3 Day</div>
+      </div>
+      <div class="day-item" data-day="4">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="4 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">4 Day</div>
+      </div>
+      <div class="day-item" data-day="5">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="5 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">5 Day</div>
+      </div>
+      <div class="day-item" data-day="6">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="6 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">6 Day</div>
+      </div>
+      <div class="day-item" data-day="7">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="7 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">7 Day</div>
+      </div>
+      <div class="day-item" data-day="8">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="8 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">8 Day</div>
+      </div>
+      <div class="day-item" data-day="9">
+        <div class="day-box">
+          <img src="https://i.ibb.co/KGVbj5b/0435f705-fb35-446b-9c3c-f1fe22c45521.webp" alt="9 Day">
+          <div class="overlay">
+            <i class="fas fa-lock"></i>
+          </div>
+        </div>
+        <div class="day-label">9 Day</div>
+      </div>
+    </div>
+    <div id="confetti-container-login" class="confetti-container"></div>
+</div>
+
+  <div id="game-overlay" class="hidden">
+    <div class="score-panel">
+      <p>𝗙𝗮𝗹𝗰𝗼𝗻𝘀: <span id="falconScore">0</span></p>
+      <p>𝗕𝗼𝗺𝗯𝘀: <span id="bombScore">0</span></p>
+    </div>
+    <div class="timer-panel">
+      <p id="timer">30.00</p>
+    </div>
+  </div>
+
+  <div id="end-game-screen" class="hidden end-game-screen">
+    <div id="stars-container"></div>
+
+    <div class="end-content">
+      <div class="rainbow-effect" style="margin-top: 30px;">
+        <div class="number-container" id="endFalconScore">100</div>
+        <div class="text-falcon">FALCON</div>
+      </div>
+
+      <div id="confetti-container" class="confetti-container"></div>
+
+      <div class="buttons-container">
+        <button id="btn-new-round" class="ripple-button">
+          <span class="btn-icon"><i class="fas fa-play"></i></span>
+          <span class="btn-text">𝐏𝐥𝐚𝐲 𝐚𝐠𝐚𝐢𝐧</span>
+        </button>
+
+        <button id="btn-back-home" class="ripple-button">
+          <span class="btn-icon"><i class="fas fa-arrow-left"></i></span>
+          <span class="btn-text">𝐁𝐚𝐜𝐤</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <nav class="bottom-nav">
+      <a href="#" class="active glow-text ripple-button" onclick="handleNavClick('main')">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('collab')">
+        <i class="fas fa-handshake"></i> Collab
+      </a>
+      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('loginDaily')">
+        <i class="fas fa-calendar-check"></i> Login Daily
+      </a>
+      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('leaderboard')">
+        <i class="fas fa-trophy"></i> Leaderboard
+      </a>
+      <a href="#" class="glow-text ripple-button" onclick="handleNavClick('friends')">
+        <i class="fas fa-user-friends"></i> Friends
+      </a>
+    </nav>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
