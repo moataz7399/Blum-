@@ -2992,6 +2992,10 @@ body.dark-mode .favorites-header {
 </style>
 </head>
 <body>
+<div id="access-denied" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); color: white; text-align: center; padding-top: 20%; z-index: 9999; font-family: 'Cairo', sans-serif;">
+    <h1>عذرًا!</h1>
+    <p>هذا الموقع متاح فقط على الهواتف المحمولة بدون تفعيل وضع سطح المكتب.</p>
+  </div>
 <div class="header">
   <img src="https://i.ibb.co/BKZTdXkd/20250226-192743.png" alt="Logo" class="icon-left">
   <i class="fas fa-bars icon-right menu-toggle"></i>
@@ -6100,6 +6104,45 @@ notificationsToggles.forEach(toggle => {
 });
 
 window.dispatchEvent(new Event('scroll'));
+
+// تعليمات لتقييد الوصول للهواتف فقط
+function restrictAccessToMobileOnly() {
+  // 1. التحقق من نوع الجهاز
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isMobile = /android|iphone|ipad|ipod|windows phone/i.test(userAgent);
+
+  // 2. التحقق من حجم الشاشة
+  const screenWidth = window.innerWidth;
+  const isMobileWidth = screenWidth <= 768;
+
+  // 3. التحقق من وضع سطح المكتب
+  const isDesktopMode = window.matchMedia('(min-width: 769px) and (pointer: fine)').matches;
+
+  // إذا لم يكن الجهاز هاتفًا، أو الشاشة كبيرة، أو وضع سطح المكتب مفعل
+  if (!isMobile || !isMobileWidth || isDesktopMode) {
+    // أظهر رسالة المنع وأخفِ المحتوى
+    document.getElementById('access-denied').style.display = 'block';
+    const bodyChildren = document.body.children;
+    for (let i = 0; i < bodyChildren.length; i++) {
+      if (bodyChildren[i].id !== 'access-denied') {
+        bodyChildren[i].style.display = 'none';
+      }
+    }
+  } else {
+    // إذا كان الجهاز هاتفًا صحيحًا، أخفِ الرسالة وأظهر المحتوى
+    document.getElementById('access-denied').style.display = 'none';
+    const bodyChildren = document.body.children;
+    for (let i = 0; i < bodyChildren.length; i++) {
+      if (bodyChildren[i].id !== 'access-denied') {
+        bodyChildren[i].style.display = '';
+      }
+    }
+  }
+}
+
+// شغّل التعليمات عند فتح الموقع وعند تغيير حجم الشاشة
+window.addEventListener('load', restrictAccessToMobileOnly);
+window.addEventListener('resize', restrictAccessToMobileOnly);
 </script>
 </body>
 </html>
