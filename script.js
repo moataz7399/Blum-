@@ -1,7 +1,7 @@
 function navigate(event, page) {
     event.preventDefault(); // منع إعادة تحميل الصفحة
-    history.pushState({ page }, "", "/" + page); // تغيير الرابط في المتصفح
-    loadPage(page); // تحميل المحتوى المناسب
+    history.pushState({ page }, "", "/" + page); // تحديث الرابط بدون تحديث الصفحة
+    loadPage(page); // تحميل الصفحة الجديدة
 }
 
 function loadPage(page) {
