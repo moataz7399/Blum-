@@ -320,8 +320,7 @@ body.dark-mode .separator-line {
 }
 
 .box {
-  width: 300px;
-  flex-shrink: 0;
+  width: 48%;
   height: auto;
   min-height: 220px;
   background-color: white;
@@ -616,6 +615,69 @@ body.dark-mode .pubg-description-text {
 
 body.dark-mode .view-more-page {
   background-color: #1a1a1a;
+}
+
+html, body {
+  width: 100vw; /* يمنع التمدد الزائد */
+  height: 100vh; /* يثبت الارتفاع */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* يمنع التحرك الجانبي، لكن يسمح بالتمرير العمودي */
+  touch-action: manipulation; /* يمنع التكبير باللمس */
+}
+
+* {
+  max-width: none !important;
+  max-height: none !important;
+  transform: none !important;
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+  box-sizing: border-box;
+}
+
+.boxes-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; /* يضمن أن العناصر لا تتغير أماكنها */
+  gap: 20px; /* مسافة ثابتة بين الصناديق */
+}
+
+.box {
+  width: 300px !important; /* يثبت عرض الصندوق */
+  height: 220px !important; /* يثبت ارتفاع الصندوق */
+  background-color: white;
+  border-radius: 25px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+img, video {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+
+@media screen and (min-width: 320px) {
+  html, body {
+    zoom: 1 !important; /* يمنع التكبير */
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .box {
+    width: 300px !important; /* يضمن أن الأحجام تبقى كما هي */
+    height: 220px !important;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .box {
+    width: 300px !important;
+    height: 220px !important;
+  }
 }
 
 .view-more-header {
