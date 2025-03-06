@@ -617,69 +617,6 @@ body.dark-mode .view-more-page {
   background-color: #1a1a1a;
 }
 
-html, body {
-  width: 100vw; /* يمنع التمدد الزائد */
-  height: 100vh; /* يثبت الارتفاع */
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* يمنع التحرك الجانبي، لكن يسمح بالتمرير العمودي */
-  touch-action: manipulation; /* يمنع التكبير باللمس */
-}
-
-* {
-  max-width: none !important;
-  max-height: none !important;
-  transform: none !important;
-  flex-wrap: nowrap !important;
-  white-space: nowrap !important;
-  box-sizing: border-box;
-}
-
-.boxes-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap; /* يضمن أن العناصر لا تتغير أماكنها */
-  gap: 20px; /* مسافة ثابتة بين الصناديق */
-}
-
-.box {
-  width: 300px !important; /* يثبت عرض الصندوق */
-  height: 220px !important; /* يثبت ارتفاع الصندوق */
-  background-color: white;
-  border-radius: 25px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-img, video {
-  width: auto !important;
-  height: auto !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
-}
-
-@media screen and (min-width: 320px) {
-  html, body {
-    zoom: 1 !important; /* يمنع التكبير */
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .box {
-    width: 300px !important; /* يضمن أن الأحجام تبقى كما هي */
-    height: 220px !important;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-  .box {
-    width: 300px !important;
-    height: 220px !important;
-  }
-}
-
 .view-more-header {
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -2915,6 +2852,25 @@ body.dark-mode .usdt-sell-amount-separator {
     margin: 20px 20px 0; 
 }
 
+.desktop-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 9999;
+  display: none;
+}
+
+
 .usdt-sell-green-button {
     width: 45%; 
     height: 40px;
@@ -3055,6 +3011,9 @@ body.dark-mode .favorites-header {
 </style>
 </head>
 <body>
+<div id="desktopWarning" class="desktop-warning">
+  لا يمكنك فتح الصفحة وأنت مفعل وضع سطح المكتب، الرجاء إطفاء وضع سطح المكتب.
+</div>
 <div class="header">
   <img src="https://i.ibb.co/BKZTdXkd/20250226-192743.png" alt="Logo" class="icon-left">
   <i class="fas fa-bars icon-right menu-toggle"></i>
@@ -5757,6 +5716,22 @@ function animateBoxes(target) {
     }
   });
 }
+
+function checkDesktopMode() {
+  if (window.matchMedia("(min-width: 1024px)").matches) {
+    document.getElementById("desktopWarning").style.display = "flex";
+    document.body.style.overflow = "hidden"; // يمنع التمرير
+  } else {
+    document.getElementById("desktopWarning").style.display = "none";
+    document.body.style.overflow = "auto"; // يعيد التمرير عند إيقاف وضع سطح المكتب
+  }
+}
+
+// التحقق عند تحميل الصفحة
+checkDesktopMode();
+
+// التحقق عند تغيير حجم الشاشة
+window.addEventListener("resize", checkDesktopMode);
 
 window.addEventListener('scroll', () => {
   animateBoxes();
