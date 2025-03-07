@@ -317,13 +317,10 @@ body.dark-mode .separator-line {
   justify-content: space-between;
   padding: 0 20px;
   position: relative;
-  max-width: 400px; /* عرض ثابت مشابه لشاشة الجوال */
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .box {
-  width: 180px; /* عرض ثابت بدلاً من 48% */
+  width: 48%;
   height: auto;
   min-height: 220px;
   background-color: white;
@@ -332,7 +329,7 @@ body.dark-mode .separator-line {
   position: relative;
   overflow: hidden;
   transition: opacity 0.5s ease, transform 0.5s ease;
-}
+} 
 
 body.dark-mode .box {
   background-color: #333;
@@ -376,8 +373,8 @@ body.dark-mode .box-icon {
 .box-image {
   width: 100%;
   height: auto;
-  max-height: 140px;
-  object-fit: contain;
+  max-height: 140px; /* ارتفاع أقصى عشان الصورة تظهر كاملة */
+  object-fit: contain; /* الصورة تظهر كاملة بدون قص */
   display: block;
 }
 
@@ -399,7 +396,7 @@ body.dark-mode .box-icon {
   height: auto;
   object-fit: contain;
   display: block;
-}
+} 
 
 .heart-icon-container {
   position: absolute;
@@ -478,7 +475,7 @@ body.dark-mode .box-text-container:hover:not(.usdt) {
 
 .box-text {
   color: #FFA500;
-  font-size: 16px; /* تصغير الخط قليلاً إذا كان كبيرًا جدًا */
+  font-size: 18px;
   font-weight: bold;
   font-family: 'Cairo', sans-serif;
   margin: 0;
@@ -543,7 +540,7 @@ body.dark-mode .section-title {
 
 .pubg-uc-text {
   color: #333;
-  font-size: 14px; /* تصغير الخط للتناسق */
+  font-size: 16px;
   font-weight: bold;
   font-family: 'Cairo', sans-serif;
   margin-bottom: 2px;
@@ -555,7 +552,7 @@ body.dark-mode .pubg-uc-text {
 
 .pubg-description-text {
   color: #555;
-  font-size: 12px; /* تصغير الخط للتناسق */
+  font-size: 14px;
   font-family: 'Cairo', sans-serif;
   text-align: center;
   margin: 0;
@@ -746,9 +743,6 @@ body.dark-mode .notifications-message {
   flex-wrap: wrap;
   padding: 20px;
   position: relative;
-  max-width: 400px; /* عرض ثابت مشابه لشاشة الجوال */
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .view-more-boxes-container .box {
@@ -2704,6 +2698,13 @@ body.dark-mode .usdt-sell-checkbox-group label {
     width: 24px; 
     height: 24px; 
     vertical-align: middle; 
+}
+
+@media (min-width: 768px) {
+  body {
+    max-width: 375px; /* عرض الهاتف */
+    margin: 0 auto;
+  }
 }
 
 .usdt-sell-buy-button {
