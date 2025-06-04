@@ -1,105 +1,157 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>خطة عمل لجنة الأمن</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: 'Arial', sans-serif;
-      background-color: white;
-      color: #333;
-    }
-
-.footer {
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
-  margin-top: 20px; /* أضف هذه السطر للمسافة المطلوبة */
-  font-weight: bold;
-  font-size: 13px;
-} 
-    
-    .container {
-      max-width: 800px;
-      margin: auto;
-      text-align: right;
-      font-size: 16px;
-      line-height: 1.8;
-    }
-
-    .logo {
-      text-align: center;
-    }
-
-    .logo img {
-      max-width: 120px;
-    }
-
-    .main-title {
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
-      margin: 10px 0;
-    }
-
-    .sub-title {
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    .divider {
-      border-bottom: 1px solid #ccc;
-      margin: 10px 0;
-    }
-
-    .content p {
-      margin: 10px 0;
-    }
-
-    .footer {
-      border-top: 1px solid #ccc;
-      padding-top: 10px;
-      font-weight: bold;
-      font-size: 13px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تواصل معنا - نموذج</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Cairo', sans-serif;
+        }
+        .input-focus:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        .btn-gradient {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .form-input {
+            padding: 0.9rem 1rem;
+            border: 1px solid #d2d6dc;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2), 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .custom-select-arrow {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+    </style>
 </head>
-<body>
-  <div class="container" id="pdf-content">
-    <div class="logo">
-      <img src="https://i.ibb.co/cSWxZ2Tz/images-1-1.png" alt="شعار المجلس" />
+<body class="bg-white min-h-screen flex items-center justify-center p-4 md:p-8">
+
+    <div class="bg-gray-50 p-8 md:p-12 rounded-xl shadow-2xl w-full md:w-4/5 lg:w-3/5 xl:w-1/2 max-w-3xl">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">تواصل معنا</h1>
+            <p class="text-gray-600 text-lg">املأ النموذج أدناه وسنقوم بالرد عليك في أقرب وقت ممكن.</p>
+        </div>
+
+        <!-- لا نحتاج لكلاس action أو method في الفورم هنا لأننا سنتحكم به بالجافاسكربت -->
+        <form id="contactForm" class="space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label for="firstName" class="block text-gray-700 font-semibold mb-2">الاسم الأول</label>
+                    <input type="text" id="firstName" name="firstName" class="w-full form-input input-focus" placeholder="أدخل اسمك الأول" required>
+                </div>
+                <div>
+                    <label for="lastName" class="block text-gray-700 font-semibold mb-2">الاسم الأخير</label>
+                    <input type="text" id="lastName" name="lastName" class="w-full form-input input-focus" placeholder="أدخل اسمك الأخير">
+                </div>
+            </div>
+            
+            <div>
+                <label for="email" class="block text-gray-700 font-semibold mb-2">البريد الإلكتروني</label>
+                <input type="email" id="email" name="email" class="w-full form-input input-focus" placeholder="example@email.com" required>
+            </div>
+            
+            <div>
+                <label for="phone" class="block text-gray-700 font-semibold mb-2">رقم الهاتف (اختياري)</label>
+                <input type="tel" id="phone" name="phone" class="w-full form-input input-focus" placeholder="+966 50 123 4567">
+            </div>
+            
+            <div class="relative">
+                <label for="subject" class="block text-gray-700 font-semibold mb-2">موضوع الرسالة</label>
+                <select id="subject" name="subject" class="w-full form-input input-focus bg-white custom-select-arrow pr-4 pl-10" required>
+                    <option value="" disabled selected>اختر الموضوع</option>
+                    <option value="استفسار عام">استفسار عام</option>
+                    <option value="الدعم التقني">الدعم التقني</option>
+                    <option value="المبيعات">المبيعات</option>
+                    <option value="الشكاوى والاقتراحات">الشكاوى والاقتراحات</option>
+                    <option value="أخرى">أخرى</option>
+                </select>
+                <div class="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 translate-y-[2px] pl-3 text-gray-500">
+                    <i class="fas fa-chevron-down fa-sm"></i>
+                </div>
+            </div>
+            
+            <div>
+                <label for="message" class="block text-gray-700 font-semibold mb-2">الرسالة</label>
+                <textarea id="message" name="message" rows="5" class="w-full form-input input-focus" placeholder="اكتب رسالتك هنا..." required></textarea>
+            </div>
+            
+            <button type="submit" class="w-full btn-gradient text-white font-semibold py-3 px-8 rounded-lg text-lg flex items-center justify-center gap-x-2">
+                إرسال الرسالة
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
     </div>
 
-    <div class="main-title">
-      خطة عمل لجنة الأمن للمجلس الإنتقالي لمديرية دارسعد (الغربية)
-    </div>
-    <div class="sub-title">
-      لشهر مايو ، يونيو ، يوليو
-    </div>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // نمنع الإرسال التقليدي للفورم
 
-    <div class="divider"></div>
+            const recipientEmail = 'ahealfish71666@gmail.com';
 
-    <div class="content">
-      <p>1- عمل جلسات حوارية بين الشرطة واللجان المجتمعية من أجل تعزيز التنسيق الأمني.</p>
-      <div class="divider"></div>
-      <p>2- عمل خطط أمنية لأي أنشطة أو فعاليات في نطاق المركز.</p>
-      <div class="divider"></div>
-      <p>3- تشكيل للجان شعبية أمنية وعمل خطط بديلة لمواجهة أي إنفلات أمني.</p>
-      <div class="divider"></div>
-      <p>4- متابعة ورصد الظواهر السلبية والنشاطات والسلوكيات التي تهدف الى تدمير المجتمع مثل المخدرات والإنحراف الأخلاقي.</p>
-      <div class="divider"></div>
-      <p>5- رصد أي تحركات او أي إختلالات أمنية تقوم بها أفراد أو جماعات متطرفة تعمل على إقلاق سكينة المديرية والإبلاغ عنها.</p>
-      <div class="divider"></div>
-      <p>6- رفع التقارير الدورية لما تم إنجازة لمهام وإختصاصات اللجنة.</p>
-    </div>
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value; // بريد المرسل
+            const phone = document.getElementById('phone').value;
+            let subjectValue = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
 
-    <div class="footer">
-      إعداد: مسؤول الأمني المجتمعي لمديرية دارسعد : محمد أبوبكر أحمد علي باهويني
-    </div>
-  </div>
+            // التحقق من الحقول المطلوبة (تم تحسينه ليتوافق مع التغييرات)
+            if (!firstName || !email || !subjectValue || subjectValue === "" || !message) {
+                alert('يرجى ملء جميع الحقول المطلوبة (الاسم الأول، البريد الإلكتروني، موضوع الرسالة، والرسالة).');
+                return;
+            }
+            
+            // إذا كان المستخدم لم يختر موضوعًا فعليًا (بالرغم من required)، نضع موضوعًا افتراضيًا لـ mailto
+            let mailtoSubject = subjectValue;
+            if (subjectValue === "" || subjectValue === "اختر الموضوع") { // "اختر الموضوع" لا يجب أن تكون value فعلية الآن
+                mailtoSubject = "رسالة من نموذج التواصل"; 
+            }
+
+
+            let emailBody = `لقد تلقيت رسالة جديدة من خلال نموذج التواصل على الموقع.\n\n`;
+            emailBody += `الاسم الأول: ${firstName}\n`;
+            emailBody += `الاسم الأخير: ${lastName || 'لم يذكر'}\n`;
+            emailBody += `البريد الإلكتروني للمرسل: ${email}\n`;
+            if (phone) {
+                emailBody += `رقم الهاتف: ${phone}\n`;
+            }
+            emailBody += `موضوع الرسالة الذي اختاره المرسل: ${subjectValue}\n\n`;
+            emailBody += `نص الرسالة:\n------------------------------------\n${message}\n------------------------------------`;
+
+            // بناء رابط mailto
+            const mailtoLink = `mailto:${recipientEmail}` +
+                               `?subject=${encodeURIComponent(mailtoSubject)}` +
+                               `&body=${encodeURIComponent(emailBody)}`;
+
+            // فتح برنامج البريد الافتراضي
+            window.location.href = mailtoLink;
+
+            // يمكنك إظهار رسالة للمستخدم هنا إذا أردت، لكن فتح برنامج البريد هو مؤشر كافٍ
+            // alert('تم تجهيز بريدك للإرسال. الرجاء الضغط على "إرسال" في برنامج البريد الخاص بك.');
+            
+            // لا تقم بعمل reset للفورم مباشرة هنا، لأن الصفحة قد تنتقل قبل أن يتم ذلك
+            // إذا أردت، يمكنك عمل reset بعد تأخير بسيط، لكن عادة لا يكون ضروريًا مع mailto
+            // setTimeout(() => { this.reset(); }, 1000);
+        });
+    </script>
 </body>
 </html>
