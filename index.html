@@ -51,7 +51,6 @@
             <p class="text-gray-600 text-lg">املأ النموذج أدناه وسنقوم بالرد عليك في أقرب وقت ممكن.</p>
         </div>
 
-        <!-- لا نحتاج لكلاس action أو method في الفورم هنا لأننا سنتحكم به بالجافاسكربت -->
         <form id="contactForm" class="space-y-6">
             <div class="grid md:grid-cols-2 gap-6">
                 <div>
@@ -103,54 +102,33 @@
 
     <script>
         document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // نمنع الإرسال التقليدي للفورم
+            e.preventDefault(); 
 
             const recipientEmail = 'ahealfish71666@gmail.com';
 
+            // لا زلنا نحتاج هذه القيم للتحقق من أن الحقول المطلوبة مملوءة
             const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const email = document.getElementById('email').value; // بريد المرسل
-            const phone = document.getElementById('phone').value;
-            let subjectValue = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
+            const email = document.getElementById('email').value;
+            let subjectValue = document.getElementById('subject').value; // هذا هو الموضوع الذي اختاره المستخدم من القائمة
+            const messageContent = document.getElementById('message').value; // محتوى الرسالة فقط
 
-            // التحقق من الحقول المطلوبة (تم تحسينه ليتوافق مع التغييرات)
-            if (!firstName || !email || !subjectValue || subjectValue === "" || !message) {
+            // التحقق من الحقول المطلوبة الأساسية
+            if (!firstName || !email || !subjectValue || subjectValue === "" || !messageContent) {
                 alert('يرجى ملء جميع الحقول المطلوبة (الاسم الأول، البريد الإلكتروني، موضوع الرسالة، والرسالة).');
                 return;
             }
             
-            // إذا كان المستخدم لم يختر موضوعًا فعليًا (بالرغم من required)، نضع موضوعًا افتراضيًا لـ mailto
-            let mailtoSubject = subjectValue;
-            if (subjectValue === "" || subjectValue === "اختر الموضوع") { // "اختر الموضوع" لا يجب أن تكون value فعلية الآن
-                mailtoSubject = "رسالة من نموذج التواصل"; 
-            }
+            const mailtoSubject = subjectValue; 
 
-
-            let emailBody = `لقد تلقيت رسالة جديدة من خلال نموذج التواصل على الموقع.\n\n`;
-            emailBody += `الاسم الأول: ${firstName}\n`;
-            emailBody += `الاسم الأخير: ${lastName || 'لم يذكر'}\n`;
-            emailBody += `البريد الإلكتروني للمرسل: ${email}\n`;
-            if (phone) {
-                emailBody += `رقم الهاتف: ${phone}\n`;
-            }
-            emailBody += `موضوع الرسالة الذي اختاره المرسل: ${subjectValue}\n\n`;
-            emailBody += `نص الرسالة:\n------------------------------------\n${message}\n------------------------------------`;
+            // جسم الرسالة سيكون فقط محتوى حقل "الرسالة"
+            const emailBody = messageContent;
 
             // بناء رابط mailto
             const mailtoLink = `mailto:${recipientEmail}` +
                                `?subject=${encodeURIComponent(mailtoSubject)}` +
                                `&body=${encodeURIComponent(emailBody)}`;
 
-            // فتح برنامج البريد الافتراضي
             window.location.href = mailtoLink;
-
-            // يمكنك إظهار رسالة للمستخدم هنا إذا أردت، لكن فتح برنامج البريد هو مؤشر كافٍ
-            // alert('تم تجهيز بريدك للإرسال. الرجاء الضغط على "إرسال" في برنامج البريد الخاص بك.');
-            
-            // لا تقم بعمل reset للفورم مباشرة هنا، لأن الصفحة قد تنتقل قبل أن يتم ذلك
-            // إذا أردت، يمكنك عمل reset بعد تأخير بسيط، لكن عادة لا يكون ضروريًا مع mailto
-            // setTimeout(() => { this.reset(); }, 1000);
         });
     </script>
 </body>
